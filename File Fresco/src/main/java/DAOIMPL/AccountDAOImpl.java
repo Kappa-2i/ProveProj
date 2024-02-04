@@ -4,27 +4,24 @@ import DAO.AccountDao;
 import DATABASE.DBConnection;
 import ENTITY.Account;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class AccountDAOImpl implements AccountDao {
     public Account checkCredentials(String email, String password) {
         // Query SQL per ottenere i dettagli dell'utente
         String query = "SELECT a.email, a.password " +
                      "FROM test.account a " +
-                     "WHERE a.email = ? AND a.password = ?";
+                    " WHERE a.email = '" + email + "' AND a.password = '" + password + "'";
 
         // Utilizzo di un blocco try-with-resources per la gestione automatica delle risorse
         try (Connection conn = DBConnection.getDBConnection().getConnection();  // Ottenimento della connessione al database
-             PreparedStatement statement = conn.prepareStatement(query)) {  // Creazione di un PreparedStatement
+             Statement statement = conn.createStatement()) {  // Creazione di un PreparedStatement
 
-            statement.setString(1, email);  // Impostazione del primo parametro (email)
-            statement.setString(2, password);  // Impostazione del secondo parametro (password)
+            //statement.setString(1, email);  // Impostazione del primo parametro (email)
+            //statement.setString(2, password);  // Impostazione del secondo parametro (password)
 
             // Esecuzione della query e gestione del ResultSet
-            ResultSet resultSet = statement.executeQuery();
+            ResultSet resultSet = statement.executeQuery(query);
 
             // Verifico se ho una tupla da analizzare
             if (resultSet != null){
