@@ -8,6 +8,7 @@ public class Main {
 
         public static void main(String[] args) {
             // Avvia la GUI di login
-            ControllerLogin.startLogin();
+            ControllerLogin controllerLogin = new ControllerLogin();
+            controllerLogin.startLogin();
         }
 }

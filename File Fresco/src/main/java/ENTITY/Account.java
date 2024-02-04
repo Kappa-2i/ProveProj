@@ -7,8 +7,8 @@ public class Account {
     private String password;
 
     public Account(String email, String password) {
-        this.email = email;
-        this.password = password;
+        setEmail(email);
+        setPassword(password);
     }
 
     // Getter per l'email
@@ -16,8 +16,16 @@ public class Account {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     // Getter per la password
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

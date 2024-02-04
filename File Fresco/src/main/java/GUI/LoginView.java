@@ -1,25 +1,27 @@
 package GUI;
 
 import CONTROLLER.ControllerLogin;
-import CONTROLLER.ControllerSignIn;
-import DAO.AccountDao;
-import ENTITY.Account;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 // Classe della GUI di login
 public class LoginView extends JFrame {
+
+    private ControllerLogin controller;
     private JTextField emailTextField;
     private JTextField passwordField;
 
-    public LoginView() {
+
+    public LoginView(ControllerLogin controllerLogin) {
         setTitle("Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel();
 
+        this.controller = controllerLogin;
         JLabel emailLabel = new JLabel("Email:");
         emailTextField = new JTextField(20);
 
@@ -31,21 +33,28 @@ public class LoginView extends JFrame {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Otteniamo i valori dalla GUI
-                String email = emailTextField.getText();
-                String password = passwordField.getText();
+//                // Otteniamo i valori dalla GUI
+//                String email = emailTextField.getText();
+//                String password = passwordField.getText();
+//
+//                // Creiamo un account con i valori inseriti
+//                Account account = new Account(email, password);
+//
+//                // Verifichiamo l'esistenza dell'account nel database
+//                if (controller.checkCredentials(account)) {
+//                    JOptionPane.showMessageDialog(LoginView.this, "Accesso consentito!");
+//                    setVisible(false);
+//                    ControllerSignIn.startSignIn();
+//
+//                } else {
+//                    JOptionPane.showMessageDialog(LoginView.this, "Credenziali errate. Riprova.");
+//                }
 
-                // Creiamo un account con i valori inseriti
-                Account account = new Account(email, password);
-
-                // Verifichiamo l'esistenza dell'account nel database
-                if (AccountDao.accountExists(account)) {
-                    JOptionPane.showMessageDialog(LoginView.this, "Accesso consentito!");
-                    setVisible(false);
-                    ControllerSignIn.startSignIn();
-
-                } else {
-                    JOptionPane.showMessageDialog(LoginView.this, "Credenziali errate. Riprova.");
+                //Chiamiamo la funzione checkCredentials dal controller passandogli i dati inseriti
+                try {
+                    controller.checkCredentials(emailLabel.getText(), passwordLabel.getText());
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
                 }
             }
         });
