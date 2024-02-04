@@ -1,5 +1,7 @@
 package GUI;
 
+import CONTROLLER.ControllerLogin;
+import CONTROLLER.ControllerSignIn;
 import DAO.AccountDao;
 import ENTITY.Account;
 
@@ -39,6 +41,9 @@ public class LoginView extends JFrame {
                 // Verifichiamo l'esistenza dell'account nel database
                 if (AccountDao.accountExists(account)) {
                     JOptionPane.showMessageDialog(LoginView.this, "Accesso consentito!");
+                    setVisible(false);
+                    ControllerSignIn.startSignIn();
+
                 } else {
                     JOptionPane.showMessageDialog(LoginView.this, "Credenziali errate. Riprova.");
                 }
