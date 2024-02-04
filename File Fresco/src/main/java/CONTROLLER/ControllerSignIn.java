@@ -11,7 +11,7 @@ public class ControllerSignIn {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new SignInView();
+                new SignInView(new ControllerLogin());
             }
         });
     }

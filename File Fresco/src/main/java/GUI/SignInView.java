@@ -1,5 +1,7 @@
 package GUI;
 
+import CONTROLLER.ControllerLogin;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -8,7 +10,7 @@ public class SignInView extends JFrame {
     private JPasswordField passwordField;
     private JTextField emailField;
 
-    public SignInView() {
+    public SignInView(ControllerLogin controller) {
         // Impostazioni della finestra principale
         setTitle("Sign In");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

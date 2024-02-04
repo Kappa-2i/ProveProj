@@ -24,6 +24,8 @@ public class ControllerLogin {
 
     public ControllerLogin() {
         this.accountDao = new AccountDAOImpl(); // Assumi che tu abbia un costruttore predefinito
+        frameLogin = new LoginView(this); // Assumi che LoginView accetti ControllerLogin come parametro
+        frameLogin.setVisible(true);
     }
 
     // Metodo per avviare la GUI di login
@@ -43,7 +45,7 @@ public class ControllerLogin {
         if((!email.isEmpty()) && (!password.isEmpty())){
             account = accountDao.checkCredentials(email.toLowerCase(), password);
             if (account != null){
-                frameSignIn = new SignInView();
+                frameSignIn = new SignInView(this);
                 frameLogin.setVisible(false);
                 frameSignIn.setVisible(true);
             }
