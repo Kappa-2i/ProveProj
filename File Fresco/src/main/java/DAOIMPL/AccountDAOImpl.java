@@ -7,7 +7,7 @@ import ENTITY.Account;
 import java.sql.*;
 
 public class AccountDAOImpl implements AccountDao {
-    public Account checkCredentials(String email, String password) {
+    public Account checkCredentials(String email, String password) throws SQLException{
         // Query SQL per ottenere i dettagli dell'utente
         String query = "SELECT a.email, a.password " +
                      "FROM test.account a " +

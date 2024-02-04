@@ -52,7 +52,7 @@ public class LoginView extends JFrame {
 
                 //Chiamiamo la funzione checkCredentials dal controller passandogli i dati inseriti
                 try {
-                    controller.checkCredentials(emailLabel.getText(), passwordLabel.getText());
+                    controller.checkCredentials(emailTextField.getText(), passwordField.getText());
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }

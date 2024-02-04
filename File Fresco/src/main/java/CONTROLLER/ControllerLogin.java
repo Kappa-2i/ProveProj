@@ -56,6 +56,13 @@ public class ControllerLogin {
                 );
             }
         }
+        else {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Inserisci delle credenziali valide!",
+                    "Errore",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 }
 
