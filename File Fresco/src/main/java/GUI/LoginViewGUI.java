@@ -6,9 +6,8 @@ import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
 import java.io.InputStream;
-import java.sql.SQLException;
+import java.net.URL;
 
 // Classe della GUI di login
 public class LoginViewGUI extends JFrame {
@@ -38,23 +37,13 @@ public class LoginViewGUI extends JFrame {
         setMinimumSize(new Dimension(600, 600));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-//        fontBold();
-//        fontRegular();
-//        fontExtraBold();
-//        fontRegularSmall();
-//        fontRegularBold();
+        fontBold();
+        fontRegular();
+        fontExtraBold();
+        fontRegularSmall();
+        fontRegularBold();
 
 
-        //Inserimento immagine maialino
-//        ImageIcon imageIcon = new ImageIcon(LoginPage.class.getResource("/noun-piggy-bank-55037.png")); // Sostituisci con il tuo percorso
-//        JLabel imageLabel = new JLabel(imageIcon) {
-//            @Override
-//            protected void paintComponent(Graphics g) {
-//                super.paintComponent(g);
-//                Image scaledImage = imageIcon.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
-//                g.drawImage(scaledImage, 0, 0, null);
-//            }
-//        };
 
 
         // Creazione dei pannelli
@@ -80,13 +69,21 @@ public class LoginViewGUI extends JFrame {
         gbc.insets = new Insets(0, -200, 0, 0);
         gbc.weightx = 0.2;
         gbc.weighty = 1;
+
         contentPane.add(panelLoginWhite, gbc);//Aggiunge il panelLoginWhite al contentPane
 
 
         //Creazione di un JPanel 'PanelLoginRed' con BoxLayout
         JPanel panelLoginRed = new JPanel(new GridBagLayout());
+
+        //Inserimento immagine maialino
+        ImageIcon imageIcon = new ImageIcon((LoginViewGUI.class.getResource("/IMG/logopiggy.png"))); // Sostituisci con il tuo percorso
+        JLabel imageLabel = new JLabel(imageIcon);
+
         panelLoginRed.setBackground(new Color(133, 53, 53)); // Scegli il colore che preferisci
         panelLoginRed.setOpaque(true); // Imposta come trasparente per mostrare il gradiente
+        gbc.anchor = GridBagConstraints.CENTER;
+        panelLoginRed.add(imageLabel, gbc);
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.BOTH;
@@ -100,8 +97,8 @@ public class LoginViewGUI extends JFrame {
 
         //Creazione della label 'Login'
         JLabel loginLabel = new JLabel("Login");
-//        if (fontExtraBold != null)
-//            loginLabel.setFont(fontExtraBold);
+        if (fontExtraBold != null)
+            loginLabel.setFont(fontExtraBold);
         gbc.gridwidth = 0;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 0;
@@ -117,11 +114,12 @@ public class LoginViewGUI extends JFrame {
         JLabel emailLabel = new JLabel("Email:");
 
         JTextField emailField = new JTextField(20);
-//        if (fontRegularBold != null)
-//            emailLabel.setFont(fontRegularBold);
-//        if (fontRegular != null){
-//            emailField.setFont(fontRegular);
-//        }
+        if (fontRegularBold != null)
+            emailLabel.setFont(fontRegularBold);
+        if (fontRegular != null){
+            emailField.setFont(fontRegular);
+        }
+
         emailField.setMaximumSize(new Dimension(Integer.MAX_VALUE, emailField.getPreferredSize().height));
         emailField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
         emailField.addFocusListener(new FocusAdapter() {
@@ -145,6 +143,11 @@ public class LoginViewGUI extends JFrame {
         JLabel passwordLabel = new JLabel("Password:");
         JPasswordField passwordField = new JPasswordField(20);
         passwordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+        if (fontRegularBold != null)
+            passwordLabel.setFont(fontRegularBold);
+        if (fontRegular != null){
+            passwordField.setFont(fontRegular);
+        }
         passwordField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -156,11 +159,6 @@ public class LoginViewGUI extends JFrame {
             }
         });
         passwordField.setEchoChar('*');
-//        if (fontRegularBold != null)
-//            passwordLabel.setFont(fontRegularBold);
-//        if (fontRegular != null){
-//            passwordField.setFont(fontRegular);
-//        }
         gbc.gridy = 4;
         panelLoginWhite.add(passwordLabel, gbc); //Aggiunge la passwordLabel al panelLoginWhite
         gbc.gridy = 5;
@@ -169,6 +167,8 @@ public class LoginViewGUI extends JFrame {
 
         // Inizializza il JCheckBox per mostrare/nascondere la password
         showPasswordCheckBox = new JCheckBox("Mostra Password");
+        if (fontRegularSmall != null)
+            showPasswordCheckBox.setFont(fontRegularSmall);
 //        if (fontRegularSmall != null)
 //            showPasswordCheckBox.setFont(fontRegularSmall);
         showPasswordCheckBox.addActionListener(new ActionListener() {
@@ -181,9 +181,13 @@ public class LoginViewGUI extends JFrame {
                 }
             }
         });
-        showPasswordCheckBox.setIcon(new ImageIcon(LoginViewGUI.class.getResource("IMG/hiddenpassword.png")));
-        showPasswordCheckBox.setSelectedIcon(new ImageIcon(LoginViewGUI.class.getResource()));
-        showPasswordCheckBox.setPressedIcon(new ImageIcon(LoginViewGUI.class.getResource()));
+
+        showPasswordCheckBox.setIcon(resizeIcon(LoginViewGUI.class.getResource("/IMG/hiddenpassword.png"), 35, 35));
+        showPasswordCheckBox.setSelectedIcon(resizeIcon(LoginViewGUI.class.getResource("/IMG/showedpassword.png"), 35, 35));
+        showPasswordCheckBox.setPressedIcon(resizeIcon(LoginViewGUI.class.getResource("/IMG/showedpassword.png"), 35, 35));
+        showPasswordCheckBox.setFocusPainted(false);
+
+
 
         gbc.gridy = 6;
         panelLoginWhite.add(showPasswordCheckBox, gbc); //Aggiunge la showPasswordCheckBox al panelLoginWhite
@@ -191,6 +195,8 @@ public class LoginViewGUI extends JFrame {
 
         // Crazione della label 'CreaUtenteLabel'
         JLabel creaUtenteLabel = new JLabel("Crea Utente");
+        if (fontRegularSmall != null)
+            creaUtenteLabel.setFont(fontRegularSmall);
         creaUtenteLabel.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia il cursore per indicare che è cliccabile
 //        if (fontRegularSmall != null)
 //            creaUtenteLabel.setFont(fontRegularSmall);
@@ -220,8 +226,8 @@ public class LoginViewGUI extends JFrame {
 
         // Crazione della label 'passwordDimenticataLabel'
         JLabel passwordDimenticataLabel = new JLabel("Password dimenticata?");
-//        if (fontRegularSmall != null)
-//            passwordDimenticataLabel.setFont(fontRegularSmall);
+        if (fontRegularSmall != null)
+           passwordDimenticataLabel.setFont(fontRegularSmall);
         passwordDimenticataLabel.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia il cursore per indicare che è cliccabile
 //        if (fontRegularSmall != null)
 //            creaUtenteLabel.setFont(fontRegularSmall);
@@ -248,97 +254,95 @@ public class LoginViewGUI extends JFrame {
         loginButton = new JButton("Accedi");
         if (fontBold != null)
             loginButton.setFont(fontBold);
-        loginButton.setBackground(new Color(34, 40, 35, 255));
+        loginButton.setOpaque(true);
+        loginButton.setBackground(new Color(0, 0, 0, 255));
         loginButton.setForeground(Color.WHITE);
         loginButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia il cursore per indicare che è cliccabile
         loginButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         gbc.gridy = 9;
         gbc.anchor = GridBagConstraints.EAST;
         gbc.fill = 0;
-        panelLoginWhite.add(loginButton, gbc); //Aggiunge il loginButton al panelLoginWhite
-//        loginButton.addMouseListener(new MouseAdapter(){
-//            @Override
-//            public void mouseClicked(MouseEvent e){
-//                // Quando con il mouse clicco sul pulsante
-//                myGestore.CheckLogin(emailField.getText(), passwordField.getText());
-//            }
-//        });
+        panelLoginWhite.add(loginButton, gbc); //Aggiunge il loginButton al panelLoginWhit
 
         setContentPane(contentPane);
     }
+
+    private static ImageIcon resizeIcon(URL url, int width, int height) {
+        // Crea l'icona dall'URL
+        ImageIcon icon = new ImageIcon(url);
+        // Ridimensiona l'immagine
+        Image resizedImage = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        // Ritorna la nuova icona ridimensionata
+        return new ImageIcon(resizedImage);
+    }
+
+
+    //Creazione del fontExtraBold
+    private void fontExtraBold() {
+        try {
+            InputStream is = LoginViewGUI.class.getResourceAsStream("/FONT/Rubik-ExtraBold.ttf"); // Sostituisci con il tuo percorso
+            fontExtraBold = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(52f); // Modifica la dimensione a piacimento
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(fontExtraBold);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fontExtraBold = null;
+        }
+    }
+
+    //Creazione del fontBold
+    private void fontBold() {
+        try {
+            InputStream is = LoginViewGUI.class.getResourceAsStream("/FONT/Rubik-Bold.ttf"); // Sostituisci con il tuo percorso
+            fontBold = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(16f); // Modifica la dimensione a piacimento
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(fontBold);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fontBold = null;
+        }
+    }
+
+    //Creazione del fontRegular
+    private void fontRegular() {
+        try {
+            InputStream is = LoginViewGUI.class.getResourceAsStream("/FONT/Rubik-Regular.ttf"); // Sostituisci con il tuo percorso
+            fontRegular = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(20f); // Modifica la dimensione a piacimento
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(fontRegular);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fontRegular = null;
+        }
+    }
+
+    //Creazioned del fontRegularBold
+    private void fontRegularBold() {
+        try {
+            InputStream is = LoginViewGUI.class.getResourceAsStream("/FONT/Rubik-Bold.ttf"); // Sostituisci con il tuo percorso
+            fontRegularBold = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(22f); // Modifica la dimensione a piacimento
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(fontRegularBold);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fontRegularBold = null;
+        }
+    }
+
+    //Creazione del fontRegularSmall
+    private void fontRegularSmall() {
+        try {
+            InputStream is = LoginViewGUI.class.getResourceAsStream("/FONT/Rubik-Regular.ttf"); // Sostituisci con il tuo percorso
+            fontRegularSmall = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12f); // Modifica la dimensione a piacimento
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(fontRegularSmall);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fontRegularSmall = null;
+        }
+    }
 }
 
-//    private void fontExtraBold() {
-//        try {
-//            // Il percorso inizia con "/" e fa riferimento alla struttura della cartella sotto "src/main/resources"
-//            InputStream is = getClass().getResourceAsStream("/Rubik/static/Rubik-ExtraBold.ttf");
-//            fontExtraBold = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(52f); // Modifica la dimensione a piacimento
-//            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-//            // Assicurati che il font sia disponibile nel tuo ambiente grafico
-//            if (fontExtraBold != null) {
-//                ge.registerFont(fontExtraBold);
-//            }
-//        } catch (IOException | FontFormatException e) {
-//            e.printStackTrace();
-//            fontExtraBold = null;
-//        }
-//    }
-//
-//
-//    //Creazione del fontBold
-//    private void fontBold() {
-//        try {
-//            InputStream is = LoginViewGUI.class.getResourceAsStream("static/Rubik-Bold.ttf"); // Sostituisci con il tuo percorso
-//            fontBold = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(16f); // Modifica la dimensione a piacimento
-//            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-//            ge.registerFont(fontBold);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            fontBold = null;
-//        }
-//    }
-//
-//
-//    //Creazione del fontRegular
-//    private void fontRegular() {
-//        try {
-//            InputStream is = LoginViewGUI.class.getResourceAsStream("/main/java/FONT/static/Rubik-Regular.ttf"); // Sostituisci con il tuo percorso
-//            fontRegular = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(20f); // Modifica la dimensione a piacimento
-//            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-//            ge.registerFont(fontRegular);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            fontRegular = null;
-//        }
-//    }
-//
-//
-//    //Creazioned del fontRegularBold
-//    private void fontRegularBold() {
-//        try {
-//            InputStream is = LoginViewGUI.class.getResourceAsStream("/main/java/FONT/static/Rubik-Bold.ttf"); // Sostituisci con il tuo percorso
-//            fontRegularBold = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(22f); // Modifica la dimensione a piacimento
-//            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-//            ge.registerFont(fontRegularBold);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            fontRegularBold = null;
-//        }
-//    }
-//
-//
-//    //Creazione del fontRegularSmall
-//    private void fontRegularSmall() {
-//        try {
-//            InputStream is = LoginViewGUI.class.getResourceAsStream("/main/java/FONT/static/Rubik-Regular.ttf"); // Sostituisci con il tuo percorso
-//            fontRegularSmall = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12f); // Modifica la dimensione a piacimento
-//            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-//            ge.registerFont(fontRegularSmall);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            fontRegularSmall = null;
-//        }
-//    }
 //    loginButton.addActionListener(new ActionListener() {
 //        @Override
 //        public void actionPerformed(ActionEvent e) {
