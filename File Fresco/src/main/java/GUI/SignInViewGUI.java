@@ -5,12 +5,12 @@ import CONTROLLER.ControllerLogin;
 import javax.swing.*;
 import java.awt.*;
 
-public class SignInView extends JFrame {
+public class SignInViewGUI extends JFrame {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JTextField emailField;
 
-    public SignInView(ControllerLogin controller) {
+    public SignInViewGUI(ControllerLogin controller) {
         // Impostazioni della finestra principale
         setTitle("Sign In");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -24,12 +24,16 @@ public class SignInView extends JFrame {
         // Etichette e campi di testo
         JLabel usernameLabel = new JLabel("Username:");
         usernameField = new JTextField();
+        usernameField.setText(controller.account.getNomeutente());
 
         JLabel passwordLabel = new JLabel("Password:");
         passwordField = new JPasswordField();
+        passwordField.setText(controller.account.getPassword());
+
 
         JLabel emailLabel = new JLabel("Email:");
         emailField = new JTextField();
+        emailField.setText(controller.account.getEmail());
 
         // Bottone di SignIn
         JButton signInButton = new JButton("Sign In");

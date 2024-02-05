@@ -1,7 +1,6 @@
 package CONTROLLER;
 
-import GUI.LoginView;
-import GUI.SignInView;
+import GUI.SignInViewGUI;
 
 import javax.swing.*;
 
@@ -11,7 +10,7 @@ public class ControllerSignIn {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new SignInView(new ControllerLogin());
+                new SignInViewGUI(new ControllerLogin());
             }
         });
     }

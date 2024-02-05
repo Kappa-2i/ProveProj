@@ -5,13 +5,20 @@ package ENTITY;
 public class Account {
     private String email;
     private String password;
+    private String nomeutente;
+    private String codiceFiscale;
 
     public Account(String email, String password) {
         setEmail(email);
         setPassword(password);
     }
 
-    // Getter per l'email
+    public Account(String email, String password, String nomeutente){
+        setEmail(email);
+        setPassword(password);
+        setNomeutente(nomeutente);
+    }
+
     public String getEmail() {
         return email;
     }
@@ -20,12 +27,27 @@ public class Account {
         this.email = email;
     }
 
-    // Getter per la password
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getNomeutente() {
+        return nomeutente;
+    }
+
+    public void setNomeutente(String nomeutente) {
+        this.nomeutente = nomeutente;
+    }
+
+    public String getCodiceFiscale() {
+        return codiceFiscale;
+    }
+
+    public void setCodiceFiscale(String codiceFiscale) {
+        this.codiceFiscale = codiceFiscale;
     }
 }

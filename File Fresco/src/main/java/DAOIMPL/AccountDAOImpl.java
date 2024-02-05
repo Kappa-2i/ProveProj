@@ -9,7 +9,7 @@ import java.sql.*;
 public class AccountDAOImpl implements AccountDao {
     public Account checkCredentials(String email, String password) throws SQLException{
         // Query SQL per ottenere i dettagli dell'utente
-        String query = "SELECT a.email, a.password " +
+        String query = "SELECT a.email, a.password, a.nomeutente " +
                      "FROM test.account a " +
                     " WHERE a.email = '" + email + "' AND a.password = '" + password + "'";
 
@@ -27,7 +27,7 @@ public class AccountDAOImpl implements AccountDao {
             if (resultSet != null){
                 while (resultSet.next()) {
                     // Ritorno dei dati dell'utente sotto forma di stringhe
-                    Account account = new Account(resultSet.getString("Email"), resultSet.getString("Password"));
+                    Account account = new Account(resultSet.getString("Email"), resultSet.getString("Password"), resultSet.getString("NomeUtente"));
                     return account;
                 }
             }

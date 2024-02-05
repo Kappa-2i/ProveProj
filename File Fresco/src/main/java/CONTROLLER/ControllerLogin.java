@@ -3,8 +3,8 @@ package CONTROLLER;
 import DAO.AccountDao;
 import DAOIMPL.AccountDAOImpl;
 import ENTITY.*;
-import GUI.LoginView;
-import GUI.SignInView;
+import GUI.LoginViewGUI;
+import GUI.SignInViewGUI;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -13,8 +13,8 @@ import java.sql.SQLException;
 public class ControllerLogin {
 
     //Dichiarazioni delle Gui
-    private LoginView frameLogin;
-    private SignInView frameSignIn;
+    private LoginViewGUI frameLogin;
+    private SignInViewGUI frameSignIn;
 
     //Dichiarazioni delle Dao
     private AccountDao accountDao;
@@ -24,17 +24,17 @@ public class ControllerLogin {
 
     public ControllerLogin() {
         this.accountDao = new AccountDAOImpl(); // Assumi che tu abbia un costruttore predefinito
-        frameLogin = new LoginView(this); // Assumi che LoginView accetti ControllerLogin come parametro
+        frameLogin = new LoginViewGUI(this); // Assumi che LoginView accetti ControllerLogin come parametro
         frameLogin.setVisible(true);
     }
 
     // Metodo per avviare la GUI di login
     public void startLogin() {
-        final ControllerLogin self = this;
+        final ControllerLogin controller = this;
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new LoginView(self);
+                new LoginViewGUI(controller);
             }
         });
     }
@@ -45,7 +45,7 @@ public class ControllerLogin {
         if((!email.isEmpty()) && (!password.isEmpty())){
             account = accountDao.checkCredentials(email.toLowerCase(), password);
             if (account != null){
-                frameSignIn = new SignInView(this);
+                frameSignIn = new SignInViewGUI(this);
                 frameLogin.setVisible(false);
                 frameSignIn.setVisible(true);
             }
