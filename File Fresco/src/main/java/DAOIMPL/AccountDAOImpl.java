@@ -4,9 +4,22 @@ import DAO.AccountDao;
 import DATABASE.DBConnection;
 import ENTITY.Account;
 
+import java.lang.invoke.StringConcatFactory;
 import java.sql.*;
 
 public class AccountDAOImpl implements AccountDao {
+
+
+
+    public void insertAccount(String email, String password, String nomeUtente, String codiceFiscale){
+
+
+
+    }
+
+
+
+
     public Account checkCredentials(String email, String password) throws SQLException{
         // Query SQL per ottenere i dettagli dell'utente
         String query = "SELECT a.email, a.password, a.nomeutente " +
@@ -38,4 +51,6 @@ public class AccountDAOImpl implements AccountDao {
         // Ritorno di null in caso di errore o se le credenziali non sono valide
         return null;
     }
+
+
 }

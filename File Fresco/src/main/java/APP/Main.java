@@ -1,14 +1,11 @@
 package APP;
 
-import CONTROLLER.ControllerLogin;
+import CONTROLLER.Controller;
 
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
 public class Main {
 
         public static void main(String[] args) {
             // Avvia la GUI di login
-            ControllerLogin controllerLogin = new ControllerLogin();
-            controllerLogin.startLogin();
+            Controller controller = new Controller();
         }
 }
