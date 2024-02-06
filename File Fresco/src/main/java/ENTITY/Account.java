@@ -3,12 +3,15 @@ package ENTITY;
 
 import EXCEPTIONS.MyExc;
 
+import java.util.ArrayList;
+
 // Classe del modello che rappresenta l'account
 public class Account {
     private String email;
     private String password;
     private String nomeutente;
     private String codiceFiscale;
+    private ArrayList<ContoCorrente> conti;
 
     public Account(String email, String password, String nomeutente) throws MyExc {
         setEmail(email);
@@ -21,6 +24,10 @@ public class Account {
         setPassword(password);
         setNomeutente(nomeutente);
         setCodiceFiscale(codiceFiscale);
+    }
+
+    public Account(ArrayList<ContoCorrente> conti) {
+        setConti(conti);
     }
 
     public String getEmail() {
@@ -59,6 +66,14 @@ public class Account {
         this.codiceFiscale = codiceFiscale;
     }
 
+    public ArrayList<ContoCorrente> getConti() {
+        return conti;
+    }
+
+    public void setConti(ArrayList<ContoCorrente> conti) {
+        this.conti = conti;
+    }
+
     // Metodo per contare le occorrenze di un carattere in una stringa
     private int countOccurrences(String str, char character) {
         int count = 0;
@@ -68,5 +83,12 @@ public class Account {
             }
         }
         return count;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "conti=" + conti +
+                '}';
     }
 }

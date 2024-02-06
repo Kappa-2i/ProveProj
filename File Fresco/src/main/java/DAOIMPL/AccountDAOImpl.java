@@ -13,7 +13,7 @@ public class AccountDAOImpl implements AccountDao {
 
     @Override
     public void insertAccount(String email, String nomeUtente, String password, String codiceFiscale){
-        String insert = "INSERT INTO db.account(email, nomeutente, password, persona_codicefiscale) VALUES (?, ?, ?, ?)";
+        String insert = "INSERT INTO test.account(email, nomeutente, password, persona_codicefiscale) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = DBConnection.getDBConnection().getConnection();  // Ottenimento della connessione al database
              PreparedStatement statement = conn.prepareStatement(insert)) {  // Creazione di un PreparedStatement

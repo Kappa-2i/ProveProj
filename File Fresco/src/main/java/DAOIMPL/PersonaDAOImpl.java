@@ -13,8 +13,8 @@ import java.text.SimpleDateFormat;
 public class PersonaDAOImpl implements PersonaDAO {
 
     @Override
-    public void insertUser(String nome, String cognome, String telefono, String dataNascita, String citta, String via, String nCivico, String cap, String codiceFiscale){
-        String insert = "INSERT INTO db.persona(codiceFiscale, nome, cognome, dataNascita, numerotelefono, città, via, n_civico, cap) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public Boolean insertUser(String nome, String cognome, String telefono, String dataNascita, String citta, String via, String nCivico, String cap, String codiceFiscale){
+        String insert = "INSERT INTO test.persona(codiceFiscale, nome, cognome, dataNascita, numerotelefono, città, via, n_civico, cap) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DBConnection.getDBConnection().getConnection();  // Ottenimento della connessione al database
              PreparedStatement statement = conn.prepareStatement(insert)) {  // Creazione di un PreparedStatement
@@ -34,16 +34,16 @@ public class PersonaDAOImpl implements PersonaDAO {
             statement.setString(8, nCivico);
             statement.setString(9, cap);
 
-
             // Esecuzione dell'insert
             statement.execute();
             statement.close();
-
+            return true;
         } catch (SQLException e) {
             // Gestione delle eccezioni SQL
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
+        return false;
     }
 }

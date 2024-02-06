@@ -265,6 +265,8 @@ public class LoginViewGUI extends JFrame {
             //Chiamiamo la funzione checkCredentials dal controller passandogli i dati inseriti
             try {
                 controller.checkCredentials(emailField.getText(), passwordField.getText());
+                emailField.setText("");
+                passwordField.setText("");
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
