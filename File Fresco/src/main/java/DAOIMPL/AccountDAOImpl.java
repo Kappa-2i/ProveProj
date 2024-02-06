@@ -3,6 +3,7 @@ package DAOIMPL;
 import DAO.AccountDao;
 import DATABASE.DBConnection;
 import ENTITY.Account;
+import EXCEPTIONS.MyExc;
 
 import java.lang.invoke.StringConcatFactory;
 import java.sql.*;
@@ -10,23 +11,36 @@ import java.sql.*;
 public class AccountDAOImpl implements AccountDao {
 
 
+    @Override
+    public void insertAccount(String email, String nomeUtente, String password, String codiceFiscale){
+        String insert = "INSERT INTO test.account(email, nomeutente, password, persona_codicefiscale) VALUES (?, ?, ?, ?)";
 
-    public void insertAccount(String email, String password, String nomeUtente, String codiceFiscale){
+        try (Connection conn = DBConnection.getDBConnection().getConnection();  // Ottenimento della connessione al database
+             PreparedStatement statement = conn.prepareStatement(insert)) {  // Creazione di un PreparedStatement
 
+            statement.setString(1, email);
+            statement.setString(2, nomeUtente);
+            statement.setString(3, password);
+            statement.setString(4, codiceFiscale);
 
+            // Esecuzione dell'insert
+            statement.execute();
+            statement.close();
 
+        } catch (SQLException e) {
+            // Gestione delle eccezioni SQL
+            e.printStackTrace();
+        }
     }
 
 
 
-
-    public Account checkCredentials(String email, String password) throws SQLException{
+    @Override
+    public Account checkCredentials(String email, String password){
         // Query SQL per ottenere i dettagli dell'utente
         String query = "SELECT a.email, a.password, a.nomeutente " +
                      "FROM test.account a " +
                     " WHERE a.email = '" + email + "' AND a.password = '" + password + "'";
-
-        // Utilizzo di un blocco try-with-resources per la gestione automatica delle risorse
         try (Connection conn = DBConnection.getDBConnection().getConnection();  // Ottenimento della connessione al database
              Statement statement = conn.createStatement()) {  // Creazione di un PreparedStatement
 
@@ -47,10 +61,9 @@ public class AccountDAOImpl implements AccountDao {
         } catch (SQLException e) {
             // Gestione delle eccezioni SQL
             e.printStackTrace();
+        } catch (MyExc e) {
+            throw new RuntimeException(e);
         }
-        // Ritorno di null in caso di errore o se le credenziali non sono valide
         return null;
     }
-
-
 }

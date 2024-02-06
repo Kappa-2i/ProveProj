@@ -1,6 +1,8 @@
 package ENTITY;
 
 
+import EXCEPTIONS.MyExc;
+
 // Classe del modello che rappresenta l'account
 public class Account {
     private String email;
@@ -8,17 +10,13 @@ public class Account {
     private String nomeutente;
     private String codiceFiscale;
 
-    public Account(String email, String password, String nomeutente) {
+    public Account(String email, String password, String nomeutente) throws MyExc {
         setEmail(email);
         setPassword(password);
         setNomeutente(nomeutente);
     }
 
-    public Account(String email, String password, String nomeutente, String codiceFiscale){
-        // Verifica che la stringa "email" contenga esattamente una "@" e nessuna altra occorrenza
-        if (countOccurrences(email, '@') != 1) {
-            throw new IllegalArgumentException("L'email deve contenere esattamente una carattere '@'.");
-        }
+    public Account(String email, String password, String nomeutente, String codiceFiscale) throws MyExc {
         setEmail(email);
         setPassword(password);
         setNomeutente(nomeutente);
@@ -29,8 +27,12 @@ public class Account {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmail(String email) throws MyExc {
+        // Verifica che la stringa "email" contenga esattamente una "@" e nessuna altra occorrenza
+        if (countOccurrences(email, '@') != 1)
+            throw new MyExc("L'email deve contenere esattamente una carattere '@'.");
+        else
+            this.email = email;
     }
 
     public String getPassword() {

@@ -1,13 +1,18 @@
 package CONTROLLER;
 
 import DAO.AccountDao;
+import DAO.PersonaDAO;
 import DAOIMPL.AccountDAOImpl;
+import DAOIMPL.PersonaDAOImpl;
 import ENTITY.*;
+import EXCEPTIONS.MyExc;
 import GUI.LoginViewGUI;
 import GUI.SignInViewGUI;
 
 import javax.swing.*;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 // Classe del controller
 public class Controller {
@@ -18,6 +23,7 @@ public class Controller {
 
     //Dichiarazioni delle Dao
     private AccountDao accountDao;
+    private PersonaDAO personaDao;
 
     //Dichiarazione di un account null
     public Account account = null;
@@ -33,6 +39,7 @@ public class Controller {
 
         //DAO
         this.accountDao = new AccountDAOImpl(); // Assumi che tu abbia un costruttore predefinito
+        this.personaDao = new PersonaDAOImpl();
 
     }
 
@@ -51,9 +58,7 @@ public class Controller {
         if((!email.isEmpty()) && (!password.isEmpty())){
             account = accountDao.checkCredentials(email.toLowerCase(), password);
             if (account != null){
-//                frameSignIn = new SignInViewGUI(new ControllerSignIn());
-//                frameLogin.setVisible(false);
-//                frameSignIn.setVisible(true);
+                frameLogin.setVisible(false);
             }
             else{
                 JOptionPane.showMessageDialog(
@@ -73,15 +78,30 @@ public class Controller {
         }
     }
 
+    public void insertUser(String nome, String cognome, String telefono, String dataNascita, String citta, String via, String nCivico, String cap, String codiceFiscale) throws MyExc {
+        if (!nome.isEmpty() && !cognome.isEmpty() && !telefono.isEmpty() && !citta.isEmpty() && !via.isEmpty() && !nCivico.isEmpty() && !cap.isEmpty() && !codiceFiscale.isEmpty()){
+            Persona persona = new Persona(nome, cognome, telefono, dataNascita, citta, via, nCivico, cap, codiceFiscale);
+            personaDao.insertUser(nome, cognome, telefono, dataNascita, citta, via, nCivico, cap, codiceFiscale);
+        }
+        else{
+            JOptionPane.showMessageDialog(
+                    frameSignIn,
+                    "Inserisci delle credenziali valide!",
+                    "Errore",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     public void insertAccount(String email, String nomeUtente, String password, String codiceFiscale){
         if (!email.isEmpty() && !nomeUtente.isEmpty() && !password.isEmpty() && !codiceFiscale.isEmpty()) {
             try {
                 Account account = new Account(email, nomeUtente, password, codiceFiscale);
+                accountDao.insertAccount(email, nomeUtente, password, codiceFiscale);
             }
-            catch (IllegalArgumentException exception){
+            catch (MyExc e){
                 JOptionPane.showMessageDialog(
                         frameSignIn,
-                        "Inserisci un'email valida!",
+                        e.getMessage(),
                         "Errore",
                         JOptionPane.ERROR_MESSAGE);
             }
@@ -93,8 +113,9 @@ public class Controller {
                     "Errore",
                     JOptionPane.ERROR_MESSAGE);
         }
-
     }
+
+
 
 
     public void frameLogin(Boolean isVisibile){

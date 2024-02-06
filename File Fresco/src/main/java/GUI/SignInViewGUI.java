@@ -1,16 +1,26 @@
 package GUI;
 
 import CONTROLLER.Controller;
+import EXCEPTIONS.MyExc;
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 
 public class SignInViewGUI extends JFrame {
 
 
     private Controller controller;
+    private String dataFormattata;
+
 
     public SignInViewGUI(Controller controller){
 
@@ -32,7 +42,17 @@ public class SignInViewGUI extends JFrame {
         JTextField cognomeField = new JTextField();
 
         JLabel dataLabel = new JLabel("Data di nascita:");
-        JTextField dataField = new JTextField();
+
+        JDateChooser dataField = new JDateChooser();
+        dataField.setDateFormatString("yyyy-MM-dd"); // Imposta il formato della data
+        dataField.getJCalendar().getYearChooser().setStartYear(1900);//anno minimo del calendario: 1900
+        dataField.getJCalendar().getYearChooser().setEndYear(Calendar.getInstance().get(Calendar.YEAR));//anno massimo del calendario: anno corrente
+
+
+        java.sql.Date dataNascita = null;
+
+
+
 
         JLabel telefonoLabel = new JLabel("Telefono:");
         JTextField telefonoField = new JTextField();
@@ -69,18 +89,47 @@ public class SignInViewGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                    controller.insertAccount(emailField.getText(), passwordField.getText(), usernameField.getText(), codiceFiscaleField.getText());
-                    controller.frameLogin(true);
-                    setVisible(false);
+                java.util.Date dataSelezionata = dataField.getDate();
+                if (dataSelezionata != null) {
+                    // Viene formattata la data Selezionata dall'utente e passata ad una stringa
+                    dataFormattata = new SimpleDateFormat("yyyy-MM-dd").format(dataSelezionata);
+                }
 
-                    emailField.setText("");
-                passwordField.setText("");
+                try {
+                    controller.insertUser(nomeField.getText(),
+                            cognomeField.getText(),
+                            telefonoField.getText(),
+                            dataFormattata,
+                            cittaField.getText(),
+                            viaField.getText(),
+                            nCivicoField.getText(),
+                            capField.getText(),
+                            codiceFiscaleField.getText());
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Dati della persona inseriti!",
+                            "Benvenuta/o",
+                            JOptionPane.ERROR_MESSAGE);
+                } catch (MyExc ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                controller.insertAccount(emailField.getText(), usernameField.getText(), passwordField.getText(), codiceFiscaleField.getText());
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Dati dell'account inseriti!",
+                        "Benvenuta/o",
+                        JOptionPane.ERROR_MESSAGE);
+
+                setVisible(false);
+                controller.frameLogin(true);
+
+                emailField.setText("");
                 usernameField.setText("");
+                passwordField.setText("");
                 codiceFiscaleField.setText("");
 
-//                controller.insertUser(nomeField.getText(), cognomeField.getText(), dataField.getText(),
-//                                telefonoField.getText(), cittaField.getText(), viaField.getText(), nCivicoField.getText(),
-//                                capField.getText(), codiceFiscaleField.getText());
+
 
 
             }

@@ -9,6 +9,7 @@ import java.awt.event.*;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.sql.SQLException;
 
 // Classe della GUI di login
 public class LoginViewGUI extends JFrame {
@@ -27,8 +28,7 @@ public class LoginViewGUI extends JFrame {
     private Font fontRegularBold;
 
     private Controller controller;
-    private JTextField emailTextField;
-    private JTextField passwordTextField;
+
 
 
     public LoginViewGUI(Controller controllerLogin) {
@@ -259,6 +259,17 @@ public class LoginViewGUI extends JFrame {
         loginButton.setForeground(Color.WHITE);
         loginButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia il cursore per indicare che è cliccabile
         loginButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        loginButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            //Chiamiamo la funzione checkCredentials dal controller passandogli i dati inseriti
+            try {
+                controller.checkCredentials(emailField.getText(), passwordField.getText());
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+    });
         gbc.gridy = 9;
         gbc.anchor = GridBagConstraints.EAST;
         gbc.fill = 0;
@@ -343,15 +354,4 @@ public class LoginViewGUI extends JFrame {
     }
 }
 
-//    loginButton.addActionListener(new ActionListener() {
-//        @Override
-//        public void actionPerformed(ActionEvent e) {
-//            //Chiamiamo la funzione checkCredentials dal controller passandogli i dati inseriti
-//            try {
-//                controllerLogin.checkCredentials(emailTextField.getText(), passwordTextField.getText());
-//            } catch (SQLException ex) {
-//                throw new RuntimeException(ex);
-//            }
-//        }
-//    });
-//}
+
