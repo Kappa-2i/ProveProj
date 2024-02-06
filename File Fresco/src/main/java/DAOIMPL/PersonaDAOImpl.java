@@ -14,7 +14,7 @@ public class PersonaDAOImpl implements PersonaDAO {
 
     @Override
     public void insertUser(String nome, String cognome, String telefono, String dataNascita, String citta, String via, String nCivico, String cap, String codiceFiscale){
-        String insert = "INSERT INTO test.persona(codiceFiscale, nome, cognome, dataNascita, numerotelefono, città, via, n_civico, cap) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String insert = "INSERT INTO db.persona(codiceFiscale, nome, cognome, dataNascita, numerotelefono, città, via, n_civico, cap) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DBConnection.getDBConnection().getConnection();  // Ottenimento della connessione al database
              PreparedStatement statement = conn.prepareStatement(insert)) {  // Creazione di un PreparedStatement

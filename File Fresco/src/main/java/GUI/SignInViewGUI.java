@@ -104,22 +104,15 @@ public class SignInViewGUI extends JFrame {
                             viaField.getText(),
                             nCivicoField.getText(),
                             capField.getText(),
-                            codiceFiscaleField.getText());
-                    JOptionPane.showMessageDialog(
-                            null,
-                            "Dati della persona inseriti!",
-                            "Benvenuta/o",
-                            JOptionPane.ERROR_MESSAGE);
+                            codiceFiscaleField.getText(),
+                            emailField.getText(),
+                            usernameField.getText(),
+                            passwordField.getText());
+
+
                 } catch (MyExc ex) {
                     throw new RuntimeException(ex);
                 }
-
-                controller.insertAccount(emailField.getText(), usernameField.getText(), passwordField.getText(), codiceFiscaleField.getText());
-                JOptionPane.showMessageDialog(
-                        null,
-                        "Dati dell'account inseriti!",
-                        "Benvenuta/o",
-                        JOptionPane.ERROR_MESSAGE);
 
                 setVisible(false);
                 controller.frameLogin(true);
@@ -128,6 +121,14 @@ public class SignInViewGUI extends JFrame {
                 usernameField.setText("");
                 passwordField.setText("");
                 codiceFiscaleField.setText("");
+                nomeField.setText("");
+                cognomeField.setText("");
+                dataField.setDate(null);
+                nCivicoField.setText("");
+                cittaField.setText("");
+                viaField.setText("");
+                capField.setText("");
+                telefonoField.setText("");
 
 
 

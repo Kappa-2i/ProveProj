@@ -78,10 +78,25 @@ public class Controller {
         }
     }
 
-    public void insertUser(String nome, String cognome, String telefono, String dataNascita, String citta, String via, String nCivico, String cap, String codiceFiscale) throws MyExc {
+    public void insertUser(String nome, String cognome, String telefono, String dataNascita, String citta, String via, String nCivico, String cap, String codiceFiscale, String email, String password, String username) throws MyExc {
         if (!nome.isEmpty() && !cognome.isEmpty() && !telefono.isEmpty() && !citta.isEmpty() && !via.isEmpty() && !nCivico.isEmpty() && !cap.isEmpty() && !codiceFiscale.isEmpty()){
-            Persona persona = new Persona(nome, cognome, telefono, dataNascita, citta, via, nCivico, cap, codiceFiscale);
-            personaDao.insertUser(nome, cognome, telefono, dataNascita, citta, via, nCivico, cap, codiceFiscale);
+           try {
+               Persona persona = new Persona(nome, cognome, telefono, dataNascita, citta, via, nCivico, cap, codiceFiscale);
+               personaDao.insertUser(nome, cognome, telefono, dataNascita, citta, via, nCivico, cap, codiceFiscale);
+               JOptionPane.showMessageDialog(
+                       frameSignIn,
+                       "Dati della persona inseriti!",
+                       "Benvenuta/o",
+                       JOptionPane.ERROR_MESSAGE);
+               insertAccount(email, password, username, codiceFiscale);
+           } catch (MyExc e){
+               JOptionPane.showMessageDialog(
+                       frameSignIn,
+                       e.getMessage(),
+                       "Errore",
+                       JOptionPane.ERROR_MESSAGE);
+
+           }
         }
         else{
             JOptionPane.showMessageDialog(
@@ -97,6 +112,11 @@ public class Controller {
             try {
                 Account account = new Account(email, nomeUtente, password, codiceFiscale);
                 accountDao.insertAccount(email, nomeUtente, password, codiceFiscale);
+                JOptionPane.showMessageDialog(
+                        frameSignIn,
+                        "Dati dell'account inseriti!",
+                        "Benvenuta/o",
+                        JOptionPane.ERROR_MESSAGE);
             }
             catch (MyExc e){
                 JOptionPane.showMessageDialog(
