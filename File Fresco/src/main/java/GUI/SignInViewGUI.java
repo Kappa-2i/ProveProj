@@ -40,7 +40,7 @@ public class SignInViewGUI extends JFrame {
         // Impostazioni della finestra principale
         setTitle("Sign In");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1400, 800);
+        setSize(1500, 1000);
         setMinimumSize(new Dimension(600, 600));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -195,6 +195,7 @@ public class SignInViewGUI extends JFrame {
         java.sql.Date dataNascita = null;
         dataField.getDateEditor().setEnabled(false);
         dataField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+        dataField.setOpaque(false);
         dataField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -547,7 +548,10 @@ public class SignInViewGUI extends JFrame {
         panelSignInWhite.add(confermaPasswordField, gbc); //Aggiunge la emailfield al panelLoginWhite
 
 
-
+        // inserisce bottone trasparente per fare spazio
+        gbc.gridx = 1;
+        gbc.gridy = 19;
+        panelSignInWhite.add(ghostButton, gbc);
 
 
         // Creazione del button 'loginButton'
@@ -565,8 +569,10 @@ public class SignInViewGUI extends JFrame {
                 //Chiamiamo la funzione checkCredentials dal controller passandogli i dati inseriti
             }
         });
+
+
         gbc.gridx = 1;
-        gbc.gridy = 19;
+        gbc.gridy = 20;
         gbc.anchor = GridBagConstraints.EAST;
         gbc.fill = 0;
         gbc.insets = new Insets(10, 250, 20, 150);
@@ -645,7 +651,7 @@ public class SignInViewGUI extends JFrame {
             }
         });
         gbc.gridx = 0;
-        gbc.gridy = 19;
+        gbc.gridy = 20;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.WEST;
         gbc.insets = new Insets(10, 20, 20, 10);
