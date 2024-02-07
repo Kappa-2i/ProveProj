@@ -13,12 +13,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.io.InputStream;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.Date;
 
 public class SignInViewGUI extends JFrame {
 
@@ -69,7 +69,7 @@ public class SignInViewGUI extends JFrame {
 
         //Creazione di un JPanel 'PanelLoginRed' con BoxLayout
         JPanel panelSignInRed = new JPanel();
-        panelSignInRed.setBackground(new Color(133, 53, 53)); // Scegli il colore che preferisci
+        panelSignInRed.setBackground(new Color(37, 89, 87)); // Scegli il colore che preferisci
         panelSignInRed.setOpaque(true); // Imposta come trasparente per mostrare il gradiente
         gbc.gridx = 1;
         gbc.gridy = 0;
@@ -127,15 +127,15 @@ public class SignInViewGUI extends JFrame {
         JTextField nomeField = new JTextField();
         if (fontRegular != null)
             nomeField.setFont(fontRegular);
-        nomeField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+        nomeField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         nomeField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                nomeField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(133, 53, 53)));
+                nomeField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
             }
             @Override
             public void focusLost(FocusEvent e) {
-                nomeField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+                nomeField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
             }
         });
         gbc.gridy = 3;
@@ -155,15 +155,15 @@ public class SignInViewGUI extends JFrame {
         JTextField cognomeField = new JTextField();
             if (fontRegular != null)
                 cognomeField.setFont(fontRegular);
-        cognomeField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+        cognomeField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         cognomeField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                cognomeField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(133, 53, 53)));
+                cognomeField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
             }
             @Override
             public void focusLost(FocusEvent e) {
-                cognomeField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+                cognomeField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
             }
         });
         gbc.gridx = 1;
@@ -188,21 +188,25 @@ public class SignInViewGUI extends JFrame {
         JDateChooser dataField = new JDateChooser();
         if (fontRegular != null)
             dataField.setFont(fontRegular);
+
         dataField.setDateFormatString("yyyy-MM-dd"); // Imposta il formato della data
+
+        dataField.setDate(new Date());
+
         dataField.getJCalendar().getYearChooser().setStartYear(1900);//anno minimo del calendario: 1900
         dataField.getJCalendar().getYearChooser().setEndYear(Calendar.getInstance().get(Calendar.YEAR));//anno massimo del calendario: anno corrente
-        java.sql.Date dataNascita = null;
+        //java.sql.Date dataNascita = null;
         dataField.getDateEditor().setEnabled(false);
-        dataField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+        dataField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         dataField.setOpaque(false);
         dataField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                dataField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(133, 53, 53)));
+                dataField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
             }
             @Override
             public void focusLost(FocusEvent e) {
-                dataField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+                dataField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
             }
         });
         gbc.gridy = 5;
@@ -221,15 +225,15 @@ public class SignInViewGUI extends JFrame {
         JTextField telefonoField = new JTextField();
         if (fontRegular != null)
             telefonoField.setFont(fontRegular);
-        telefonoField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+        telefonoField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         telefonoField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                telefonoField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(133, 53, 53)));
+                telefonoField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
             }
             @Override
             public void focusLost(FocusEvent e) {
-                telefonoField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+                telefonoField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
             }
         });
         gbc.gridx = 1;
@@ -255,15 +259,15 @@ public class SignInViewGUI extends JFrame {
         JTextField cittaField = new JTextField();
         if (fontRegular != null)
             cittaField.setFont(fontRegular);
-        cittaField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+        cittaField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         cittaField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                cittaField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(133, 53, 53)));
+                cittaField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
             }
             @Override
             public void focusLost(FocusEvent e) {
-                cittaField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+                cittaField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
             }
         });
         gbc.gridy = 7;
@@ -282,15 +286,15 @@ public class SignInViewGUI extends JFrame {
         JTextField viaField= new JTextField();
         if (fontRegular != null)
             viaField.setFont(fontRegular);
-        viaField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+        viaField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         viaField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                viaField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(133, 53, 53)));
+                viaField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
             }
             @Override
             public void focusLost(FocusEvent e) {
-                viaField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+                viaField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
             }
         });
         gbc.gridx = 1;
@@ -315,15 +319,15 @@ public class SignInViewGUI extends JFrame {
         JTextField nCivicoField = new JTextField();
         if (fontRegular != null)
             nCivicoField.setFont(fontRegular);
-        nCivicoField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+        nCivicoField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         nCivicoField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                nCivicoField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(133, 53, 53)));
+                nCivicoField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
             }
             @Override
             public void focusLost(FocusEvent e) {
-                nCivicoField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+                nCivicoField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
             }
         });
         gbc.gridy = 11;
@@ -342,15 +346,15 @@ public class SignInViewGUI extends JFrame {
         JTextField capField= new JTextField();
         if (fontRegular != null)
             capField.setFont(fontRegular);
-        capField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+        capField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         capField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                capField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(133, 53, 53)));
+                capField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
             }
             @Override
             public void focusLost(FocusEvent e) {
-                capField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+                capField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
             }
         });
         gbc.gridx = 1;
@@ -374,15 +378,15 @@ public class SignInViewGUI extends JFrame {
         JTextField codiceFiscaleField = new JTextField();
         if (fontRegular != null)
             codiceFiscaleField.setFont(fontRegular);
-        codiceFiscaleField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+        codiceFiscaleField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         codiceFiscaleField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                codiceFiscaleField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(133, 53, 53)));
+                codiceFiscaleField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
             }
             @Override
             public void focusLost(FocusEvent e) {
-                codiceFiscaleField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+                codiceFiscaleField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
             }
         });
         gbc.gridy = 13;
@@ -442,15 +446,15 @@ public class SignInViewGUI extends JFrame {
         JTextField emailField = new JTextField();
         if (fontRegular != null)
             emailField.setFont(fontRegular);
-        emailField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+        emailField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         emailField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                emailField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(133, 53, 53)));
+                emailField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
             }
             @Override
             public void focusLost(FocusEvent e) {
-                emailField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+                emailField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
             }
         });
         gbc.gridy = 16;
@@ -469,15 +473,15 @@ public class SignInViewGUI extends JFrame {
         JTextField nomeUtenteField= new JTextField();
         if (fontRegular != null)
             nomeUtenteField.setFont(fontRegular);
-        nomeUtenteField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+        nomeUtenteField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         nomeUtenteField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                nomeUtenteField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(133, 53, 53)));
+                nomeUtenteField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
             }
             @Override
             public void focusLost(FocusEvent e) {
-                nomeUtenteField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+                nomeUtenteField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
             }
         });
         gbc.gridx = 1;
@@ -503,15 +507,15 @@ public class SignInViewGUI extends JFrame {
         passwordField.setEchoChar('*');
         if (fontRegular != null)
             passwordField.setFont(fontRegular);
-        passwordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+        passwordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         passwordField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                passwordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(133, 53, 53)));
+                passwordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
             }
             @Override
             public void focusLost(FocusEvent e) {
-                passwordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+                passwordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
             }
         });
         gbc.gridy = 18;
@@ -531,26 +535,21 @@ public class SignInViewGUI extends JFrame {
         confermaPasswordField.setEchoChar('*');
         if (fontRegular != null)
             confermaPasswordField.setFont(fontRegular);
-        confermaPasswordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+        confermaPasswordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         confermaPasswordField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                confermaPasswordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(133, 53, 53)));
+                confermaPasswordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
             }
             @Override
             public void focusLost(FocusEvent e) {
-                confermaPasswordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+                confermaPasswordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
             }
         });
         gbc.gridx = 1;
         gbc.gridy = 18;
         panelSignInWhite.add(confermaPasswordField, gbc); //Aggiunge la emailfield al panelLoginWhite
 
-
-        // inserisce bottone trasparente per fare spazio
-        gbc.gridx = 1;
-        gbc.gridy = 19;
-        panelSignInWhite.add(ghostButton, gbc);
 
 
         // Creazione del button 'loginButton'
@@ -578,56 +577,52 @@ public class SignInViewGUI extends JFrame {
         continueButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                java.util.Date dataSelezionata = dataField.getDate();
-                if (dataSelezionata != null) {
-                    // Viene formattata la data Selezionata dall'utente e passata ad una stringa
+                    java.util.Date dataSelezionata = dataField.getDate();
                     dataFormattata = new SimpleDateFormat("yyyy-MM-dd").format(dataSelezionata);
-                }
-                if(controller.confirmedPassword(passwordField.getText(), confermaPasswordField.getText())){
-                    try {
-                        controller.insertUser(nomeField.getText(),
-                                cognomeField.getText(),
-                                telefonoField.getText(),
-                                dataFormattata,
-                                cittaField.getText(),
-                                viaField.getText(),
-                                nCivicoField.getText(),
-                                capField.getText(),
-                                codiceFiscaleField.getText(),
-                                emailField.getText(),
-                                nomeUtenteField.getText(),
-                                passwordField.getText());
+                    if(controller.confirmedPassword(passwordField.getText(), confermaPasswordField.getText())){
+                        try {
+                            controller.insertUser(nomeField.getText(),
+                                    cognomeField.getText(),
+                                    telefonoField.getText(),
+                                    dataFormattata,
+                                    cittaField.getText(),
+                                    viaField.getText(),
+                                    nCivicoField.getText(),
+                                    capField.getText(),
+                                    codiceFiscaleField.getText(),
+                                    emailField.getText(),
+                                    nomeUtenteField.getText(),
+                                    passwordField.getText());
+                        } catch (MyExc ex) {
+                            throw new RuntimeException(ex);
+                        }
+                        setVisible(false);
+                        controller.frameLogin(true);
 
+                        emailField.setText("");
+                        nomeUtenteField.setText("");
+                        passwordField.setText("");
+                        codiceFiscaleField.setText("");
+                        nomeField.setText("");
+                        cognomeField.setText("");
+                        dataField.setDate(new Date());
+                        dataFormattata = null;
+                        nCivicoField.setText("");
+                        cittaField.setText("");
+                        viaField.setText("");
+                        capField.setText("");
+                        telefonoField.setText("");
+                        confermaPasswordField.setText("");
 
-                    } catch (MyExc ex) {
-                        throw new RuntimeException(ex);
                     }
-                    setVisible(false);
-                    controller.frameLogin(true);
-
-                    emailField.setText("");
-                    nomeUtenteField.setText("");
-                    passwordField.setText("");
-                    codiceFiscaleField.setText("");
-                    nomeField.setText("");
-                    cognomeField.setText("");
-                    dataField.setDate(null);
-                    nCivicoField.setText("");
-                    cittaField.setText("");
-                    viaField.setText("");
-                    capField.setText("");
-                    telefonoField.setText("");
-
-                }
-                else {
-                    JOptionPane.showMessageDialog(
-                            null,
-                            "Le password non corrispondono",
-                            "Errore",
-                            JOptionPane.ERROR_MESSAGE
-                    );
-                }
-
+                    else {
+                        JOptionPane.showMessageDialog(
+                                null,
+                                "Le password non corrispondono",
+                                "Errore",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+                    }
             }
         });
         panelSignInWhite.add(continueButton, gbc); //Aggiunge il loginButton al panelLoginWhit
@@ -656,153 +651,9 @@ public class SignInViewGUI extends JFrame {
         gbc.insets = new Insets(10, 20, 20, 10);
         panelSignInWhite.add(backButton, gbc); //Aggiunge il loginButton al panelLoginWhit
 
-
-
-
-//        JLabel nomeLabel = new JLabel("Nome:");
-//        if (fontRegularBold != null)
-//            nomeLabel.setFont(fontRegularBold);
-//        gbc.insets = new Insets(5, 5, 5, 5);
-//        gbc.gridx = 0;
-//        gbc.gridy = 0;
-//        panelSignInWhite.add(nomeLabel, gbc);
-//        JTextField nomeField = new JTextField();
-//        gbc.gridx = 0;
-//        gbc.gridy = 1;
-//        panelSignInWhite.add(nomeField, gbc);
-//
-//
-//        JLabel cognomeLabel = new JLabel("Cognome:");
-//        if (fontRegularBold != null)
-//            cognomeLabel.setFont(fontRegularBold);
-//        gbc.insets = new Insets(5, 50, 5, 5);
-//        gbc.gridx = 1;
-//        gbc.gridy = 0;
-//        panelSignInWhite.add(cognomeLabel, gbc);
-//        JTextField cognomeField = new JTextField();
-//        gbc.gridx = 1;
-//        gbc.gridy = 1;
-//        panelSignInWhite.add(cognomeField, gbc);
-//
-//        JLabel dataLabel = new JLabel("Data di nascita:");
-//        if (fontRegularBold != null)
-//            dataLabel.setFont(fontRegularBold);
-//        gbc.insets = new Insets(5, 5, 5, 5);
-//        gbc.gridx = 0;
-//        gbc.gridy = 2;
-//        panelSignInWhite.add(dataLabel, gbc);
-//        JDateChooser dataField = new JDateChooser();
-//        dataField.setDateFormatString("yyyy-MM-dd"); // Imposta il formato della data
-//        dataField.getJCalendar().getYearChooser().setStartYear(1900);//anno minimo del calendario: 1900
-//        dataField.getJCalendar().getYearChooser().setEndYear(Calendar.getInstance().get(Calendar.YEAR));//anno massimo del calendario: anno corrente
-//        java.sql.Date dataNascita = null;
-//        gbc.gridx = 0;
-//        gbc.gridy = 3;
-//        panelSignInWhite.add(dataField, gbc);
-//
-//
-//        JLabel telefonoLabel = new JLabel("Telefono:");
-//        if (fontRegularBold != null)
-//            telefonoLabel.setFont(fontRegularBold);
-//        gbc.insets = new Insets(5, 50, 5, 5);
-//        gbc.gridx = 1;
-//        gbc.gridy = 2;
-//        panelSignInWhite.add(telefonoLabel, gbc);
-//        JTextField telefonoField = new JTextField();
-//        gbc.gridx = 1;
-//        gbc.gridy = 3;
-//        panelSignInWhite.add(telefonoField, gbc);
-//
-//        JLabel cittaLabel = new JLabel("Città:");
-//        if (fontRegularBold != null)
-//            cittaLabel.setFont(fontRegularBold);
-//        gbc.insets = new Insets(5, 5, 5, 5);
-//        gbc.gridx = 0;
-//        gbc.gridy = 4;
-//        panelSignInWhite.add(cittaLabel, gbc);
-//        JTextField cittaField = new JTextField();
-//        gbc.gridx = 0;
-//        gbc.gridy = 5;
-//        panelSignInWhite.add(cittaField, gbc);
-//
-//        JLabel viaLabel = new JLabel("Via:");
-//        if (fontRegularBold != null)
-//            viaLabel.setFont(fontRegularBold);
-//        gbc.insets = new Insets(5, 50, 5, 5);
-//        gbc.gridx = 1;
-//        gbc.gridy = 4;
-//        panelSignInWhite.add(viaLabel, gbc);
-//        JTextField viaField = new JTextField();
-//        gbc.gridx = 1;
-//        gbc.gridy = 5;
-//        panelSignInWhite.add(viaField, gbc);
-//
-//        JLabel nCivicoLabel = new JLabel("Civico:");
-//        if (fontRegularBold != null)
-//            nCivicoLabel.setFont(fontRegularBold);
-//        gbc.insets = new Insets(5, 5, 5, 5);
-//        gbc.gridx = 0;
-//        gbc.gridy = 6;
-//        panelSignInWhite.add(nCivicoLabel, gbc);
-//        JTextField nCivicoField = new JTextField();
-//        gbc.gridx = 0;
-//        gbc.gridy = 7;
-//        panelSignInWhite.add(nCivicoField, gbc);
-//
-//        JLabel capLabel = new JLabel("Cap:");
-//        if (fontRegularBold != null)
-//            capLabel.setFont(fontRegularBold);
-//        gbc.insets = new Insets(5, 50, 5, 5);
-//        gbc.gridx = 1;
-//        gbc.gridy = 6;
-//        panelSignInWhite.add(capLabel, gbc);
-//        JTextField capField = new JTextField();
-//        gbc.gridx = 1;
-//        gbc.gridy = 7;
-//        panelSignInWhite.add(capField, gbc);
-//
-//        JLabel codiceFiscaleLabel = new JLabel("Codice fiscale:");
-//        if (fontRegularBold != null)
-//            codiceFiscaleLabel.setFont(fontRegularBold);
-//        gbc.fill = GridBagConstraints.BOTH;
-//        gbc.insets = new Insets(5, 5, 5, 5);
-//        gbc.gridx = 0;
-//        gbc.gridy = 8;
-//        panelSignInWhite.add(codiceFiscaleLabel, gbc);
-//        JTextField codiceFiscaleField = new JTextField();
-//        gbc.gridx = 0;
-//        gbc.gridy = 9;
-//        panelSignInWhite.add(codiceFiscaleField, gbc);
-//
-//
-//        // Etichette e campi di testo
-//        JLabel usernameLabel = new JLabel("Username:");
-//        JTextField usernameField = new JTextField();
-//        JLabel passwordLabel = new JLabel("Password:");
-//        JPasswordField passwordField = new JPasswordField();
-//        JLabel emailLabel = new JLabel("Email:");
-//        JTextField emailField = new JTextField();
-//        // Etichette e campi di testo
-//
-//
-//        // Bottone di SignIn
-//        JButton signInButton = new JButton("Sign In");
-//
-//
-//
-//        // Bottone "Cancel"
-//        JButton cancelButton = new JButton("Cancel");
-//        cancelButton.addActionListener(e -> System.exit(0));
-//
-//        gbc.weightx = 1;
-//        gbc.gridwidth = 2;
-//        gbc.fill = GridBagConstraints.BOTH;
-//        gbc.insets = new Insets(100, 100, 100, 100);
-
         setContentPane(contentPane);
-
-
     }
+
     //Creazione del fontExtraBold
     private void fontExtraBold() {
         try {

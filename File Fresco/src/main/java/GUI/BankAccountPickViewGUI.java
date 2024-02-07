@@ -39,6 +39,7 @@ public class BankAccountPickViewGUI extends JFrame {
         fontRegular();
         fontExtraBold();
         fontRegularSmall();
+        fontRegularBold();
 
         // Aggiungo il content Panel
         JPanel contentPane = new JPanel(new GridBagLayout());
@@ -120,6 +121,7 @@ public class BankAccountPickViewGUI extends JFrame {
         gbc.weighty = 0.7;
         //panelSignIn.setPreferredSize(new Dimension(200, 500));
         showBankAccount();
+
         contentPane.add(panelSignIn, gbc);
 
 
@@ -150,6 +152,7 @@ public class BankAccountPickViewGUI extends JFrame {
     }
 
     public void showBankAccount(){
+
         ArrayList<ContoCorrente> conti = controller.selectBankAccount(controller.account.getEmail());
         if (!conti.isEmpty()){
             for (ContoCorrente conto : conti){
@@ -157,9 +160,7 @@ public class BankAccountPickViewGUI extends JFrame {
 
                 JPanel cardBank = new JPanel();
                 cardBank.setBackground(new Color(234, 242, 239));
-
                 cardBank.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
-
 
                 JLabel ibanLabel = new JLabel("Iban: ");
                 if (fontBold != null)
@@ -200,12 +201,54 @@ public class BankAccountPickViewGUI extends JFrame {
                         addComponent(saldoLabel).addComponent(numberSaldoLabel));
                 glBankAccount.setVerticalGroup(vGroup);
 
+                cardBank.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                cardBank.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        controller.showHomePage(numberIbanLabel.getText());
+                    }
+                });
+
 
                 GridBagConstraints gbc = new GridBagConstraints();
 
                 gbc.insets = new Insets(20, 20, 20, 20);
                 panelSignIn.add(cardBank, gbc);
             }
+        }
+        else
+        {
+
+            JLabel creaContoLabel = new JLabel("Crea Conto Corrente");
+            if (fontRegularBold != null)
+                creaContoLabel.setFont(fontRegularBold);
+
+
+            creaContoLabel.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e){
+                        if(controller.insertBankAccount(controller.account.getEmail())) {
+                            try {
+                                controller.checkCredentials(controller.account.getEmail(), controller.account.getPassword());
+                            } catch (SQLException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    creaContoLabel.setText("<html><b><u>Crea Conto Corrente</u></b></html>");
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    creaContoLabel.setText("Crea Conto Corrente");
+                }
+            });
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.insets = new Insets(20, 20, 20, 20);
+            panelSignIn.add(creaContoLabel, gbc);
         }
     }
 

@@ -110,15 +110,15 @@ public class LoginViewGUI extends JFrame {
         }
 
         emailField.setMaximumSize(new Dimension(Integer.MAX_VALUE, emailField.getPreferredSize().height));
-        emailField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+        emailField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         emailField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                emailField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(133, 53, 53)));
+                emailField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
             }
             @Override
             public void focusLost(FocusEvent e) {
-                emailField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+                emailField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
             }
         });
         gbc.gridy = 2;
@@ -131,7 +131,7 @@ public class LoginViewGUI extends JFrame {
         //Creaione della label 'Password' e della textfield per il campo password.
         JLabel passwordLabel = new JLabel("Password:");
         JPasswordField passwordField = new JPasswordField(20);
-        passwordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+        passwordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         if (fontRegularBold != null)
             passwordLabel.setFont(fontRegularBold);
         if (fontRegular != null){
@@ -140,11 +140,11 @@ public class LoginViewGUI extends JFrame {
         passwordField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                passwordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(133, 53, 53)));
+                passwordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
             }
             @Override
             public void focusLost(FocusEvent e) {
-                passwordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(110, 110, 110)));
+                passwordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
             }
         });
         passwordField.setEchoChar('*');

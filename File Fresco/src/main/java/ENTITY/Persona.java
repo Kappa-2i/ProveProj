@@ -77,7 +77,7 @@ public class Persona {
 
             // Verifica se la data di nascita è maggiorenne
             if (sqlDataNascita.after(dataMaggiorenne)) {
-                throw new MyExc("La persona non è maggiorenne.");
+                throw new MyExc("Devi essere maggiorenne per poterti registrare.");
             } else {
                 this.dataNascita = String.valueOf(sqlDataNascita);
             }

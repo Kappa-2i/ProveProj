@@ -4,10 +4,7 @@ import DAO.ContoCorrenteDAO;
 import DATABASE.DBConnection;
 import ENTITY.ContoCorrente;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class ContoCorrenteDAOImpl implements ContoCorrenteDAO {
@@ -38,4 +35,26 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO {
         }
         return null;
     }
+
+
+    @Override
+    public Boolean insertBankAccount(String email) {
+        CallableStatement statement = null;
+        try (Connection conn = DBConnection.getDBConnection().getConnection()) {
+
+            String callFunction = "{call test.crea_contocorrente_con_carta2(?)}";
+
+            statement = conn.prepareCall(callFunction);
+
+            statement.setString(1, email);
+
+            statement.executeQuery();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

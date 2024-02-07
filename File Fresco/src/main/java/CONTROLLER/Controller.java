@@ -9,14 +9,12 @@ import DAOIMPL.PersonaDAOImpl;
 import ENTITY.*;
 import EXCEPTIONS.MyExc;
 import GUI.BankAccountPickViewGUI;
+import GUI.HomePageGUI;
 import GUI.LoginViewGUI;
 import GUI.SignInViewGUI;
 
 import javax.swing.*;
-import java.awt.*;
-import java.sql.Date;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 // Classe del controller
@@ -26,6 +24,7 @@ public class Controller {
     private LoginViewGUI frameLogin;
     private SignInViewGUI frameSignIn;
     private BankAccountPickViewGUI framePick;
+    private HomePageGUI frameHome;
 
     //Dichiarazioni delle Dao
     private AccountDao accountDao;
@@ -36,8 +35,6 @@ public class Controller {
     public Account account = null;
 
     public Controller() {
-
-
         frameLogin = new LoginViewGUI(this); // Assumi che LoginView accetti ControllerLogin come parametro
         frameLogin.setVisible(true);
 
@@ -49,6 +46,7 @@ public class Controller {
         this.accountDao = new AccountDAOImpl(); // Assumi che tu abbia un costruttore predefinito
         this.personaDao = new PersonaDAOImpl();
         this.contoCorrenteDAO = new ContoCorrenteDAOImpl();
+
 
     }
 
@@ -122,22 +120,12 @@ public class Controller {
     public void insertAccount(String email, String nomeUtente, String password, String codiceFiscale){
 
         if (!email.isEmpty() && !nomeUtente.isEmpty() && !password.isEmpty() && !codiceFiscale.isEmpty()) {
-            try {
-                Account account = new Account(email, nomeUtente, password, codiceFiscale);
                 accountDao.insertAccount(email, nomeUtente, password, codiceFiscale);
                 JOptionPane.showMessageDialog(
                         frameSignIn,
                         "Dati dell'account inseriti!",
                         "Benvenuta/o",
                         JOptionPane.INFORMATION_MESSAGE);
-            }
-            catch (MyExc e){
-                JOptionPane.showMessageDialog(
-                        frameSignIn,
-                        e.getMessage(),
-                        "Errore",
-                        JOptionPane.ERROR_MESSAGE);
-            }
         }
         else{
             JOptionPane.showMessageDialog(
@@ -164,8 +152,18 @@ public class Controller {
         return conti;
     }
 
+    public Boolean insertBankAccount(String email){
+        if (contoCorrenteDAO.insertBankAccount(email)){
+            return true;
+        }
+        else
+            return false;
+    }
 
 
+    public void showHomePage(String iban){
+
+    }
 
     public void frameLogin(Boolean isVisibile){
         frameLogin.setVisible(isVisibile);
@@ -175,8 +173,12 @@ public class Controller {
         frameSignIn.setVisible(isVisibile);
     }
 
-    public void FramePick(Boolean isVisibile){
+    public void framePick(Boolean isVisibile){
         framePick.setVisible(isVisibile);
+    }
+
+    public void frameHome(Boolean isVisible){
+        frameHome.setVisible(isVisible);
     }
 
 }
