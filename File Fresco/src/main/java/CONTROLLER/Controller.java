@@ -156,12 +156,12 @@ public class Controller {
     }
 
 
-    public void selectBankAccount(String email){
+    public ArrayList<ContoCorrente> selectBankAccount(String email){
         ArrayList<ContoCorrente> conti = new ArrayList<ContoCorrente>();
         conti = contoCorrenteDAO.selectBankAccount(email);
 
         account.setConti(conti);
-        System.out.println(account.toString());
+        return conti;
     }
 
 

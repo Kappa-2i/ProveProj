@@ -72,7 +72,7 @@ public class LoginViewGUI extends JFrame {
 
         //Creazione di un JPanel 'PanelLoginRed' con BoxLayout
         JPanel panelLoginRed = new JPanel();
-        panelLoginRed.setBackground(new Color(133, 53, 53)); // Scegli il colore che preferisci
+        panelLoginRed.setBackground(new Color(37, 89, 87)); // Scegli il colore che preferisci
         panelLoginRed.setOpaque(true); // Imposta come trasparente per mostrare il gradiente
         gbc.gridx = 1;
         gbc.gridy = 0;

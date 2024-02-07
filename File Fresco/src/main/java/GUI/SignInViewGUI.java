@@ -40,8 +40,7 @@ public class SignInViewGUI extends JFrame {
         // Impostazioni della finestra principale
         setTitle("Sign In");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1500, 1000);
-        setMinimumSize(new Dimension(600, 600));
+        setSize(1400, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
