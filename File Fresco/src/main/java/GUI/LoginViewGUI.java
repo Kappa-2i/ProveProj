@@ -38,6 +38,7 @@ public class LoginViewGUI extends JFrame {
         setMinimumSize(new Dimension(600, 600));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        setResizable(false);
         fontBold();
         fontRegular();
         fontExtraBold();
@@ -101,7 +102,6 @@ public class LoginViewGUI extends JFrame {
 
         //Creazione della label 'Email' e della textfield per il campo email.
         JLabel emailLabel = new JLabel("Email:");
-
         JTextField emailField = new JTextField(20);
         if (fontRegularBold != null)
             emailLabel.setFont(fontRegularBold);

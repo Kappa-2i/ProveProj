@@ -120,6 +120,7 @@ public class Controller {
     }
 
     public void insertAccount(String email, String nomeUtente, String password, String codiceFiscale){
+
         if (!email.isEmpty() && !nomeUtente.isEmpty() && !password.isEmpty() && !codiceFiscale.isEmpty()) {
             try {
                 Account account = new Account(email, nomeUtente, password, codiceFiscale);
@@ -145,6 +146,13 @@ public class Controller {
                     "Errore",
                     JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    public boolean confirmedPassword(String password, String confirmedPassword){
+        if (password.equals(confirmedPassword))
+            return true;
+        else
+            return false;
     }
 
 
