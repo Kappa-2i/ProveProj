@@ -80,8 +80,6 @@ public class SignInViewGUI extends JFrame {
 
 
         // Creazione e aggiunta dei componenti sul pannello 'PanelLoginWhite'
-
-
         //Creazione della label 'Login'
         JLabel signInLabel = new JLabel("Crea Account");
         if (fontExtraBold != null)
@@ -153,8 +151,8 @@ public class SignInViewGUI extends JFrame {
         panelSignInWhite.add(cognomeLabel, gbc); //aggiunge la loginLabel al panelLoginWhite
 
         JTextField cognomeField = new JTextField();
-            if (fontRegular != null)
-                cognomeField.setFont(fontRegular);
+        if (fontRegular != null)
+            cognomeField.setFont(fontRegular);
         cognomeField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         cognomeField.addFocusListener(new FocusAdapter() {
             @Override
@@ -577,52 +575,52 @@ public class SignInViewGUI extends JFrame {
         continueButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    java.util.Date dataSelezionata = dataField.getDate();
-                    dataFormattata = new SimpleDateFormat("yyyy-MM-dd").format(dataSelezionata);
-                    if(controller.confirmedPassword(passwordField.getText(), confermaPasswordField.getText())){
-                        try {
-                            controller.insertUser(nomeField.getText(),
-                                    cognomeField.getText(),
-                                    telefonoField.getText(),
-                                    dataFormattata,
-                                    cittaField.getText(),
-                                    viaField.getText(),
-                                    nCivicoField.getText(),
-                                    capField.getText(),
-                                    codiceFiscaleField.getText(),
-                                    emailField.getText(),
-                                    nomeUtenteField.getText(),
-                                    passwordField.getText());
-                        } catch (MyExc ex) {
-                            throw new RuntimeException(ex);
-                        }
-                        setVisible(false);
-                        controller.frameLogin(true);
-
-                        emailField.setText("");
-                        nomeUtenteField.setText("");
-                        passwordField.setText("");
-                        codiceFiscaleField.setText("");
-                        nomeField.setText("");
-                        cognomeField.setText("");
-                        dataField.setDate(new Date());
-                        dataFormattata = null;
-                        nCivicoField.setText("");
-                        cittaField.setText("");
-                        viaField.setText("");
-                        capField.setText("");
-                        telefonoField.setText("");
-                        confermaPasswordField.setText("");
-
+                java.util.Date dataSelezionata = dataField.getDate();
+                dataFormattata = new SimpleDateFormat("yyyy-MM-dd").format(dataSelezionata);
+                if(controller.confirmedPassword(passwordField.getText(), confermaPasswordField.getText())){
+                    try {
+                        controller.insertUser(nomeField.getText(),
+                                cognomeField.getText(),
+                                telefonoField.getText(),
+                                dataFormattata,
+                                cittaField.getText(),
+                                viaField.getText(),
+                                nCivicoField.getText(),
+                                capField.getText(),
+                                codiceFiscaleField.getText(),
+                                emailField.getText(),
+                                nomeUtenteField.getText(),
+                                passwordField.getText());
+                    } catch (MyExc ex) {
+                        throw new RuntimeException(ex);
                     }
-                    else {
-                        JOptionPane.showMessageDialog(
-                                null,
-                                "Le password non corrispondono",
-                                "Errore",
-                                JOptionPane.ERROR_MESSAGE
-                        );
-                    }
+                    setVisible(false);
+                    controller.frameLogin(true);
+
+                    emailField.setText("");
+                    nomeUtenteField.setText("");
+                    passwordField.setText("");
+                    codiceFiscaleField.setText("");
+                    nomeField.setText("");
+                    cognomeField.setText("");
+                    dataField.setDate(new Date());
+                    dataFormattata = null;
+                    nCivicoField.setText("");
+                    cittaField.setText("");
+                    viaField.setText("");
+                    capField.setText("");
+                    telefonoField.setText("");
+                    confermaPasswordField.setText("");
+
+                }
+                else {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Le password non corrispondono",
+                            "Errore",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                }
             }
         });
         panelSignInWhite.add(continueButton, gbc); //Aggiunge il loginButton al panelLoginWhit
@@ -720,4 +718,5 @@ public class SignInViewGUI extends JFrame {
     }
 
 }
+
 

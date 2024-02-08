@@ -83,8 +83,6 @@ public class LoginViewGUI extends JFrame {
 
 
         // Creazione e aggiunta dei componenti sul pannello 'PanelLoginWhite'
-
-
         //Creazione della label 'Login'
         JLabel loginLabel = new JLabel("Login");
         if (fontExtraBold != null)
