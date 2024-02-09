@@ -65,12 +65,10 @@ public class BankAccountPickViewGUI extends JFrame {
         panelSignIn3.add(titoloFrame, gbc);
 
         //Crea componenti
-        ImageIcon icon = new ImageIcon(BankAccountPickViewGUI.class.getResource("/IMG/logOut.png")); // Sostituisci con il percorso del tuo file icona
+        ImageIcon icon = new ImageIcon(BankAccountPickViewGUI.class.getResource("/IMG/logout.png")); // Sostituisci con il percorso del tuo file icona
         logOutButton = new JButton();
         logOutButton.setIcon(icon);
         logOutButton.setBackground(null);
-        if (fontBold != null)
-            logOutButton.setFont(fontBold);
         logOutButton.setOpaque(true);
         logOutButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia il cursore per indicare che è cliccabile
         logOutButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
