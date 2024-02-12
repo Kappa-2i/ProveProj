@@ -49,7 +49,7 @@ public class LoginViewGUI extends JFrame {
         // Creazione dei pannelli
         // Creazione del pannello di sfondo e setta il GridBagLayout
         JPanel contentPane = new JPanel();
-        contentPane.setBackground(new Color(255, 255, 255));
+        contentPane.setBackground(new Color(246, 248, 255));
         contentPane.setLayout(new GridBagLayout());
 
 
@@ -59,7 +59,7 @@ public class LoginViewGUI extends JFrame {
 
         //Creazione di un JPanel con BoxLayout per contenere i componenti utili per il login
         JPanel panelLoginWhite = new JPanel(new GridBagLayout());
-        panelLoginWhite.setBackground(new Color(255, 255, 255)); // Scegli il colore che preferisci
+        panelLoginWhite.setBackground(new Color(246, 248, 255)); // Scegli il colore che preferisci
         panelLoginWhite.setOpaque(true); // Imposta come trasparente per mostrare il gradiente
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -101,6 +101,7 @@ public class LoginViewGUI extends JFrame {
         //Creazione della label 'Email' e della textfield per il campo email.
         JLabel emailLabel = new JLabel("Email:");
         JTextField emailField = new JTextField(20);
+        emailField.setBackground(new Color(246, 248, 255));
         if (fontRegularBold != null)
             emailLabel.setFont(fontRegularBold);
         if (fontRegular != null){
@@ -129,6 +130,7 @@ public class LoginViewGUI extends JFrame {
         //Creaione della label 'Password' e della textfield per il campo password.
         JLabel passwordLabel = new JLabel("Password:");
         JPasswordField passwordField = new JPasswordField(20);
+        passwordField.setBackground(new Color(246, 248, 255));
         passwordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(185, 185, 185)));
         if (fontRegularBold != null)
             passwordLabel.setFont(fontRegularBold);
@@ -254,7 +256,7 @@ public class LoginViewGUI extends JFrame {
             loginButton.setFont(fontBold);
         loginButton.setOpaque(true);
         loginButton.setBackground(new Color(0, 0, 0, 255));
-        loginButton.setForeground(Color.WHITE);
+        loginButton.setForeground(new Color(246, 248, 255));
         loginButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia il cursore per indicare che è cliccabile
         loginButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         loginButton.addActionListener(new ActionListener() {

@@ -32,9 +32,10 @@ public class BankAccountPickViewGUI extends JFrame {
     public BankAccountPickViewGUI(Controller controller){
         this.controller = controller;
         setTitle("Seleziona conto");
-        setSize(1920, 800);
-        setMinimumSize(new Dimension(500, 400));
+        setSize(1400, 800);
+        setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
         fontBold();
         fontRegular();
         fontExtraBold();
@@ -43,7 +44,7 @@ public class BankAccountPickViewGUI extends JFrame {
 
         // Aggiungo il content Panel
         JPanel contentPane = new JPanel(new GridBagLayout());
-        contentPane.setBackground(new Color(255, 255, 255));
+        contentPane.setBackground(new Color(246, 248, 255));
 
         // Constraints
         GridBagConstraints gbc = new GridBagConstraints();
@@ -56,13 +57,29 @@ public class BankAccountPickViewGUI extends JFrame {
         JLabel titoloFrame = new JLabel("Benvenuto " +controller.account.getNomeutente());
         if (fontExtraBold != null)
             titoloFrame.setFont(fontExtraBold);
-        titoloFrame.setForeground(new Color(234, 242, 239));
+        titoloFrame.setForeground(new Color(246, 248, 255));
         //gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridx = 0; // Inizia dalla prima colonna
         gbc.gridy = 0; // Prima riga
         gbc.fill = GridBagConstraints.BOTH;
         panelSignIn3.add(titoloFrame, gbc);
+
+        ImageIcon iconUnina = new ImageIcon(HomePageGUI.class.getResource("/IMG/unina.png")); // Sostituisci con il percorso del tuo file icona
+        JButton buttonLogo = new JButton();
+        buttonLogo.setBackground(null);
+        buttonLogo.setIcon(iconUnina);
+        buttonLogo.setContentAreaFilled(false);
+        buttonLogo.setOpaque(false);
+        buttonLogo.setBorderPainted(false);
+        buttonLogo.setBorder(null);
+        buttonLogo.setFocusPainted(false);
+
+        JLabel titoloSmu = new JLabel("S.M.U.");
+        titoloSmu.setForeground(Color.WHITE);
+        if (fontExtraBold != null) {
+            titoloSmu.setFont(fontRegular);
+        }
 
         //Crea componenti
         ImageIcon icon = new ImageIcon(BankAccountPickViewGUI.class.getResource("/IMG/logout.png")); // Sostituisci con il percorso del tuo file icona
@@ -75,36 +92,61 @@ public class BankAccountPickViewGUI extends JFrame {
         logOutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //Quando premo il bottone
-                controller.account = null;
-                setVisible(false);
-                controller.frameLogin(true);
+                int risposta = JOptionPane.showConfirmDialog(null, "Sei sicuro di voler uscire?", "Conferma Logout", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (risposta == JOptionPane.YES_OPTION)
+                    controller.backLoginPage();
             }
         });
-        // Crea un oggetto GridBagConstraints per il pulsante
-        gbc.gridx = 1; // Imposta la posizione x nel layout della griglia
-        gbc.gridy = 0; // Imposta la posizione y nel layout della griglia
-        //gbc.insets = new Insets(10, 10, 10, 10); // Imposta i margini intorno al pulsante
-        gbc.anchor = GridBagConstraints.EAST;
+        gbc = new GridBagConstraints();
+
+
+        // Configurazione per buttonLogo a sinistra di titoloSmu
+        gbc.gridx = 1; // Posizione immediatamente a sinistra di titoloSmu
+        gbc.weightx = 0; // Non assegna spazio extra, mantiene la posizione
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.insets = new Insets(0, 15, 0, 0); // Aggiusta gli insetti se necessario
+        panelSignIn3.add(buttonLogo, gbc);
+
+        // Configurazione per il titoloSmu a sinistra di homePageLabel
+        gbc.gridx = 2; // Posiziona titoloSmu accanto a buttonLogo
+        panelSignIn3.add(titoloSmu, gbc);
+
+        gbc = new GridBagConstraints();
+        // Infine, aggiungi spazio di espansione a destra per mantenere homePageLabel centrata
+        gbc.gridx = 3;
+        gbc.weightx = 1.0; // Bilancia lo spazio extra a destra
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panelSignIn3.add(Box.createHorizontalGlue(), gbc);
+
+        gbc = new GridBagConstraints();
+        // Configurazione per la homePageLabel al centro
+        gbc.gridx = 4;
+        panelSignIn3.add(titoloFrame, gbc);
+
+        // Infine, aggiungi spazio di espansione a destra per mantenere homePageLabel centrata
+        gbc.gridx = 5;
+        gbc.weightx = 1.0; // Bilancia lo spazio extra a destra
         gbc.fill = GridBagConstraints.EAST;
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        // Aggiungi il pulsante al panelSignIn3 utilizzando GridBagLayout
+        panelSignIn3.add(Box.createHorizontalGlue(), gbc);
+
+        gbc = new GridBagConstraints();
+        // Configurazione per buttonUser e buttonLogout a destra della homePageLabel
+        gbc.gridx = 6; // Posiziona buttonUser a destra della homePageLabel
         panelSignIn3.add(logOutButton, gbc);
 
+        gbc = new GridBagConstraints();
         gbc.gridx = 0; // Inizia dalla prima colonna
         gbc.gridy = 0; // Prima riga
         gbc.gridwidth = GridBagConstraints.REMAINDER; // Si estende su tutte le colonne
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
-        gbc.weighty = 0.3;
+        gbc.weighty = 0.05;
         contentPane.add(panelSignIn3, gbc);
 
         // Crea un JPanel a sx
         panelSignIn = new JPanel(new GridBagLayout());
-        panelSignIn.setBackground(new Color(234, 242, 239)); // Scegli il colore che preferisci
+        panelSignIn.setBackground(new Color(246, 248, 255)); // Scegli il colore che preferisci
         panelSignIn.setOpaque(true);
-
-
 
         controller.selectBankAccount(controller.account.getEmail());
         gbc.gridx = 0;
@@ -116,7 +158,6 @@ public class BankAccountPickViewGUI extends JFrame {
         gbc.insets = new Insets(40, 5, 20, 5);
         gbc.gridx = 1;
         gbc.anchor = GridBagConstraints.CENTER;
-
 
         showBankAccount();
         // Creazione dello JScrollPane che conterrà panelSignIn
@@ -130,7 +171,7 @@ public class BankAccountPickViewGUI extends JFrame {
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
-        gbc.weighty = 0.7; // Assegna più spazio a panelSignIn
+        gbc.weighty = 0.95; // Assegna più spazio a panelSignIn
         gbc.insets = new Insets(0, 0, 0, 0);
 
         // Aggiungi scrollPane a contentPane invece di panelSignIn
@@ -148,7 +189,7 @@ public class BankAccountPickViewGUI extends JFrame {
                 if (x == 3)
                     x = 0;
                 JPanel cardBank = new JPanel();
-                cardBank.setBackground(new Color(234, 242, 239));
+                cardBank.setBackground(new Color(246, 248, 255));
                 cardBank.setBorder(new MatteBorder(0, 0, 0, 0, new Color(37, 89, 87)));
 
                 cardBank.addMouseListener(new MouseAdapter() {
@@ -180,36 +221,72 @@ public class BankAccountPickViewGUI extends JFrame {
                 }
 
 
+
                 GroupLayout glBankAccount = new GroupLayout(cardBank);
                 cardBank.setLayout(glBankAccount);
 
                 glBankAccount.setAutoCreateGaps(true);
                 glBankAccount.setAutoCreateContainerGaps(true);
 
-                GroupLayout.SequentialGroup hGroup = glBankAccount.createSequentialGroup();
+                // Controlla se l'elemento corrente è l'ultimo dell'ArrayList
+                if (conto.equals(conti.get(conti.size() - 1))) {
 
-                hGroup.addGroup(glBankAccount.createParallelGroup().
-                        addComponent(ibanLabel).addComponent(saldoLabel));
-                hGroup.addGroup(glBankAccount.createParallelGroup().
-                        addComponent(numberIbanLabel).addComponent(numberSaldoLabel));
-                glBankAccount.setHorizontalGroup(hGroup);
+                    JLabel creaContoLabel = new JLabel("Crea Conto Corrente +");
+                    if (fontRegularBold != null)
+                        creaContoLabel.setFont(fontRegularBold);
+                    creaContoLabel.addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseClicked(MouseEvent e){
+                            if(controller.insertBankAccount(controller.account.getEmail())) {
+                                try {
+                                    setVisible(false);
+                                    controller.checkCredentials(controller.account.getEmail(), controller.account.getPassword());
+                                } catch (SQLException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                            }
+                        }
+                    });
 
-                GroupLayout.SequentialGroup vGroup = glBankAccount.createSequentialGroup();
+                    GroupLayout.SequentialGroup hGroup = glBankAccount.createSequentialGroup();
 
-                vGroup.addGroup(glBankAccount.createParallelGroup(GroupLayout.Alignment.BASELINE).
-                        addComponent(ibanLabel).addComponent(numberIbanLabel));
-                vGroup.addGroup(glBankAccount.createParallelGroup(GroupLayout.Alignment.BASELINE).
-                        addComponent(saldoLabel).addComponent(numberSaldoLabel));
-                glBankAccount.setVerticalGroup(vGroup);
+                    hGroup.addGroup(glBankAccount.createParallelGroup().
+                            addComponent(creaContoLabel));
+                    glBankAccount.setHorizontalGroup(hGroup);
 
-                cardBank.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                cardBank.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        controller.showHomePage(conto);
-                    }
+                    GroupLayout.SequentialGroup vGroup = glBankAccount.createSequentialGroup();
 
-                });
+                    vGroup.addGroup(glBankAccount.createParallelGroup(GroupLayout.Alignment.BASELINE).
+                           addComponent(creaContoLabel));
+                    glBankAccount.setVerticalGroup(vGroup);
+
+                }
+                else {
+                    GroupLayout.SequentialGroup hGroup = glBankAccount.createSequentialGroup();
+
+                    hGroup.addGroup(glBankAccount.createParallelGroup().
+                            addComponent(ibanLabel).addComponent(saldoLabel));
+                    hGroup.addGroup(glBankAccount.createParallelGroup().
+                            addComponent(numberIbanLabel).addComponent(numberSaldoLabel));
+                    glBankAccount.setHorizontalGroup(hGroup);
+
+                    GroupLayout.SequentialGroup vGroup = glBankAccount.createSequentialGroup();
+
+                    vGroup.addGroup(glBankAccount.createParallelGroup(GroupLayout.Alignment.BASELINE).
+                            addComponent(ibanLabel).addComponent(numberIbanLabel));
+                    vGroup.addGroup(glBankAccount.createParallelGroup(GroupLayout.Alignment.BASELINE).
+                            addComponent(saldoLabel).addComponent(numberSaldoLabel));
+                    glBankAccount.setVerticalGroup(vGroup);
+
+                    cardBank.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                    cardBank.addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
+                            controller.showHomePage(conto);
+                        }
+
+                    });
+                }
 
                 GridBagConstraints gbc = new GridBagConstraints();
 
@@ -224,7 +301,6 @@ public class BankAccountPickViewGUI extends JFrame {
         }
         else
         {
-
             JLabel creaContoLabel = new JLabel("Crea Conto Corrente");
             if (fontRegularBold != null)
                 creaContoLabel.setFont(fontRegularBold);
@@ -235,6 +311,7 @@ public class BankAccountPickViewGUI extends JFrame {
                 public void mouseClicked(MouseEvent e){
                         if(controller.insertBankAccount(controller.account.getEmail())) {
                             try {
+                                setVisible(false);
                                 controller.checkCredentials(controller.account.getEmail(), controller.account.getPassword());
                             } catch (SQLException ex) {
                                 throw new RuntimeException(ex);

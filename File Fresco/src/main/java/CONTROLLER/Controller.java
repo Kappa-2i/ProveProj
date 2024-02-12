@@ -167,6 +167,19 @@ public class Controller {
         frameHome(true);
     }
 
+    public void backLoginPage(){
+        account = null;
+        contoScelto = null;
+        framePick(false);
+        frameLogin(true);
+    }
+
+    public void backFramePick(){
+        contoScelto = null;
+        frameHome(false);
+        framePick(true);
+    }
+
     public void frameLogin(Boolean isVisibile){
         frameLogin.setVisible(isVisibile);
     }

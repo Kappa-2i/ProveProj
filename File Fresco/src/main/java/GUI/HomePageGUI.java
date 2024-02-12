@@ -6,6 +6,8 @@ import javax.naming.event.ObjectChangeListener;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.InputStream;
@@ -29,7 +31,7 @@ public class HomePageGUI extends JFrame {
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
-        setSize(1200, 800);
+        setSize(1400, 800);
         setLocationRelativeTo(null);
         fontBold();
         fontRegular();
@@ -49,7 +51,7 @@ public class HomePageGUI extends JFrame {
         JPanel panelTop = new JPanel(new GridBagLayout());
         panelTop.setBackground(new Color(37, 89, 87));
         gbc.gridwidth = 4;
-        gbc.weighty = 0.05;
+        gbc.weighty = 0.1;
         gbc.weightx = 1;
         gbc.gridy = 0;
         gbc.gridx = 0;
@@ -122,6 +124,14 @@ public class HomePageGUI extends JFrame {
         buttonLogout.setBorderPainted(false);
         buttonLogout.setBorder(null);
         buttonLogout.setFocusPainted(false);
+        buttonLogout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int risposta = JOptionPane.showConfirmDialog(null, "Sei sicuro di voler uscire?", "Conferma Logout", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (risposta == JOptionPane.YES_OPTION)
+                    controller.backLoginPage();
+            }
+        });
 
 
 
@@ -138,17 +148,22 @@ public class HomePageGUI extends JFrame {
                 accountLabel.setText("Account");
             }
         });
-        JLabel bankAccountLabel = new JLabel("Conto Corrente");
+        JLabel bankAccountLabel = new JLabel("Seleziona Conto");
         bankAccountLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         bankAccountLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                bankAccountLabel.setText("<html><u>Conto Corrente</u></html>");
+                bankAccountLabel.setText("<html><u>Seleziona Conto</u></html>");
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                bankAccountLabel.setText("Conto Corrente");
+                bankAccountLabel.setText("Seleziona Conto");
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e){
+                controller.backFramePick();
             }
         });
         JLabel notificheLabel = new JLabel("Notifiche");
@@ -278,16 +293,16 @@ public class HomePageGUI extends JFrame {
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1;
-        gbc.weighty = 0.25;
+        gbc.weighty = 0.33;
         gbc.insets = new Insets(20, 20, 20, 20);
         panelLeft.add(saldoPanel, gbc);
 
         gbc.gridy = 1;
-        gbc.weighty = 0.4;
+        gbc.weighty = 0.33;
         panelLeft.add(spesePanel, gbc);
 
         gbc.gridy = 2;
-        gbc.weighty = 0.4;
+        gbc.weighty = 0.33;
         panelLeft.add(salvadanaioPanel, gbc);
 
         /**
