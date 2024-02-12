@@ -33,30 +33,29 @@ public class Controller {
 
     //Dichiarazione di un account null
     public Account account = null;
+    public ArrayList<ContoCorrente> conti = null;
+    public ContoCorrente contoScelto = null;
 
     public Controller() {
         frameLogin = new LoginViewGUI(this); // Assumi che LoginView accetti ControllerLogin come parametro
-        frameLogin.setVisible(true);
+        frameLogin(true);
 
         frameSignIn = new SignInViewGUI(this);
-
 
 
         //DAO
         this.accountDao = new AccountDAOImpl(); // Assumi che tu abbia un costruttore predefinito
         this.personaDao = new PersonaDAOImpl();
         this.contoCorrenteDAO = new ContoCorrenteDAOImpl();
-
-
     }
 
     public void checkCredentials(String email, String password) throws SQLException {
         if((!email.isEmpty()) && (!password.isEmpty())){
             account = accountDao.checkCredentials(email.toLowerCase(), password);
             if (account != null){
-                frameLogin.setVisible(false);
+                frameLogin(false);
                 framePick = new BankAccountPickViewGUI(this);
-                framePick.setVisible(true);
+                framePick(true);
             }
             else{
                 JOptionPane.showMessageDialog(
@@ -82,7 +81,7 @@ public class Controller {
         if (!nome.isEmpty() && !cognome.isEmpty() && !telefono.isEmpty() && !citta.isEmpty() && !via.isEmpty() && !nCivico.isEmpty() && !cap.isEmpty() && !codiceFiscale.isEmpty()){
            try {
                Persona persona = new Persona(nome, cognome, telefono, dataNascita, citta, via, nCivico, cap, codiceFiscale);
-               Account account = new Account(email, password, username, codiceFiscale);
+               Account accountInserito = new Account(email, password, username, codiceFiscale);
 
                if (personaDao.insertUser(nome, cognome, telefono, dataNascita, citta, via, nCivico, cap, codiceFiscale)){
                    JOptionPane.showMessageDialog(
@@ -145,7 +144,7 @@ public class Controller {
 
 
     public ArrayList<ContoCorrente> selectBankAccount(String email){
-        ArrayList<ContoCorrente> conti = new ArrayList<ContoCorrente>();
+        conti = new ArrayList<ContoCorrente>();
         conti = contoCorrenteDAO.selectBankAccount(email);
 
         account.setConti(conti);
@@ -161,8 +160,11 @@ public class Controller {
     }
 
 
-    public void showHomePage(String iban){
-
+    public void showHomePage(ContoCorrente conto){
+        contoScelto = conto;
+        framePick(false);
+        frameHome = new HomePageGUI(this);
+        frameHome(true);
     }
 
     public void frameLogin(Boolean isVisibile){

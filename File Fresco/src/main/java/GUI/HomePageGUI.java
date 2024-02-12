@@ -2,6 +2,7 @@ package GUI;
 
 import CONTROLLER.Controller;
 
+import javax.naming.event.ObjectChangeListener;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
@@ -22,14 +23,7 @@ public class HomePageGUI extends JFrame {
 
 
 
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            HomePageGUI signFrame = new HomePageGUI();
-        });
-    }
-
-    public HomePageGUI(/*Controller controller*/){
+    public HomePageGUI(Controller controller){
         this.controller = controller;
         setTitle("HomePage - S.M.U.");
         setVisible(true);
@@ -46,6 +40,7 @@ public class HomePageGUI extends JFrame {
 
         // Creazione panello principale che contiene il tutto
         JPanel contentPane = new JPanel(new GridBagLayout());
+        contentPane.setBackground(new Color(246, 248, 255));
 
         // Dichiarazione dei constraints per posizionare i pannelli
         GridBagConstraints gbc = new GridBagConstraints();
@@ -66,20 +61,19 @@ public class HomePageGUI extends JFrame {
         panelLeft.setLayout(new GridBagLayout());
         gbc.gridwidth = 1;
         gbc.weighty = 0.95;
-        gbc.weightx = 0.15;
+        gbc.weightx = 0.04;
         gbc.gridy = 1;
         gbc.gridx = 0;
-        gbc.insets = new Insets(20, 20, 20, 0);
+        gbc.insets = new Insets(20, 20, 20, 20);
         contentPane.add(panelLeft, gbc);
 
         // Dichiarazione del pannello laterale destro con aggiunta dei constraints per posizionarlo
-        JPanel panelGhost = new JPanel();
-        panelGhost.setBackground(Color.BLUE);
-        panelGhost.setOpaque(false);
+        JPanel panelGhost = new JPanel(new GridBagLayout());
+        panelGhost.setBackground(new Color(246, 248, 255));
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weighty = 0;
-        gbc.weightx = 0.30;
+        gbc.weightx = 0.35;
         gbc.gridy = 1;
         gbc.gridx = 2;
         contentPane.add(panelGhost, gbc);
@@ -87,10 +81,11 @@ public class HomePageGUI extends JFrame {
         JPanel userPanel = new JPanel();
         userPanel.setVisible(false);
         userPanel.setBackground(new Color(217, 217, 217));
+        userPanel.setBorder(new MatteBorder(0, 3, 0, 0, new Color(37, 89, 87)));
         userPanel.setLayout(new GridBagLayout());
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weighty = 0;
-        gbc.weightx = 0.03;
+        gbc.weightx = 0.08;
         gbc.gridy = 1;
         gbc.gridx = 3;
         contentPane.add(userPanel, gbc);
@@ -99,7 +94,7 @@ public class HomePageGUI extends JFrame {
 
         // Dichiarazione dei componenti per il pannello superiore
         JLabel homePageLabel = new JLabel("Home Page");
-        homePageLabel.setForeground(Color.WHITE);
+        homePageLabel.setForeground(new Color(246, 248, 255));
         JLabel titoloSmu = new JLabel("S.M.U.");
         titoloSmu.setForeground(Color.WHITE);
         if (fontExtraBold != null) {
@@ -145,8 +140,6 @@ public class HomePageGUI extends JFrame {
         });
         JLabel bankAccountLabel = new JLabel("Conto Corrente");
         bankAccountLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        bankAccountLabel.setBorder(new MatteBorder(0, 0, 0, 0, new Color(105, 105, 105)));
-
         bankAccountLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -285,26 +278,29 @@ public class HomePageGUI extends JFrame {
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1;
-        gbc.weighty = 0.33;
+        gbc.weighty = 0.25;
         gbc.insets = new Insets(20, 20, 20, 20);
         panelLeft.add(saldoPanel, gbc);
 
         gbc.gridy = 1;
+        gbc.weighty = 0.4;
         panelLeft.add(spesePanel, gbc);
 
         gbc.gridy = 2;
+        gbc.weighty = 0.4;
         panelLeft.add(salvadanaioPanel, gbc);
 
         /**
          * Aggiungiamo i componenti ad ognuno dei 3 rounded panel all'interno del panel di sx
          * */
 
-        JLabel saldoTagLabel = new JLabel("IL TUO SALDO");
-        saldoTagLabel.setForeground(Color.WHITE);
-        JLabel saldoLabel = new JLabel("€1200");
-        saldoLabel.setForeground(Color.WHITE);
+
+        JLabel cartaLabel = new JLabel("CARTA");
+        cartaLabel.setForeground(new Color(8, 76, 97));
+        JLabel saldoLabel = new JLabel(String.valueOf(controller.contoScelto.getSaldo())+"€");
+        saldoLabel.setForeground(new Color(246, 248, 255));
         JButton buttonSaldo = new JButton();
-        ImageIcon iconSaldo = new ImageIcon(HomePageGUI.class.getResource("/IMG/money (1) (1).png"));
+        ImageIcon iconSaldo = new ImageIcon(HomePageGUI.class.getResource("/IMG/credit_resized.png"));
         buttonSaldo.setBackground(null);
         buttonSaldo.setIcon(iconSaldo);
         buttonSaldo.setContentAreaFilled(false);
@@ -312,28 +308,160 @@ public class HomePageGUI extends JFrame {
         buttonSaldo.setBorderPainted(false);
         buttonSaldo.setBorder(null);
         buttonSaldo.setFocusPainted(false);
+
+
+        JLabel speseLabel = new JLabel("<html><b>LE TUE<br>SPESE</b></html>");
+        speseLabel.setForeground(new Color(8, 76, 97));
+        JButton buttonSpese = new JButton();
+        ImageIcon iconSpese = new ImageIcon(HomePageGUI.class.getResource("/IMG/time-count_resized_flipped.png"));
+        buttonSpese.setBackground(null);
+        buttonSpese.setIcon(iconSpese);
+        buttonSpese.setContentAreaFilled(false);
+        buttonSpese.setOpaque(false);
+        buttonSpese.setBorderPainted(false);
+        buttonSpese.setBorder(null);
+        buttonSpese.setFocusPainted(false);
+
+        JLabel salvadanaioLabel = new JLabel("<html><b>PIGGY<br>BANK</b></html>");
+        salvadanaioLabel.setForeground(new Color(8, 76, 97));
+        JButton buttonSalvadanaio = new JButton();
+        ImageIcon iconSalvadanaio = new ImageIcon(HomePageGUI.class.getResource("/IMG/saving_resized.png"));
+        buttonSalvadanaio.setBackground(null);
+        buttonSalvadanaio.setIcon(iconSalvadanaio);
+        buttonSalvadanaio.setContentAreaFilled(false);
+        buttonSalvadanaio.setOpaque(false);
+        buttonSalvadanaio.setBorderPainted(false);
+        buttonSalvadanaio.setBorder(null);
+        buttonSalvadanaio.setFocusPainted(false);
+
         if (fontRegular != null){
-            saldoLabel.setFont(fontRegular);
-            saldoTagLabel.setFont(fontRegularXXL);
+            saldoLabel.setFont(fontRegularXXL);
+            cartaLabel.setFont(fontRegularXXL);
+            speseLabel.setFont(fontRegularXXL);
+            salvadanaioLabel.setFont(fontRegularXXL);
         }
 
+
         gbc = new GridBagConstraints();
+
         gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.NORTHWEST;
-        gbc.weighty = 0.4;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.weighty = 0.5;
         gbc.weightx = 0.5;
-        gbc.insets = new Insets(5, 5 , 5, 0);
-        //saldoPanel.add(saldoTagLabel, gbc);
-        gbc.anchor = GridBagConstraints.NORTHWEST;
+        gbc.insets = new Insets(-40, 0, 0, 0);
+        saldoPanel.add(cartaLabel, gbc);
+
+
+        gbc.anchor = GridBagConstraints.NORTH;
+        gbc.gridwidth = 2;
         gbc.gridy = 1;
         gbc.weighty = 0.5;
-        //saldoPanel.add(saldoLabel, gbc);
-        gbc.anchor = GridBagConstraints.NORTHWEST;
-        gbc.weightx = 0.6;
-        gbc.weighty = 0.5;
-        gbc.gridy = 0;
+        gbc.insets = new Insets(-50, 0, 0, 0);
+        saldoPanel.add(saldoLabel, gbc);
+
         gbc.gridx = 1;
-        //saldoPanel.add(buttonSaldo, gbc);
+        gbc.gridy = 0;
+        gbc.weighty = 1;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.insets = new Insets(0, 0, 0, 0);
+        saldoPanel.add(buttonSaldo, gbc);
+
+        gbc = new GridBagConstraints();
+
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.weighty = 0.5;
+        gbc.weightx = 0.5;
+        gbc.insets = new Insets(0, 0, 0, 0);
+        spesePanel.add(speseLabel, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.weighty = 1;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.insets = new Insets(0, 0, 0, 0);
+        spesePanel.add(buttonSpese, gbc);
+
+        gbc = new GridBagConstraints();
+
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.gridy = 0;
+        gbc.weighty = 0.5;
+        gbc.insets = new Insets(0, 0, 0, 0);
+        salvadanaioPanel.add(salvadanaioLabel, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.weighty = 1;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.insets = new Insets(0, 50, 0, 0);
+        salvadanaioPanel.add(buttonSalvadanaio, gbc);
+
+
+        /**
+         * Aggiungiamo ora i componenti all'interno del panello trasparente centrale
+         * */
+        RoundedPanel inviaSoldiPanel = new RoundedPanel(200, new Color(246, 248, 255) );
+        inviaSoldiPanel.setLayout(new GridBagLayout());
+
+        RoundedPanel raccoltePanel = new RoundedPanel(200, new Color(246, 248, 255));
+        raccoltePanel.setLayout(new GridBagLayout());
+
+        RoundedPanel riceviSoldiPanel = new RoundedPanel(200, new Color(246, 248, 255));
+        riceviSoldiPanel.setLayout(new GridBagLayout());
+
+        gbc = new GridBagConstraints();
+
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1;
+        gbc.weighty = 0.33;
+        gbc.insets = new Insets(20, 20, 20, 20);
+        panelGhost.add(inviaSoldiPanel, gbc);
+
+        gbc.gridy = 1;
+        gbc.weighty = 0.33;
+        panelGhost.add(raccoltePanel, gbc);
+
+        gbc.gridy = 2;
+        gbc.weighty = 0.33;
+        panelGhost.add(riceviSoldiPanel, gbc);
+
+        /**
+         * Aggiungiamo i componenti ad ognuno dei 3 rounded panel all'interno del panel trasparente
+         * */
+
+
+        JButton buttonInviaSoldi = new JButton();
+        ImageIcon iconInviaSoldi = new ImageIcon(HomePageGUI.class.getResource("/IMG/saving_resized.png"));
+        buttonInviaSoldi.setBackground(null);
+        buttonInviaSoldi.setIcon(iconSalvadanaio);
+        buttonInviaSoldi.setContentAreaFilled(false);
+        buttonInviaSoldi.setOpaque(false);
+        buttonInviaSoldi.setBorderPainted(false);
+        buttonInviaSoldi.setBorder(null);
+        buttonInviaSoldi.setFocusPainted(false);
+
+
+        JButton buttonRaccolte = new JButton();
+        ImageIcon iconRaccole = new ImageIcon(HomePageGUI.class.getResource("/IMG/saving_resized.png"));
+        buttonRaccolte.setBackground(null);
+        buttonRaccolte.setIcon(iconSalvadanaio);
+        buttonRaccolte.setContentAreaFilled(false);
+        buttonRaccolte.setOpaque(false);
+        buttonRaccolte.setBorderPainted(false);
+        buttonRaccolte.setBorder(null);
+        buttonRaccolte.setFocusPainted(false);
+
+
+        JButton buttonNotifiche = new JButton();
+        ImageIcon iconNotifiche = new ImageIcon(HomePageGUI.class.getResource("/IMG/saving_resized.png"));
+        buttonNotifiche.setBackground(null);
+        buttonNotifiche.setIcon(iconSalvadanaio);
+        buttonNotifiche.setContentAreaFilled(false);
+        buttonNotifiche.setOpaque(false);
+        buttonNotifiche.setBorderPainted(false);
+        buttonNotifiche.setBorder(null);
+        buttonNotifiche.setFocusPainted(false);
+
 
 
         setContentPane(contentPane);
@@ -409,8 +537,8 @@ public class HomePageGUI extends JFrame {
     //Creazione del fontRegular
     private void fontRegularXXL() {
         try {
-            InputStream is = LoginViewGUI.class.getResourceAsStream("/FONT/Rubik-Regular.ttf"); // Sostituisci con il tuo percorso
-            fontRegularXXL = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(48f); // Modifica la dimensione a piacimento
+            InputStream is = LoginViewGUI.class.getResourceAsStream("/FONT/Rubik-Bold.ttf"); // Sostituisci con il tuo percorso
+            fontRegularXXL = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(40f); // Modifica la dimensione a piacimento
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(fontRegularXXL);
         } catch (Exception e) {

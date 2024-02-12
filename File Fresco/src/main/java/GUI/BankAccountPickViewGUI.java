@@ -144,8 +144,8 @@ public class BankAccountPickViewGUI extends JFrame {
         if (!conti.isEmpty()){
             int y = 2;
             int x = 0;
-            for (ContoCorrente conto : conti){
-                if(x == 3)
+            for (ContoCorrente conto : conti) {
+                if (x == 3)
                     x = 0;
                 JPanel cardBank = new JPanel();
                 cardBank.setBackground(new Color(234, 242, 239));
@@ -156,6 +156,7 @@ public class BankAccountPickViewGUI extends JFrame {
                     public void mouseEntered(MouseEvent e) {
                         cardBank.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
                     }
+
                     public void mouseExited(MouseEvent e) {
                         cardBank.setBorder(new MatteBorder(0, 0, 0, 0, new Color(37, 89, 87)));
                     }
@@ -172,11 +173,11 @@ public class BankAccountPickViewGUI extends JFrame {
 
 
                 JLabel saldoLabel = new JLabel("Saldo: ");
-                if (fontBold != null)
-                    saldoLabel.setFont(fontBold);
                 JLabel numberSaldoLabel = new JLabel(String.valueOf(conto.getSaldo())+"€");
-                if (fontRegular != null)
-                    numberSaldoLabel.setFont(fontRegular);
+                if (fontBold != null){
+                    saldoLabel.setFont(fontBold);
+                    numberSaldoLabel.setFont(fontBold);
+                }
 
 
                 GroupLayout glBankAccount = new GroupLayout(cardBank);
@@ -205,10 +206,10 @@ public class BankAccountPickViewGUI extends JFrame {
                 cardBank.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        controller.showHomePage(numberIbanLabel.getText());
+                        controller.showHomePage(conto);
                     }
-                });
 
+                });
 
                 GridBagConstraints gbc = new GridBagConstraints();
 
