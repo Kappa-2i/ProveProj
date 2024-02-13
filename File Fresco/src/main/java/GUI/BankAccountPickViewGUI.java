@@ -228,8 +228,61 @@ public class BankAccountPickViewGUI extends JFrame {
                 glBankAccount.setAutoCreateGaps(true);
                 glBankAccount.setAutoCreateContainerGaps(true);
 
+                GroupLayout.SequentialGroup hGroup = glBankAccount.createSequentialGroup();
+
+                hGroup.addGroup(glBankAccount.createParallelGroup().
+                        addComponent(ibanLabel).addComponent(saldoLabel));
+                hGroup.addGroup(glBankAccount.createParallelGroup().
+                        addComponent(numberIbanLabel).addComponent(numberSaldoLabel));
+                glBankAccount.setHorizontalGroup(hGroup);
+
+                    GroupLayout.SequentialGroup vGroup = glBankAccount.createSequentialGroup();
+
+                    vGroup.addGroup(glBankAccount.createParallelGroup(GroupLayout.Alignment.BASELINE).
+                            addComponent(ibanLabel).addComponent(numberIbanLabel));
+                    vGroup.addGroup(glBankAccount.createParallelGroup(GroupLayout.Alignment.BASELINE).
+                            addComponent(saldoLabel).addComponent(numberSaldoLabel));
+                    glBankAccount.setVerticalGroup(vGroup);
+
+                    cardBank.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                    cardBank.addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
+                            controller.showHomePage(conto);
+                        }
+
+                    });
+
+
+                GridBagConstraints gbc = new GridBagConstraints();
+
+                gbc.insets = new Insets(40, 40, 40, 40);
+                gbc.gridy = y;
+                gbc.gridx = x;
+                panelSignIn.add(cardBank, gbc);
+                x++;
+                if(x == 3)
+                    y++;
+
                 // Controlla se l'elemento corrente è l'ultimo dell'ArrayList
                 if (conto.equals(conti.get(conti.size() - 1))) {
+                    if (x == 3){
+                        x = 0;
+                    }
+                    JPanel addBank = new JPanel();
+                    addBank.setBackground(new Color(246, 248, 255));
+                    addBank.setBorder(new MatteBorder(0, 0, 0, 0, new Color(37, 89, 87)));
+                    addBank.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                    addBank.addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseEntered(MouseEvent e) {
+                            addBank.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
+                        }
+
+                        public void mouseExited(MouseEvent e) {
+                            addBank.setBorder(new MatteBorder(0, 0, 0, 0, new Color(37, 89, 87)));
+                        }
+                    });
 
                     JLabel creaContoLabel = new JLabel("Crea Conto Corrente +");
                     if (fontRegularBold != null)
@@ -248,90 +301,94 @@ public class BankAccountPickViewGUI extends JFrame {
                         }
                     });
 
-                    GroupLayout.SequentialGroup hGroup = glBankAccount.createSequentialGroup();
+                    GroupLayout glAddBank = new GroupLayout(addBank);
+                    addBank.setLayout(glAddBank);
 
-                    hGroup.addGroup(glBankAccount.createParallelGroup().
+                    glAddBank.setAutoCreateGaps(true);
+                    glAddBank.setAutoCreateContainerGaps(true);
+
+                    GroupLayout.SequentialGroup hGroup2 = glAddBank.createSequentialGroup();
+                    GroupLayout.SequentialGroup vGroup2 = glAddBank.createSequentialGroup();
+
+
+
+                    hGroup2.addGroup(glAddBank.createParallelGroup().
                             addComponent(creaContoLabel));
-                    glBankAccount.setHorizontalGroup(hGroup);
+                    glAddBank.setHorizontalGroup(hGroup2);
 
-                    GroupLayout.SequentialGroup vGroup = glBankAccount.createSequentialGroup();
 
-                    vGroup.addGroup(glBankAccount.createParallelGroup(GroupLayout.Alignment.BASELINE).
-                           addComponent(creaContoLabel));
-                    glBankAccount.setVerticalGroup(vGroup);
+                    vGroup2.addGroup(glAddBank.createParallelGroup(GroupLayout.Alignment.BASELINE).
+                            addComponent(creaContoLabel));
+                    glAddBank.setVerticalGroup(vGroup2);
 
+                    gbc = new GridBagConstraints();
+
+                    gbc.insets = new Insets(40, 40, 40, 40);
+                    gbc.gridy = y;
+                    gbc.gridx = x;
+                    panelSignIn.add(addBank, gbc);
                 }
-                else {
-                    GroupLayout.SequentialGroup hGroup = glBankAccount.createSequentialGroup();
-
-                    hGroup.addGroup(glBankAccount.createParallelGroup().
-                            addComponent(ibanLabel).addComponent(saldoLabel));
-                    hGroup.addGroup(glBankAccount.createParallelGroup().
-                            addComponent(numberIbanLabel).addComponent(numberSaldoLabel));
-                    glBankAccount.setHorizontalGroup(hGroup);
-
-                    GroupLayout.SequentialGroup vGroup = glBankAccount.createSequentialGroup();
-
-                    vGroup.addGroup(glBankAccount.createParallelGroup(GroupLayout.Alignment.BASELINE).
-                            addComponent(ibanLabel).addComponent(numberIbanLabel));
-                    vGroup.addGroup(glBankAccount.createParallelGroup(GroupLayout.Alignment.BASELINE).
-                            addComponent(saldoLabel).addComponent(numberSaldoLabel));
-                    glBankAccount.setVerticalGroup(vGroup);
-
-                    cardBank.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                    cardBank.addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mouseClicked(MouseEvent e) {
-                            controller.showHomePage(conto);
-                        }
-
-                    });
-                }
-
-                GridBagConstraints gbc = new GridBagConstraints();
-
-                gbc.insets = new Insets(40, 40, 40, 40);
-                gbc.gridy = y;
-                gbc.gridx = x;
-                panelSignIn.add(cardBank, gbc);
-                x++;
-                if(x == 3)
-                    y++;
             }
         }
-        else
-        {
-            JLabel creaContoLabel = new JLabel("Crea Conto Corrente");
+        else {
+            JPanel addBank = new JPanel();
+            addBank.setBackground(new Color(246, 248, 255));
+            addBank.setBorder(new MatteBorder(0, 0, 0, 0, new Color(37, 89, 87)));
+            addBank.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            addBank.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    addBank.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
+                }
+
+                public void mouseExited(MouseEvent e) {
+                    addBank.setBorder(new MatteBorder(0, 0, 0, 0, new Color(37, 89, 87)));
+                }
+            });
+
+            JLabel creaContoLabel = new JLabel("Crea Conto Corrente +");
             if (fontRegularBold != null)
                 creaContoLabel.setFont(fontRegularBold);
-
-
             creaContoLabel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e){
-                        if(controller.insertBankAccount(controller.account.getEmail())) {
-                            try {
-                                setVisible(false);
-                                controller.checkCredentials(controller.account.getEmail(), controller.account.getPassword());
-                            } catch (SQLException ex) {
-                                throw new RuntimeException(ex);
-                            }
+                    if(controller.insertBankAccount(controller.account.getEmail())) {
+                        try {
+                            setVisible(false);
+                            controller.checkCredentials(controller.account.getEmail(), controller.account.getPassword());
+                        } catch (SQLException ex) {
+                            throw new RuntimeException(ex);
                         }
-                }
-
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    creaContoLabel.setText("<html><b><u>Crea Conto Corrente</u></b></html>");
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    creaContoLabel.setText("Crea Conto Corrente");
+                    }
                 }
             });
+
+            GroupLayout glAddBank = new GroupLayout(addBank);
+            addBank.setLayout(glAddBank);
+
+            glAddBank.setAutoCreateGaps(true);
+            glAddBank.setAutoCreateContainerGaps(true);
+
+            GroupLayout.SequentialGroup hGroup2 = glAddBank.createSequentialGroup();
+            GroupLayout.SequentialGroup vGroup2 = glAddBank.createSequentialGroup();
+
+
+
+            hGroup2.addGroup(glAddBank.createParallelGroup().
+                    addComponent(creaContoLabel));
+            glAddBank.setHorizontalGroup(hGroup2);
+
+
+            vGroup2.addGroup(glAddBank.createParallelGroup(GroupLayout.Alignment.BASELINE).
+                    addComponent(creaContoLabel));
+            glAddBank.setVerticalGroup(vGroup2);
+
             GridBagConstraints gbc = new GridBagConstraints();
-            gbc.insets = new Insets(20, 20, 20, 20);
-            panelSignIn.add(creaContoLabel, gbc);
+
+            gbc.insets = new Insets(40, 40, 40, 40);
+            gbc.gridy = 2;
+            gbc.gridx = 0;
+            panelSignIn.add(addBank, gbc);
         }
     }
 
@@ -402,5 +459,3 @@ public class BankAccountPickViewGUI extends JFrame {
 
 
 }
-
-

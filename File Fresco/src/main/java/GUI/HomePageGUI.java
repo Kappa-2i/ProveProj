@@ -179,17 +179,22 @@ public class HomePageGUI extends JFrame {
                 notificheLabel.setText("Notifiche");
             }
         });
-        JLabel settingsLabel = new JLabel("Impostazioni");
+        JLabel settingsLabel = new JLabel("Elimina Conto Corrente");
         settingsLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         settingsLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                settingsLabel.setText("<html><u>Impostazioni</u></html>");
+                settingsLabel.setText("<html><u>Elimina Conto Corrente</u></html>");
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                settingsLabel.setText("Impostazioni");
+                settingsLabel.setText("Elimina Conto Corrente");
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e){
+                controller.deleteBankAccount(controller.contoScelto.getIban());
             }
         });
 

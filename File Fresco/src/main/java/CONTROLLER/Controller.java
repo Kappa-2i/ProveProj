@@ -159,6 +159,23 @@ public class Controller {
             return false;
     }
 
+    public void deleteBankAccount(String iban){
+        contoCorrenteDAO.deleteBankAccount(iban);
+        frameHome(false);
+        try {
+            checkCredentials(account.getEmail(), account.getPassword());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        JOptionPane.showMessageDialog(
+                framePick,
+                "Conto Corrente con Iban: " +iban+ ", eliminato con successo!",
+                "Conto Corrente eliminato",
+                JOptionPane.INFORMATION_MESSAGE
+        );
+    }
+
 
     public void showHomePage(ContoCorrente conto){
         contoScelto = conto;
@@ -169,7 +186,9 @@ public class Controller {
 
     public void backLoginPage(){
         account = null;
-        contoScelto = null;
+        if (contoScelto!= null)
+            contoScelto = null;
+
         framePick(false);
         frameLogin(true);
     }

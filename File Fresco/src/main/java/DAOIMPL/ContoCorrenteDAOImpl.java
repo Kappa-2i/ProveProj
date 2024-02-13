@@ -57,4 +57,20 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO {
         return false;
     }
 
+    @Override
+    public void deleteBankAccount(String iban){
+        CallableStatement statement = null;
+        try (Connection conn = DBConnection.getDBConnection().getConnection()){
+            String callFunction = "{call test.rimuovi_contocorrente_con_carta2(?)}";
+
+            statement = conn.prepareCall(callFunction);
+
+            statement.setString(1, iban);
+            statement.executeQuery();
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
 }
