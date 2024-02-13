@@ -71,7 +71,8 @@ public class HomePageGUI extends JFrame {
 
         // Dichiarazione del pannello laterale destro con aggiunta dei constraints per posizionarlo
         JPanel panelGhost = new JPanel(new GridBagLayout());
-        panelGhost.setBackground(new Color(246, 248, 255));
+        panelGhost.setBackground(new Color(65, 157, 120));
+
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weighty = 0;
@@ -451,36 +452,48 @@ public class HomePageGUI extends JFrame {
 
 
         JButton buttonInviaSoldi = new JButton();
-        ImageIcon iconInviaSoldi = new ImageIcon(HomePageGUI.class.getResource("/IMG/saving_resized.png"));
+        ImageIcon iconInviaSoldi = new ImageIcon(HomePageGUI.class.getResource("/IMG/kapp-05.png"));
         buttonInviaSoldi.setBackground(null);
-        buttonInviaSoldi.setIcon(iconSalvadanaio);
+        buttonInviaSoldi.setIcon(iconInviaSoldi);
         buttonInviaSoldi.setContentAreaFilled(false);
         buttonInviaSoldi.setOpaque(false);
         buttonInviaSoldi.setBorderPainted(false);
         buttonInviaSoldi.setBorder(null);
         buttonInviaSoldi.setFocusPainted(false);
 
+        gbc = new GridBagConstraints();
+        gbc.gridy = 0;
+        inviaSoldiPanel.add(buttonInviaSoldi, gbc);
+
 
         JButton buttonRaccolte = new JButton();
-        ImageIcon iconRaccole = new ImageIcon(HomePageGUI.class.getResource("/IMG/saving_resized.png"));
+        ImageIcon iconRaccolte = new ImageIcon(HomePageGUI.class.getResource("/IMG/kapp-03.png"));
         buttonRaccolte.setBackground(null);
-        buttonRaccolte.setIcon(iconSalvadanaio);
+        buttonRaccolte.setIcon(iconRaccolte);
         buttonRaccolte.setContentAreaFilled(false);
         buttonRaccolte.setOpaque(false);
         buttonRaccolte.setBorderPainted(false);
         buttonRaccolte.setBorder(null);
         buttonRaccolte.setFocusPainted(false);
 
+        gbc = new GridBagConstraints();
+        gbc.gridy = 1;
+        raccoltePanel.add(buttonRaccolte, gbc);
+
 
         JButton buttonNotifiche = new JButton();
-        ImageIcon iconNotifiche = new ImageIcon(HomePageGUI.class.getResource("/IMG/saving_resized.png"));
+        ImageIcon iconNotifiche = new ImageIcon(HomePageGUI.class.getResource("/IMG/kapp-01.png"));
         buttonNotifiche.setBackground(null);
-        buttonNotifiche.setIcon(iconSalvadanaio);
+        buttonNotifiche.setIcon(iconNotifiche);
         buttonNotifiche.setContentAreaFilled(false);
         buttonNotifiche.setOpaque(false);
         buttonNotifiche.setBorderPainted(false);
         buttonNotifiche.setBorder(null);
         buttonNotifiche.setFocusPainted(false);
+
+        gbc = new GridBagConstraints();
+        gbc.gridy = 2;
+        riceviSoldiPanel.add(buttonNotifiche, gbc);
 
 
 
