@@ -6,8 +6,6 @@ import javax.naming.event.ObjectChangeListener;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.InputStream;
@@ -31,7 +29,7 @@ public class HomePageGUI extends JFrame {
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
-        setSize(1400, 800);
+        setSize(1200, 800);
         setLocationRelativeTo(null);
         fontBold();
         fontRegular();
@@ -39,6 +37,8 @@ public class HomePageGUI extends JFrame {
         fontRegularSmall();
         fontRegularBold();
         fontRegularXXL();
+        Object[] options = {"Sì", "No"};
+
 
         // Creazione panello principale che contiene il tutto
         JPanel contentPane = new JPanel(new GridBagLayout());
@@ -71,7 +71,7 @@ public class HomePageGUI extends JFrame {
 
         // Dichiarazione del pannello laterale destro con aggiunta dei constraints per posizionarlo
         JPanel panelGhost = new JPanel(new GridBagLayout());
-        panelGhost.setBackground(new Color(65, 157, 120));
+        panelGhost.setBackground(new Color(246, 248, 255));
 
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
@@ -79,6 +79,7 @@ public class HomePageGUI extends JFrame {
         gbc.weightx = 0.35;
         gbc.gridy = 1;
         gbc.gridx = 2;
+        gbc.insets = new Insets(0, 0, 0, 0);
         contentPane.add(panelGhost, gbc);
 
         JPanel userPanel = new JPanel();
@@ -86,6 +87,7 @@ public class HomePageGUI extends JFrame {
         userPanel.setBackground(new Color(217, 217, 217));
         userPanel.setBorder(new MatteBorder(0, 3, 0, 0, new Color(37, 89, 87)));
         userPanel.setLayout(new GridBagLayout());
+        gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weighty = 0;
         gbc.weightx = 0.08;
@@ -125,30 +127,63 @@ public class HomePageGUI extends JFrame {
         buttonLogout.setBorderPainted(false);
         buttonLogout.setBorder(null);
         buttonLogout.setFocusPainted(false);
-        buttonLogout.addActionListener(new ActionListener() {
+        buttonLogout.addMouseListener(new MouseAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                int risposta = JOptionPane.showConfirmDialog(null, "Sei sicuro di voler uscire?", "Conferma Logout", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                if (risposta == JOptionPane.YES_OPTION)
+            public void mouseClicked(MouseEvent e) {
+                ImageIcon iconExit = new ImageIcon(HomePageGUI.class.getResource("/IMG/door_exit.png"));
+                int scelta = JOptionPane.showOptionDialog(
+                        null, // Componente padre
+                        "Sei sicuro di voler uscire?", // Messaggio
+                        "Conferma Logout", // Titolo
+                        JOptionPane.YES_NO_CANCEL_OPTION,
+                        JOptionPane.QUESTION_MESSAGE, // Tipo di messaggio
+                        iconExit, // Icona personalizzata, usa null per l'icona di default
+                        options, // Array contenente le etichette dei pulsanti
+                        options[1] // Opzione di default
+                );
+                if (scelta == JOptionPane.YES_OPTION)
                     controller.backLoginPage();
             }
         });
 
 
 
-        JLabel accountLabel = new JLabel("Account");
+        JLabel accountLabel = new JLabel("Informazioni Profilo");
         accountLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         accountLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                accountLabel.setText("<html><u>Account</u></html>");
+                accountLabel.setText("<html><u>Informazioni Profilo</u></html>");
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                accountLabel.setText("Account");
+                accountLabel.setText("Informazioni Profilo");
+            }
+
+//            @Override
+//            public void mouseClicked(MouseEvent e){
+//                JOptionPane.showMessageDialog(
+//                        null,
+//                        "Nome: "
+//                );
+//            }
+        });
+
+        JLabel notificheLabel = new JLabel("Elimina Account");
+        notificheLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        notificheLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                notificheLabel.setText("<html><u>Elimina Account</u></html>");
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                notificheLabel.setText("Elimina Account");
             }
         });
+
         JLabel bankAccountLabel = new JLabel("Seleziona Conto");
         bankAccountLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         bankAccountLabel.addMouseListener(new MouseAdapter() {
@@ -167,19 +202,7 @@ public class HomePageGUI extends JFrame {
                 controller.backFramePick();
             }
         });
-        JLabel notificheLabel = new JLabel("Notifiche");
-        notificheLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        notificheLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                notificheLabel.setText("<html><u>Notifiche</u></html>");
-            }
 
-            @Override
-            public void mouseExited(MouseEvent e) {
-                notificheLabel.setText("Notifiche");
-            }
-        });
         JLabel settingsLabel = new JLabel("Elimina Conto Corrente");
         settingsLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         settingsLabel.addMouseListener(new MouseAdapter() {
@@ -195,8 +218,39 @@ public class HomePageGUI extends JFrame {
 
             @Override
             public void mouseClicked(MouseEvent e){
-                controller.deleteBankAccount(controller.contoScelto.getIban());
+                ImageIcon iconDelete = new ImageIcon(HomePageGUI.class.getResource("/IMG/delete.png"));
+                int scelta = JOptionPane.showOptionDialog(
+                        null, // Componente padre
+                        "Vuoi eliminare questo conto corrente?", // Messaggio
+                        "Eliminazione conto corrente", // Titolo
+                        JOptionPane.YES_NO_CANCEL_OPTION,
+                        JOptionPane.QUESTION_MESSAGE, // Tipo di messaggio
+                        iconDelete, // Icona personalizzata, usa null per l'icona di default
+                        options, // Array contenente le etichette dei pulsanti
+                        options[1] // Opzione di default
+                );
+                if (scelta == JOptionPane.YES_OPTION)
+                    controller.deleteBankAccount(controller.contoScelto.getIban());
             }
+        });
+
+        JLabel addMoney = new JLabel("Aggiungi Fondi");
+        addMoney.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        addMoney.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                addMoney.setText("<html><u>Aggiungi Fondi</u></html>");
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                addMoney.setText("Aggiungi Fondi");
+            }
+
+//            @Override
+//            public void mouseClicked(MouseEvent e){
+//                controller.backFramePick();
+//            }
         });
 
         if (fontRegular != null){
@@ -407,7 +461,7 @@ public class HomePageGUI extends JFrame {
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridy = 0;
         gbc.weighty = 0.5;
-        gbc.insets = new Insets(0, 0, 0, 0);
+        gbc.insets = new Insets(0, 8, 0, 0);
         salvadanaioPanel.add(salvadanaioLabel, gbc);
         gbc.gridx = 1;
         gbc.gridy = 0;
@@ -460,10 +514,32 @@ public class HomePageGUI extends JFrame {
         buttonInviaSoldi.setBorderPainted(false);
         buttonInviaSoldi.setBorder(null);
         buttonInviaSoldi.setFocusPainted(false);
+        buttonInviaSoldi.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        JLabel inviaSoldiLabel = new JLabel("   INVIA BONIFICO");
+        if (fontRegularXXL != null)
+            inviaSoldiLabel.setFont(fontRegularXXL);
+        inviaSoldiLabel.setForeground(new Color(8, 76, 97));
+        inviaSoldiLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
 
         gbc = new GridBagConstraints();
-        gbc.gridy = 0;
+
+        // Infine, aggiungi spazio di espansione a destra per mantenere homePageLabel centrata
+        gbc.gridx = 0;
+        gbc.weightx = 1.0; // Bilancia lo spazio extra a destra
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        inviaSoldiPanel.add(Box.createHorizontalGlue(), gbc);
+
+        gbc.gridx = 1;
+        gbc.weightx = 0.3;
+        gbc.anchor = GridBagConstraints.WEST;
         inviaSoldiPanel.add(buttonInviaSoldi, gbc);
+
+        gbc.gridx = 2;
+        gbc.weightx = 0.7;
+        gbc.anchor = GridBagConstraints.CENTER;
+        inviaSoldiPanel.add(inviaSoldiLabel, gbc);
 
 
         JButton buttonRaccolte = new JButton();
@@ -475,10 +551,36 @@ public class HomePageGUI extends JFrame {
         buttonRaccolte.setBorderPainted(false);
         buttonRaccolte.setBorder(null);
         buttonRaccolte.setFocusPainted(false);
+        buttonRaccolte.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        JLabel raccolteLabel = new JLabel("          RACCOLTE");
+        if (fontRegularXXL != null)
+            raccolteLabel.setFont(fontRegularXXL);
+        raccolteLabel.setForeground(new Color(8, 76, 97));
+        raccolteLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+
 
         gbc = new GridBagConstraints();
-        gbc.gridy = 1;
+
+        gbc.gridy = 0;
+        gbc.weightx = 0.7;
+        gbc.anchor = GridBagConstraints.CENTER;
+        raccoltePanel.add(raccolteLabel, gbc);
+
+
+        gbc.gridx = 1;
+        gbc.weightx = 0.3;
+        gbc.anchor = GridBagConstraints.WEST;
         raccoltePanel.add(buttonRaccolte, gbc);
+
+        // Infine, aggiungi spazio di espansione a destra per mantenere homePageLabel centrata
+        gbc.gridx = 2;
+        gbc.weightx = 1.0; // Bilancia lo spazio extra a destra
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        raccoltePanel.add(Box.createHorizontalGlue(), gbc);
+
+
 
 
         JButton buttonNotifiche = new JButton();
@@ -490,10 +592,32 @@ public class HomePageGUI extends JFrame {
         buttonNotifiche.setBorderPainted(false);
         buttonNotifiche.setBorder(null);
         buttonNotifiche.setFocusPainted(false);
+        buttonNotifiche.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        JLabel notificheLabel2 = new JLabel("   NOTIFICHE        ");
+        if (fontRegularXXL != null)
+            notificheLabel2.setFont(fontRegularXXL);
+        notificheLabel2.setForeground(new Color(8, 76, 97));
+        notificheLabel2.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         gbc = new GridBagConstraints();
-        gbc.gridy = 2;
+
+        gbc.gridx = 0;
+        gbc.weightx = 1.0; // Bilancia lo spazio extra a destra
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        riceviSoldiPanel.add(Box.createHorizontalGlue(), gbc);
+
+        gbc.gridy = 0;
+        gbc.gridx = 1;
+        gbc.weightx = 0.3;
+        gbc.anchor = GridBagConstraints.WEST;
         riceviSoldiPanel.add(buttonNotifiche, gbc);
+
+
+        gbc.gridx = 2;
+        gbc.weightx = 0.7;
+        gbc.anchor = GridBagConstraints.CENTER;
+        riceviSoldiPanel.add(notificheLabel2, gbc);
 
 
 

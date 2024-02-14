@@ -41,6 +41,7 @@ public class BankAccountPickViewGUI extends JFrame {
         fontExtraBold();
         fontRegularSmall();
         fontRegularBold();
+        Object[] options = {"Sì", "No"};
 
         // Aggiungo il content Panel
         JPanel contentPane = new JPanel(new GridBagLayout());
@@ -89,11 +90,21 @@ public class BankAccountPickViewGUI extends JFrame {
         logOutButton.setOpaque(true);
         logOutButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia il cursore per indicare che è cliccabile
         logOutButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        logOutButton.addActionListener(new ActionListener() {
+        logOutButton.addMouseListener(new MouseAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                int risposta = JOptionPane.showConfirmDialog(null, "Sei sicuro di voler uscire?", "Conferma Logout", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                if (risposta == JOptionPane.YES_OPTION)
+            public void mouseClicked(MouseEvent e) {
+                ImageIcon iconExit = new ImageIcon(HomePageGUI.class.getResource("/IMG/door_exit.png"));
+                int scelta = JOptionPane.showOptionDialog(
+                        null, // Componente padre
+                        "Sei sicuro di voler uscire?", // Messaggio
+                        "Conferma Logout", // Titolo
+                        JOptionPane.YES_NO_CANCEL_OPTION,
+                        JOptionPane.QUESTION_MESSAGE, // Tipo di messaggio
+                        iconExit, // Icona personalizzata, usa null per l'icona di default
+                        options, // Array contenente le etichette dei pulsanti
+                        options[1] // Opzione di default
+                );
+                if (scelta == JOptionPane.YES_OPTION)
                     controller.backLoginPage();
             }
         });

@@ -190,6 +190,7 @@ public class Controller {
             contoScelto = null;
 
         framePick(false);
+        frameHome(false);
         frameLogin(true);
     }
 
