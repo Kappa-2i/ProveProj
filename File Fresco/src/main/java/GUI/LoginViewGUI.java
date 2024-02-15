@@ -71,15 +71,26 @@ public class LoginViewGUI extends JFrame {
 
 
         //Creazione di un JPanel 'PanelLoginRed' con BoxLayout
-        JPanel panelLoginRed = new JPanel();
+        JPanel panelLoginRed = new JPanel(new BorderLayout());
         panelLoginRed.setBackground(new Color(37, 89, 87)); // Scegli il colore che preferisci
         panelLoginRed.setOpaque(true); // Imposta come trasparente per mostrare il gradiente
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 0.6;
+        gbc.weightx = 0.45;
         gbc.weighty = 1;
         contentPane.add(panelLoginRed, gbc);//Aggiunge il panelLoginRed al contentPane
+
+        ImageIcon iconLogo = new ImageIcon(LoginViewGUI.class.getResource("/IMG/piggy-bank.png"));
+        JButton buttonLogo = new JButton();
+        buttonLogo.setBackground(null);
+        buttonLogo.setIcon(iconLogo);
+        buttonLogo.setContentAreaFilled(false);
+        buttonLogo.setOpaque(false);
+        buttonLogo.setBorderPainted(false);
+        buttonLogo.setBorder(null);
+        buttonLogo.setFocusPainted(false);
+        panelLoginRed.add(buttonLogo, BorderLayout.CENTER);
 
 
         // Creazione e aggiunta dei componenti sul pannello 'PanelLoginWhite'
