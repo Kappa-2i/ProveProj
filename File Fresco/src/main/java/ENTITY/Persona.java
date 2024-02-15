@@ -10,7 +10,6 @@ import java.util.Calendar;
 
 public class Persona {
 
-
     String codiceFiscale;
     String nome;
     String cognome;
@@ -132,5 +131,18 @@ public class Persona {
         this.cap = cap;
     }
 
-
+    @Override
+    public String toString() {
+        return "Persona{" +
+                "codiceFiscale='" + codiceFiscale + '\'' +
+                ", nome='" + nome + '\'' +
+                ", cognome='" + cognome + '\'' +
+                ", dataNascita='" + dataNascita + '\'' +
+                ", numeroTelefono='" + numeroTelefono + '\'' +
+                ", citta='" + citta + '\'' +
+                ", via='" + via + '\'' +
+                ", nCivico='" + nCivico + '\'' +
+                ", cap='" + cap + '\'' +
+                '}';
+    }
 }

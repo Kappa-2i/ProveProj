@@ -2,6 +2,7 @@ package DAOIMPL;
 
 import DAO.ContoCorrenteDAO;
 import DATABASE.DBConnection;
+import ENTITY.Account;
 import ENTITY.ContoCorrente;
 
 import java.sql.*;
@@ -9,13 +10,13 @@ import java.util.ArrayList;
 
 public class ContoCorrenteDAOImpl implements ContoCorrenteDAO {
     @Override
-    public ArrayList<ContoCorrente> selectBankAccount(String email){
+    public ArrayList<ContoCorrente> selectBankAccount(Account account){
 
         ArrayList<ContoCorrente> contiCorrenti = new ArrayList<ContoCorrente>();
         // Query SQL per ottenere i dettagli dell'utente
         String query = "SELECT cc.iban, cc.saldo " +
                 "FROM test.contocorrente cc " +
-                " WHERE cc.account_email = '" + email + "'";
+                " WHERE cc.account_email = '" + account.getEmail() + "'";
 
         try (Connection conn = DBConnection.getDBConnection().getConnection();  // Ottenimento della connessione al database
              Statement statement = conn.createStatement()) {  // Creazione di un PreparedStatement
@@ -24,7 +25,7 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO {
             ResultSet resultSet = statement.executeQuery(query);
             if (resultSet != null){
                 while (resultSet.next()){
-                    ContoCorrente conto = new ContoCorrente(resultSet.getString("Iban"), resultSet.getDouble("Saldo"));
+                    ContoCorrente conto = new ContoCorrente(resultSet.getString("Iban"), resultSet.getDouble("Saldo"), account);
                     contiCorrenti.add(conto);
                 }
                 return contiCorrenti;

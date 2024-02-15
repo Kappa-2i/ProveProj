@@ -2,7 +2,6 @@ package GUI;
 
 import CONTROLLER.Controller;
 
-import javax.naming.event.ObjectChangeListener;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
@@ -161,13 +160,21 @@ public class HomePageGUI extends JFrame {
                 accountLabel.setText("Informazioni Profilo");
             }
 
-//            @Override
-//            public void mouseClicked(MouseEvent e){
-//                JOptionPane.showMessageDialog(
-//                        null,
-//                        "Nome: "
-//                );
-//            }
+            @Override
+            public void mouseClicked(MouseEvent e){
+                ImageIcon iconInformation = new ImageIcon(HomePageGUI.class.getResource("/IMG/information.png"));
+                JOptionPane.showMessageDialog(
+                        null,
+                        "<html><b>Nome: </b>" +controller.persona.getNome() +"</html>"+
+                        "\n<html><b>Cognome: </b>: " +controller.persona.getCognome() +"</html>"+
+                        "\n<html><b>Data di Nascita: </b>: " +controller.persona.getDataNascita() + "</html>"+
+                        "\n<html><b>Codice Fiscale: </b>: " +controller.persona.getCodiceFiscale() + "</html>" +
+                                "\n<html><b>Numero Telefono: </b>: " +controller.persona.getNumeroTelefono() + "</html>",
+                        "Informazioni profilo",
+                        JOptionPane.PLAIN_MESSAGE,
+                        iconInformation
+                );
+            }
         });
 
         JLabel notificheLabel = new JLabel("Elimina Account");
@@ -341,6 +348,12 @@ public class HomePageGUI extends JFrame {
          * */
         RoundedPanel saldoPanel = new RoundedPanel(50, new Color(72, 173, 169) );
         saldoPanel.setLayout(new GridBagLayout());
+        saldoPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                controller.showCardPage();
+            }
+        });
 
         RoundedPanel spesePanel = new RoundedPanel(50, new Color(111, 195, 192));
         spesePanel.setLayout(new GridBagLayout());
@@ -383,6 +396,7 @@ public class HomePageGUI extends JFrame {
         buttonSaldo.setBorderPainted(false);
         buttonSaldo.setBorder(null);
         buttonSaldo.setFocusPainted(false);
+
 
 
         JLabel speseLabel = new JLabel("<html><b>LE TUE<br>SPESE</b></html>");
@@ -506,7 +520,7 @@ public class HomePageGUI extends JFrame {
 
 
         JButton buttonInviaSoldi = new JButton();
-        ImageIcon iconInviaSoldi = new ImageIcon(HomePageGUI.class.getResource("/IMG/kapp-05.png"));
+        ImageIcon iconInviaSoldi = new ImageIcon(HomePageGUI.class.getResource("/IMG/sendMoney.png"));
         buttonInviaSoldi.setBackground(null);
         buttonInviaSoldi.setIcon(iconInviaSoldi);
         buttonInviaSoldi.setContentAreaFilled(false);
@@ -543,7 +557,7 @@ public class HomePageGUI extends JFrame {
 
 
         JButton buttonRaccolte = new JButton();
-        ImageIcon iconRaccolte = new ImageIcon(HomePageGUI.class.getResource("/IMG/kapp-03.png"));
+        ImageIcon iconRaccolte = new ImageIcon(HomePageGUI.class.getResource("/IMG/raccolte.png"));
         buttonRaccolte.setBackground(null);
         buttonRaccolte.setIcon(iconRaccolte);
         buttonRaccolte.setContentAreaFilled(false);
@@ -584,7 +598,7 @@ public class HomePageGUI extends JFrame {
 
 
         JButton buttonNotifiche = new JButton();
-        ImageIcon iconNotifiche = new ImageIcon(HomePageGUI.class.getResource("/IMG/kapp-01.png"));
+        ImageIcon iconNotifiche = new ImageIcon(HomePageGUI.class.getResource("/IMG/notice.png"));
         buttonNotifiche.setBackground(null);
         buttonNotifiche.setIcon(iconNotifiche);
         buttonNotifiche.setContentAreaFilled(false);

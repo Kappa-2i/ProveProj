@@ -10,7 +10,7 @@ public class Account {
     private String email;
     private String password;
     private String nomeutente;
-    private String codiceFiscale;
+    private Persona persona;
     private ArrayList<ContoCorrente> conti;
 
     public Account(String email, String password, String nomeutente) throws MyExc {
@@ -19,11 +19,11 @@ public class Account {
         setNomeutente(nomeutente);
     }
 
-    public Account(String email, String password, String nomeutente, String codiceFiscale) throws MyExc {
+    public Account(String email, String password, String nomeutente, Persona persona) throws MyExc {
         setEmail(email);
         setPassword(password);
         setNomeutente(nomeutente);
-        setCodiceFiscale(codiceFiscale);
+        setPersona(persona);
     }
 
     public Account(ArrayList<ContoCorrente> conti) {
@@ -58,12 +58,12 @@ public class Account {
         this.nomeutente = nomeutente;
     }
 
-    public String getCodiceFiscale() {
-        return codiceFiscale;
+    public Persona getPersona() {
+        return persona;
     }
 
-    public void setCodiceFiscale(String codiceFiscale) {
-        this.codiceFiscale = codiceFiscale;
+    public void setPersona(Persona persona) {
+        this.persona = persona;
     }
 
     public ArrayList<ContoCorrente> getConti() {
@@ -88,7 +88,7 @@ public class Account {
     @Override
     public String toString() {
         return "Account{" +
-                "conti=" + conti +
+                "persona=" + persona +
                 '}';
     }
 }

@@ -159,7 +159,7 @@ public class BankAccountPickViewGUI extends JFrame {
         panelSignIn.setBackground(new Color(246, 248, 255)); // Scegli il colore che preferisci
         panelSignIn.setOpaque(true);
 
-        controller.selectBankAccount(controller.account.getEmail());
+        controller.selectBankAccount(controller.account);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
@@ -192,7 +192,7 @@ public class BankAccountPickViewGUI extends JFrame {
 
     public void showBankAccount(){
 
-        ArrayList<ContoCorrente> conti = controller.selectBankAccount(controller.account.getEmail());
+        ArrayList<ContoCorrente> conti = controller.selectBankAccount(controller.account);
         if (!conti.isEmpty()){
             int y = 2;
             int x = 0;

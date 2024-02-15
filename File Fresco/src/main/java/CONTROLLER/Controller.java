@@ -1,17 +1,16 @@
 package CONTROLLER;
 
-import DAO.AccountDao;
+import DAO.AccountDAO;
+import DAO.CartaDAO;
 import DAO.ContoCorrenteDAO;
 import DAO.PersonaDAO;
 import DAOIMPL.AccountDAOImpl;
+import DAOIMPL.CartaDAOImpl;
 import DAOIMPL.ContoCorrenteDAOImpl;
 import DAOIMPL.PersonaDAOImpl;
 import ENTITY.*;
 import EXCEPTIONS.MyExc;
-import GUI.BankAccountPickViewGUI;
-import GUI.HomePageGUI;
-import GUI.LoginViewGUI;
-import GUI.SignInViewGUI;
+import GUI.*;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -25,34 +24,38 @@ public class Controller {
     private SignInViewGUI frameSignIn;
     private BankAccountPickViewGUI framePick;
     private HomePageGUI frameHome;
+    private CardPageGUI frameCard;
 
     //Dichiarazioni delle Dao
-    private AccountDao accountDao;
+    private AccountDAO accountDao;
     private PersonaDAO personaDao;
     private ContoCorrenteDAO contoCorrenteDAO;
+    private CartaDAO cartaDAO;
 
     //Dichiarazione di un account null
     public Account account = null;
+    public Persona persona = null;
     public ArrayList<ContoCorrente> conti = null;
     public ContoCorrente contoScelto = null;
+    public Carta carta = null;
 
     public Controller() {
         frameLogin = new LoginViewGUI(this); // Assumi che LoginView accetti ControllerLogin come parametro
         frameLogin(true);
 
-        frameSignIn = new SignInViewGUI(this);
-
-
         //DAO
-        this.accountDao = new AccountDAOImpl(); // Assumi che tu abbia un costruttore predefinito
+        this.accountDao = new AccountDAOImpl();
         this.personaDao = new PersonaDAOImpl();
         this.contoCorrenteDAO = new ContoCorrenteDAOImpl();
+        this.cartaDAO = new CartaDAOImpl();
     }
 
     public void checkCredentials(String email, String password) throws SQLException {
         if((!email.isEmpty()) && (!password.isEmpty())){
             account = accountDao.checkCredentials(email.toLowerCase(), password);
             if (account != null){
+                persona = personaDao.selectPersonaFromEmail(email.toLowerCase());
+                account.setPersona(persona);
                 frameLogin(false);
                 framePick = new BankAccountPickViewGUI(this);
                 framePick(true);
@@ -75,13 +78,17 @@ public class Controller {
         }
     }
 
-
+    public void showFrameSignIn(){
+        frameLogin(false);
+        frameSignIn = new SignInViewGUI(this);
+        frameSignIn(true);
+    }
 
     public void insertUser(String nome, String cognome, String telefono, String dataNascita, String citta, String via, String nCivico, String cap, String codiceFiscale, String email, String password, String username) throws MyExc {
         if (!nome.isEmpty() && !cognome.isEmpty() && !telefono.isEmpty() && !citta.isEmpty() && !via.isEmpty() && !nCivico.isEmpty() && !cap.isEmpty() && !codiceFiscale.isEmpty()){
            try {
-               Persona persona = new Persona(nome, cognome, telefono, dataNascita, citta, via, nCivico, cap, codiceFiscale);
-               Account accountInserito = new Account(email, password, username, codiceFiscale);
+               Persona personaInserita = new Persona(nome, cognome, telefono, dataNascita, citta, via, nCivico, cap, codiceFiscale);
+               Account accountInserito = new Account(email, password, username);
 
                if (personaDao.insertUser(nome, cognome, telefono, dataNascita, citta, via, nCivico, cap, codiceFiscale)){
                    JOptionPane.showMessageDialog(
@@ -143,10 +150,9 @@ public class Controller {
     }
 
 
-    public ArrayList<ContoCorrente> selectBankAccount(String email){
+    public ArrayList<ContoCorrente> selectBankAccount(Account account){
         conti = new ArrayList<ContoCorrente>();
-        conti = contoCorrenteDAO.selectBankAccount(email);
-
+        conti = contoCorrenteDAO.selectBankAccount(account);
         account.setConti(conti);
         return conti;
     }
@@ -179,6 +185,8 @@ public class Controller {
 
     public void showHomePage(ContoCorrente conto){
         contoScelto = conto;
+        carta = cartaDAO.selectCard(contoScelto);
+        System.out.println(carta.toString());
         framePick(false);
         frameHome = new HomePageGUI(this);
         frameHome(true);
@@ -200,6 +208,11 @@ public class Controller {
         framePick(true);
     }
 
+    public void showCardPage(){
+        frameCard = new CardPageGUI(this);
+        frameCard(true);
+    }
+
     public void frameLogin(Boolean isVisibile){
         frameLogin.setVisible(isVisibile);
     }
@@ -214,6 +227,10 @@ public class Controller {
 
     public void frameHome(Boolean isVisible){
         frameHome.setVisible(isVisible);
+    }
+
+    public void frameCard(Boolean isVisible){
+        frameCard.setVisible(isVisible);
     }
 
 }

@@ -1,14 +1,13 @@
 package DAOIMPL;
 
-import DAO.AccountDao;
+import DAO.AccountDAO;
 import DATABASE.DBConnection;
 import ENTITY.Account;
 import EXCEPTIONS.MyExc;
 
-import java.lang.invoke.StringConcatFactory;
 import java.sql.*;
 
-public class AccountDAOImpl implements AccountDao {
+public class AccountDAOImpl implements AccountDAO {
 
 
     @Override
@@ -41,6 +40,8 @@ public class AccountDAOImpl implements AccountDao {
         String query = "SELECT a.email, a.password, a.nomeutente " +
                      "FROM test.account a " +
                     " WHERE a.email = '" + email + "' AND a.password = '" + password + "'";
+
+
         try (Connection conn = DBConnection.getDBConnection().getConnection();  // Ottenimento della connessione al database
              Statement statement = conn.createStatement()) {  // Creazione di un PreparedStatement
 

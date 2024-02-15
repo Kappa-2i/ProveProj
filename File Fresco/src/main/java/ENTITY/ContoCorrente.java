@@ -2,13 +2,11 @@ package ENTITY;
 
 public class ContoCorrente {
     private String iban;
-    private String dataApertura;
     private double saldo;
     private Account account;
 
-    public ContoCorrente(String iban, String dataApertura, double saldo, Account account) {
+    public ContoCorrente(String iban, double saldo, Account account) {
         setIban(iban);
-        setDataApertura(dataApertura);
         setSaldo(saldo);
         setAccount(account);
     }
@@ -24,14 +22,6 @@ public class ContoCorrente {
 
     public void setIban(String iban) {
         this.iban = iban;
-    }
-
-    public String getDataApertura() {
-        return dataApertura;
-    }
-
-    public void setDataApertura(String dataApertura) {
-        this.dataApertura = dataApertura;
     }
 
     public double getSaldo() {
@@ -54,7 +44,6 @@ public class ContoCorrente {
     public String toString() {
         return "ContoCorrente{" +
                 "iban='" + iban + '\'' +
-                ", dataApertura='" + dataApertura + '\'' +
                 ", saldo=" + saldo +
                 ", account=" + account +
                 '}';

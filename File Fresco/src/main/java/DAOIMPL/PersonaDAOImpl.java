@@ -2,11 +2,12 @@ package DAOIMPL;
 
 import DAO.PersonaDAO;
 import DATABASE.DBConnection;
+import ENTITY.Carta;
+import ENTITY.CartaDiDebito;
+import ENTITY.Persona;
+import EXCEPTIONS.MyExc;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -45,5 +46,36 @@ public class PersonaDAOImpl implements PersonaDAO {
             throw new RuntimeException(e);
         }
         return false;
+    }
+
+    public Persona selectPersonaFromEmail(String email){
+        String query = "SELECT nome, cognome, numerotelefono, datanascita, città, via, n_civico, cap, codicefiscale " +
+                "FROM test.persona p " +
+                "JOIN test.account a " +
+                "ON a.persona_codicefiscale = p.codicefiscale " +
+                "WHERE a.email = '" + email + "'";
+
+        try(Connection conn = DBConnection.getDBConnection().getConnection();
+            Statement statement = conn.createStatement()){
+
+            ResultSet resultSet = statement.executeQuery(query);
+
+            if(resultSet != null){
+                while(resultSet.next()){
+                    Persona persona = new Persona(resultSet.getString("nome"), resultSet.getString("cognome"),
+                            resultSet.getString("numerotelefono"), resultSet.getString("datanascita"),
+                            resultSet.getString("città"), resultSet.getString("via"),
+                            resultSet.getString("n_civico"), resultSet.getString("cap"),
+                            resultSet.getString("codicefiscale"));
+                    return persona;
+                }
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        } catch (MyExc e) {
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 }

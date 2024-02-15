@@ -207,8 +207,7 @@ public class LoginViewGUI extends JFrame {
 
             @Override
             public void mouseClicked(MouseEvent e){
-                controller.frameSignIn(true);
-                setVisible(false);
+                controller.showFrameSignIn();
             }
         });
 
