@@ -59,7 +59,7 @@ public class CardPageGUI extends JFrame {
         nomeTitolareLabel.setForeground(new Color(246, 248, 255));
 
 
-        JLabel numeroCartaLabel = new JLabel(controller.carta.getPan().substring(0,4) + " " +controller.carta.getPan().substring(4,8) + " " +controller.carta.getPan().substring(8,12) + " "+ controller.carta.getPan().substring(8,12));
+        JLabel numeroCartaLabel = new JLabel(controller.carta.getPan().substring(0,4) + " " +controller.carta.getPan().substring(4,8) + " " +controller.carta.getPan().substring(8,12) + " "+ controller.carta.getPan().substring(12,16));
         numeroCartaLabel.setForeground(new Color(246, 248, 255));
 
 

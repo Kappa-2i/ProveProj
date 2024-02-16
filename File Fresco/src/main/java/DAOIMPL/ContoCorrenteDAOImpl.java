@@ -25,7 +25,7 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO {
             ResultSet resultSet = statement.executeQuery(query);
             if (resultSet != null){
                 while (resultSet.next()){
-                    ContoCorrente conto = new ContoCorrente(resultSet.getString("Iban"), resultSet.getDouble("Saldo"), account);
+                    ContoCorrente conto = new ContoCorrente(resultSet.getString("Iban"), resultSet.getDouble("Saldo"), account, null);
                     contiCorrenti.add(conto);
                 }
                 return contiCorrenti;

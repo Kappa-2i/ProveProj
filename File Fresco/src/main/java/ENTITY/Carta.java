@@ -4,12 +4,14 @@ public class Carta {
     private String pan;
     private String pin;
     private String cvv;
+    private String tipoCarta;
     private ContoCorrente contoCorrente;
 
-    public Carta(String pan, String pin, String cvv, ContoCorrente contoCorrente) {
+    public Carta(String pan, String pin, String cvv, String tipoCarta, ContoCorrente contoCorrente) {
         setCvv(cvv);
         setPan(pan);
         setPin(pin);
+        setTipoCarta(tipoCarta);
         setContoCorrente(contoCorrente);
     }
 
@@ -37,6 +39,14 @@ public class Carta {
         this.cvv = cvv;
     }
 
+    public String getTipoCarta() {
+        return tipoCarta;
+    }
+
+    public void setTipoCarta(String tipoCarta) {
+        this.tipoCarta = tipoCarta;
+    }
+
     public ContoCorrente getContoCorrente() {
         return contoCorrente;
     }
@@ -45,13 +55,5 @@ public class Carta {
         this.contoCorrente = contoCorrente;
     }
 
-    @Override
-    public String toString() {
-        return "Carta{" +
-                "pan='" + pan + '\'' +
-                ", pin='" + pin + '\'' +
-                ", cvv='" + cvv + '\'' +
-                ", contoCorrente=" + contoCorrente +
-                '}';
-    }
+
 }

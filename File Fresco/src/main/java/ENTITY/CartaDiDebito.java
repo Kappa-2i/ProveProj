@@ -3,8 +3,8 @@ package ENTITY;
 public class CartaDiDebito extends Carta{
     private double limiteFondi;
 
-    public CartaDiDebito(String pan, String pin, String cvv, ContoCorrente contoCorrente, double limiteFondi){
-        super(pan, pin, cvv, contoCorrente);
+    public CartaDiDebito(String pan, String pin, String cvv, String tipoCarta, ContoCorrente contoCorrente, double limiteFondi){
+        super(pan, pin, cvv, tipoCarta, contoCorrente);
         setLimiteFondi(limiteFondi);
     }
 

@@ -1,13 +1,7 @@
 package CONTROLLER;
 
-import DAO.AccountDAO;
-import DAO.CartaDAO;
-import DAO.ContoCorrenteDAO;
-import DAO.PersonaDAO;
-import DAOIMPL.AccountDAOImpl;
-import DAOIMPL.CartaDAOImpl;
-import DAOIMPL.ContoCorrenteDAOImpl;
-import DAOIMPL.PersonaDAOImpl;
+import DAO.*;
+import DAOIMPL.*;
 import ENTITY.*;
 import EXCEPTIONS.MyExc;
 import GUI.*;
@@ -25,12 +19,14 @@ public class Controller {
     private BankAccountPickViewGUI framePick;
     private HomePageGUI frameHome;
     private CardPageGUI frameCard;
+    private SalvadanaioGUI frameSalvadanaio;
 
     //Dichiarazioni delle Dao
     private AccountDAO accountDao;
     private PersonaDAO personaDao;
     private ContoCorrenteDAO contoCorrenteDAO;
     private CartaDAO cartaDAO;
+    private SalvadanaioDAO salvadanaioDAO;
 
     //Dichiarazione di un account null
     public Account account = null;
@@ -38,6 +34,7 @@ public class Controller {
     public ArrayList<ContoCorrente> conti = null;
     public ContoCorrente contoScelto = null;
     public Carta carta = null;
+    public ArrayList<Salvadanaio> salvadanai = null;
 
     public Controller() {
         frameLogin = new LoginViewGUI(this); // Assumi che LoginView accetti ControllerLogin come parametro
@@ -48,6 +45,7 @@ public class Controller {
         this.personaDao = new PersonaDAOImpl();
         this.contoCorrenteDAO = new ContoCorrenteDAOImpl();
         this.cartaDAO = new CartaDAOImpl();
+        this.salvadanaioDAO = new SalvadanaioDAOImpl();
     }
 
     public void checkCredentials(String email, String password) throws SQLException {
@@ -186,7 +184,9 @@ public class Controller {
     public void showHomePage(ContoCorrente conto){
         contoScelto = conto;
         carta = cartaDAO.selectCard(contoScelto);
-        System.out.println(carta.toString());
+        salvadanai = salvadanaioDAO.selectSalvadanaio(contoScelto);
+        contoScelto.setSalvadanai(salvadanai);
+        System.out.println(contoScelto.toString());
         framePick(false);
         frameHome = new HomePageGUI(this);
         frameHome(true);
@@ -213,6 +213,40 @@ public class Controller {
         frameCard(true);
     }
 
+    public void showSalvadanaioPage(){
+        frameSalvadanaio = new SalvadanaioGUI(this);
+        frameHome(false);
+        frameSalvadanaio(true);
+    }
+
+    public void upgradeCarta(String pan){
+        cartaDAO.upgradeCarta(pan);
+        ImageIcon iconChecked = new ImageIcon(Controller.class.getResource("/IMG/checked.png"));
+        JOptionPane.showMessageDialog(
+                null,
+                "La tua carta è stata aggiornata a carta di credito!",
+                "Aggiornamento effettuato",
+                JOptionPane.PLAIN_MESSAGE,
+                iconChecked
+        );
+        frameHome(false);
+        showHomePage(contoScelto);
+    }
+
+    public void downgradeCarta(String pan){
+        cartaDAO.downgradeCarta(pan);
+        ImageIcon iconChecked = new ImageIcon(Controller.class.getResource("/IMG/checked.png"));
+        JOptionPane.showMessageDialog(
+                null,
+                "La tua carta è stata aggiornata a carta di debito!",
+                "Aggiornamento effettuato",
+                JOptionPane.PLAIN_MESSAGE,
+                iconChecked
+        );
+        frameHome(false);
+        showHomePage(contoScelto);
+    }
+
     public void frameLogin(Boolean isVisibile){
         frameLogin.setVisible(isVisibile);
     }
@@ -231,6 +265,10 @@ public class Controller {
 
     public void frameCard(Boolean isVisible){
         frameCard.setVisible(isVisible);
+    }
+
+    public void frameSalvadanaio(Boolean isVisible){
+        frameSalvadanaio.setVisible(isVisible);
     }
 
 }

@@ -81,16 +81,7 @@ public class LoginViewGUI extends JFrame {
         gbc.weighty = 1;
         contentPane.add(panelLoginRed, gbc);//Aggiunge il panelLoginRed al contentPane
 
-        ImageIcon iconLogo = new ImageIcon(LoginViewGUI.class.getResource("/IMG/piggy-bank.png"));
-        JButton buttonLogo = new JButton();
-        buttonLogo.setBackground(null);
-        buttonLogo.setIcon(iconLogo);
-        buttonLogo.setContentAreaFilled(false);
-        buttonLogo.setOpaque(false);
-        buttonLogo.setBorderPainted(false);
-        buttonLogo.setBorder(null);
-        buttonLogo.setFocusPainted(false);
-        panelLoginRed.add(buttonLogo, BorderLayout.CENTER);
+
 
 
         // Creazione e aggiunta dei componenti sul pannello 'PanelLoginWhite'

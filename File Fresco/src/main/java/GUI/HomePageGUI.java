@@ -81,11 +81,10 @@ public class HomePageGUI extends JFrame {
         gbc.insets = new Insets(0, 0, 0, 0);
         contentPane.add(panelGhost, gbc);
 
-        JPanel userPanel = new JPanel();
+        JPanel userPanel = new JPanel(new GridBagLayout());
         userPanel.setVisible(false);
         userPanel.setBackground(new Color(217, 217, 217));
         userPanel.setBorder(new MatteBorder(0, 3, 0, 0, new Color(37, 89, 87)));
-        userPanel.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weighty = 0;
@@ -177,20 +176,6 @@ public class HomePageGUI extends JFrame {
             }
         });
 
-        JLabel notificheLabel = new JLabel("Elimina Account");
-        notificheLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        notificheLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                notificheLabel.setText("<html><u>Elimina Account</u></html>");
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                notificheLabel.setText("Elimina Account");
-            }
-        });
-
         JLabel bankAccountLabel = new JLabel("Seleziona Conto");
         bankAccountLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         bankAccountLabel.addMouseListener(new MouseAdapter() {
@@ -209,6 +194,84 @@ public class HomePageGUI extends JFrame {
                 controller.backFramePick();
             }
         });
+
+        JLabel upgradeLabel = new JLabel("Upgrade Carta");
+        upgradeLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        upgradeLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                upgradeLabel.setText("<html><u>Upgrade Carta</u></html>");
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                upgradeLabel.setText("Upgrade Carta");
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e){
+                if(controller.carta.getTipoCarta().equals("CartaDiDebito")) {
+                    controller.upgradeCarta(controller.carta.getPan());
+                }
+                else{
+                    ImageIcon iconCancel = new ImageIcon(HomePageGUI.class.getResource("/IMG/cancel.png"));
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Non puoi effettuare l'upgrade, la carta è già di tipo Carta di Credito",
+                            "Attenzione!",
+                            JOptionPane.PLAIN_MESSAGE,
+                            iconCancel
+                    );
+                }
+            }
+        });
+
+        JLabel downgradeLabel = new JLabel("Downgrade Carta");
+        downgradeLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        downgradeLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                downgradeLabel.setText("<html><u>Downgrade Carta</u></html>");
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                downgradeLabel.setText("Downgrade Carta");
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e){
+                if(controller.carta.getTipoCarta().equals("CartaDiCredito")) {
+                    controller.downgradeCarta(controller.carta.getPan());
+                }
+                else{
+                    ImageIcon iconCancel = new ImageIcon(HomePageGUI.class.getResource("/IMG/cancel.png"));
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Non puoi effettuare il downgrade, la carta è già di tipo Carta di Debito ",
+                            "Attenzione!",
+                            JOptionPane.PLAIN_MESSAGE,
+                            iconCancel
+                    );
+                }
+            }
+        });
+
+        JLabel notificheLabel = new JLabel("Elimina Account");
+        notificheLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        notificheLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                notificheLabel.setText("<html><u>Elimina Account</u></html>");
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                notificheLabel.setText("Elimina Account");
+            }
+        });
+
+
 
         JLabel settingsLabel = new JLabel("Elimina Conto Corrente");
         settingsLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -265,6 +328,8 @@ public class HomePageGUI extends JFrame {
             bankAccountLabel.setFont(fontRegular);
             notificheLabel.setFont(fontRegular);
             settingsLabel.setFont(fontRegular);
+            upgradeLabel.setFont(fontRegular);
+            downgradeLabel.setFont(fontRegular);
         }
 
         gbc.gridy = 0;
@@ -273,8 +338,12 @@ public class HomePageGUI extends JFrame {
         gbc.gridy = 1;
         userPanel.add(bankAccountLabel, gbc);
         gbc.gridy = 2;
-        userPanel.add(notificheLabel, gbc);
+        userPanel.add(upgradeLabel, gbc);
         gbc.gridy = 3;
+        userPanel.add(downgradeLabel, gbc);
+        gbc.gridy = 4;
+        userPanel.add(notificheLabel, gbc);
+        gbc.gridy = 5;
         userPanel.add(settingsLabel, gbc);
 
 
@@ -348,6 +417,7 @@ public class HomePageGUI extends JFrame {
          * */
         RoundedPanel saldoPanel = new RoundedPanel(50, new Color(72, 173, 169) );
         saldoPanel.setLayout(new GridBagLayout());
+        saldoPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         saldoPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -360,6 +430,12 @@ public class HomePageGUI extends JFrame {
 
         RoundedPanel salvadanaioPanel = new RoundedPanel(50, new Color(154, 213, 211));
         salvadanaioPanel.setLayout(new GridBagLayout());
+        salvadanaioPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                controller.showSalvadanaioPage();
+            }
+        });
 
         gbc = new GridBagConstraints();
 
@@ -382,8 +458,15 @@ public class HomePageGUI extends JFrame {
          * Aggiungiamo i componenti ad ognuno dei 3 rounded panel all'interno del panel di sx
          * */
 
+        String carta;
+        if (controller.carta.getTipoCarta().equals("CartaDiCredito")) {
+            carta = "<html><b>CARTA<br>DI CREDITO</b></html>";
+        }
+        else {
+            carta = "<html><b>CARTA<br>DI DEBITO</b></html>";
+        }
 
-        JLabel cartaLabel = new JLabel("CARTA");
+        JLabel cartaLabel = new JLabel(carta);
         cartaLabel.setForeground(new Color(8, 76, 97));
         JLabel saldoLabel = new JLabel(String.valueOf(controller.contoScelto.getSaldo())+"€");
         saldoLabel.setForeground(new Color(246, 248, 255));
@@ -396,6 +479,12 @@ public class HomePageGUI extends JFrame {
         buttonSaldo.setBorderPainted(false);
         buttonSaldo.setBorder(null);
         buttonSaldo.setFocusPainted(false);
+        buttonSaldo.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                controller.showCardPage();
+            }
+        });
 
 
 
@@ -423,6 +512,7 @@ public class HomePageGUI extends JFrame {
         buttonSalvadanaio.setBorder(null);
         buttonSalvadanaio.setFocusPainted(false);
 
+
         if (fontRegular != null){
             saldoLabel.setFont(fontRegularXXL);
             cartaLabel.setFont(fontRegularXXL);
@@ -445,7 +535,7 @@ public class HomePageGUI extends JFrame {
         gbc.gridwidth = 2;
         gbc.gridy = 1;
         gbc.weighty = 0.5;
-        gbc.insets = new Insets(-50, 0, 0, 0);
+        gbc.insets = new Insets(-40, 0, 0, 0);
         saldoPanel.add(saldoLabel, gbc);
 
         gbc.gridx = 1;
