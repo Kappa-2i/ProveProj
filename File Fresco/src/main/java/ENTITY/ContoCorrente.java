@@ -2,12 +2,17 @@ package ENTITY;
 
 import java.util.ArrayList;
 
+// Classe del modello che rappresenta il conto corrente
+
 public class ContoCorrente {
+
+    //Attributi
     private String iban;
     private double saldo;
     private Account account;
     private ArrayList<Salvadanaio> salvadanai;
 
+    //Costruttori
     public ContoCorrente(String iban, double saldo, Account account, ArrayList<Salvadanaio> salvadanai) {
         setIban(iban);
         setSaldo(saldo);
@@ -20,6 +25,8 @@ public class ContoCorrente {
         setSaldo(saldo);
     }
 
+
+    //Getter e Setter
     public String getIban() {
         return iban;
     }

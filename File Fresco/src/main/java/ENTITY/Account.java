@@ -7,12 +7,15 @@ import java.util.ArrayList;
 
 // Classe del modello che rappresenta l'account
 public class Account {
+
+    //Attributi
     private String email;
     private String password;
     private String nomeutente;
     private Persona persona;
     private ArrayList<ContoCorrente> conti;
 
+    //Costruttori
     public Account(String email, String password, String nomeutente) throws MyExc {
         setEmail(email);
         setPassword(password);
@@ -26,6 +29,7 @@ public class Account {
         setPersona(persona);
     }
 
+    //Getter e Setter
     public Account(ArrayList<ContoCorrente> conti) {
         setConti(conti);
     }

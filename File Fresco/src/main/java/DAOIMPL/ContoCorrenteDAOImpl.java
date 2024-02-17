@@ -43,6 +43,7 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO {
         CallableStatement statement = null;
         try (Connection conn = DBConnection.getDBConnection().getConnection()) {
 
+            //Chiamata della funzione del db.
             String callFunction = "{call test.crea_contocorrente_con_carta2(?)}";
 
             statement = conn.prepareCall(callFunction);
@@ -53,6 +54,7 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO {
             return true;
 
         } catch (SQLException e) {
+            //Gestione delle eccezioni SQL
             e.printStackTrace();
         }
         return false;
@@ -62,6 +64,8 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO {
     public void deleteBankAccount(String iban){
         CallableStatement statement = null;
         try (Connection conn = DBConnection.getDBConnection().getConnection()){
+
+            //Chiamata della funzione del db.
             String callFunction = "{call test.rimuovi_contocorrente_con_carta2(?)}";
 
             statement = conn.prepareCall(callFunction);
@@ -70,6 +74,7 @@ public class ContoCorrenteDAOImpl implements ContoCorrenteDAO {
             statement.executeQuery();
         }
         catch (SQLException e){
+            //Gestione delle eccezioni SQL
             e.printStackTrace();
         }
     }

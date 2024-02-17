@@ -1,6 +1,10 @@
 package ENTITY;
 
+// Classe del modello che rappresenta il salvadanaio
+
 public class Salvadanaio {
+
+    //Attributi
     private String nomeSalvadanaio;
     private String descrizione;
     private double obiettivo;
@@ -8,6 +12,7 @@ public class Salvadanaio {
     private double saldoRimanente;
     private String dataCreazione;
 
+    //Costruttori
     public Salvadanaio(String nomeSalvadanaio, String descrizione, double obiettivo, double saldoRisparmio, double saldoRimanente, String dataApertura) {
         setNomeSalvadanaio(nomeSalvadanaio);
         setDescrizione(descrizione);
@@ -17,6 +22,7 @@ public class Salvadanaio {
         setDataCreazione(dataApertura);
     }
 
+    //Getter e Setter
     public String getNomeSalvadanaio() {
         return nomeSalvadanaio;
     }

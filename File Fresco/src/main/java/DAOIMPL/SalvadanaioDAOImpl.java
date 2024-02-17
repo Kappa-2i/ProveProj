@@ -15,6 +15,7 @@ public class SalvadanaioDAOImpl implements SalvadanaioDAO {
     public ArrayList<Salvadanaio> selectSalvadanaio(ContoCorrente conto){
 
         ArrayList<Salvadanaio> salvadanai = new ArrayList<Salvadanaio>();
+
         // Query SQL per ottenere i dettagli dell'utente
         String query = "SELECT * " +
                 "FROM test.salvadanaio s" +
@@ -27,10 +28,12 @@ public class SalvadanaioDAOImpl implements SalvadanaioDAO {
             ResultSet resultSet = statement.executeQuery(query);
             if (resultSet != null){
                 while (resultSet.next()){
+                    //Creazione degli oggetti Salvadanaio.
                     Salvadanaio salvadanaio = new Salvadanaio(resultSet.getString("nomesalvadanaio"), resultSet.getString("descrizione"),
                             resultSet.getDouble("obiettivo"), resultSet.getDouble("saldorisparmio"),
                             resultSet.getDouble("saldorimanente"), resultSet.getString("datacreazione")
                     );
+                    //Agginta del salvadaio all'ArrayList di salvadanai
                     salvadanai.add(salvadanaio);
                 }
                 return salvadanai;

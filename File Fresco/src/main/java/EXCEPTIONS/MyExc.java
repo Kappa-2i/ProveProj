@@ -1,6 +1,8 @@
 package EXCEPTIONS;
 
+//Eccezione personalizzata
 public class MyExc extends Exception{
+
     public MyExc() {
         super();
     }

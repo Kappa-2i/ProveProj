@@ -28,7 +28,7 @@ public class Controller {
     private CartaDAO cartaDAO;
     private SalvadanaioDAO salvadanaioDAO;
 
-    //Dichiarazione di un account null
+    //Dichiarazione delle variabili
     public Account account = null;
     public Persona persona = null;
     public ArrayList<ContoCorrente> conti = null;
@@ -37,7 +37,7 @@ public class Controller {
     public ArrayList<Salvadanaio> salvadanai = null;
 
     public Controller() {
-        frameLogin = new LoginViewGUI(this); // Assumi che LoginView accetti ControllerLogin come parametro
+        frameLogin = new LoginViewGUI(this); //LoginView accetta ControllerLogin come parametro
         frameLogin(true);
 
         //DAO
@@ -48,6 +48,11 @@ public class Controller {
         this.salvadanaioDAO = new SalvadanaioDAOImpl();
     }
 
+    /**
+     * Metodo che controlla la validità dei campi email e password inseriti al momento del login. <br> In caso di successo viene visulalizzata la pagina Home, bisogna riporovare altrimenti.
+     * @param email per controllare che l'email sia corretta.
+     * @param password per controllare che la password sia corretta.
+     * */
     public void checkCredentials(String email, String password) throws SQLException {
         if((!email.isEmpty()) && (!password.isEmpty())){
             account = accountDao.checkCredentials(email.toLowerCase(), password);
@@ -59,6 +64,7 @@ public class Controller {
                 framePick(true);
             }
             else{
+                //Se uno dei due campi è sbagliato viene visualizzato un messaggio di errore.
                 JOptionPane.showMessageDialog(
                         null,
                         "Email o Password Errati",
@@ -68,6 +74,7 @@ public class Controller {
             }
         }
         else {
+            //Se i campi non vengono compilati viene visualizzato un messaggio di errore.
             JOptionPane.showMessageDialog(
                     null,
                     "Inserisci delle credenziali valide!",
@@ -76,12 +83,16 @@ public class Controller {
         }
     }
 
+    /**
+     *Metodo che permette di gestire la viusalizzazione della pagina di SignIn.*/
     public void showFrameSignIn(){
         frameLogin(false);
         frameSignIn = new SignInViewGUI(this);
         frameSignIn(true);
     }
 
+    /**
+     * Metodo che permette di gestire la creazione di un una nuovo Utente, aggiornando il database.*/
     public void insertUser(String nome, String cognome, String telefono, String dataNascita, String citta, String via, String nCivico, String cap, String codiceFiscale, String email, String password, String username) throws MyExc {
         if (!nome.isEmpty() && !cognome.isEmpty() && !telefono.isEmpty() && !citta.isEmpty() && !via.isEmpty() && !nCivico.isEmpty() && !cap.isEmpty() && !codiceFiscale.isEmpty()){
            try {
@@ -147,7 +158,10 @@ public class Controller {
             return false;
     }
 
-
+    /**
+     * Metodo che seleziona tutti i conti relativi all'account che gli viene passato
+     * @param account riferimento per i conti da selzionare
+     * */
     public ArrayList<ContoCorrente> selectBankAccount(Account account){
         conti = new ArrayList<ContoCorrente>();
         conti = contoCorrenteDAO.selectBankAccount(account);
@@ -155,6 +169,9 @@ public class Controller {
         return conti;
     }
 
+    /**
+     * Metodo che aggiunge un nuovo Conto Corrente. <br>Ritorna true in caso venga completato correttanente, false altrimenti.
+     * @param email riferimeto per il conto da aggiungere.*/
     public Boolean insertBankAccount(String email){
         if (contoCorrenteDAO.insertBankAccount(email)){
             return true;
@@ -163,9 +180,14 @@ public class Controller {
             return false;
     }
 
+    /**
+     * Metodo che elimina un determinato Conto Corrente.
+     *@param iban riferimento per l'eliminazione del conto.*/
     public void deleteBankAccount(String iban){
         contoCorrenteDAO.deleteBankAccount(iban);
         frameHome(false);
+
+        //Viene aggiornata la pagina con i conti corretti.
         try {
             checkCredentials(account.getEmail(), account.getPassword());
         } catch (SQLException e) {
@@ -180,20 +202,31 @@ public class Controller {
         );
     }
 
-
+    /**
+     * Metodo per gesitre la visualizzaione della pagina di Home page.
+     * @param conto riferimento per le informazioni da visualizzare in Home Page.*/
     public void showHomePage(ContoCorrente conto){
+        //Viene selezionato il conto dopo averlo scelto dalla pagina di selzione.
         contoScelto = conto;
+        //Viene recuperata la carta associata al conto scelto.
         carta = cartaDAO.selectCard(contoScelto);
+        //Vengono recuperati i salvadanai associati al conto scelto.
         salvadanai = salvadanaioDAO.selectSalvadanaio(contoScelto);
         contoScelto.setSalvadanai(salvadanai);
-        System.out.println(contoScelto.toString());
+
+        //System.out.println(contoScelto.toString());
         framePick(false);
         frameHome = new HomePageGUI(this);
         frameHome(true);
     }
 
+    /**
+     * Metodo che permette di tornare alla pagina di Login.
+     */
     public void backLoginPage(){
+        //Quando si torna alla pagina di Login l'account viene settato a null.
         account = null;
+        //Quando si torna alla pagina di Login il conto scelto viene settato a null.
         if (contoScelto!= null)
             contoScelto = null;
 
@@ -201,27 +234,36 @@ public class Controller {
         frameHome(false);
         frameLogin(true);
     }
-
+    /**
+     * Metodo che permette di tornare alla pagina di selezione del Conto Corrente.*/
     public void backFramePick(){
         contoScelto = null;
         frameHome(false);
         framePick(true);
     }
 
+    /**
+     * Metodo che permette gestire la visualizzazione della pagina della carta.*/
     public void showCardPage(){
         frameCard = new CardPageGUI(this);
         frameCard(true);
     }
 
+    /**
+     * Metodo che permette di gestire la visualizzazione della pagina dei salvadanai. */
     public void showSalvadanaioPage(){
         frameSalvadanaio = new SalvadanaioGUI(this);
         frameHome(false);
         frameSalvadanaio(true);
     }
 
+
+    /**
+     * Metodo che permette di effettuare l'upgrade della carta da Debito (default) a Credito.
+     * @param pan riferimento per la carta da aggiornare.*/
     public void upgradeCarta(String pan){
         cartaDAO.upgradeCarta(pan);
-        ImageIcon iconChecked = new ImageIcon(Controller.class.getResource("/IMG/checked.png"));
+        ImageIcon iconChecked = new ImageIcon(Controller.class.getResource("/IMG/checked.png")); //Inserisce l'immagine sul JOptionPane.
         JOptionPane.showMessageDialog(
                 null,
                 "La tua carta è stata aggiornata a carta di credito!",
@@ -233,9 +275,12 @@ public class Controller {
         showHomePage(contoScelto);
     }
 
+    /**
+     * Metodo che permette di effetuare il downgrade della carta Da credito a Debito.
+     * @param pan riferimento per la carta da aggiornare.*/
     public void downgradeCarta(String pan){
         cartaDAO.downgradeCarta(pan);
-        ImageIcon iconChecked = new ImageIcon(Controller.class.getResource("/IMG/checked.png"));
+        ImageIcon iconChecked = new ImageIcon(Controller.class.getResource("/IMG/checked.png")); //Inserisce l'immagine sul JOptionPane.
         JOptionPane.showMessageDialog(
                 null,
                 "La tua carta è stata aggiornata a carta di debito!",
@@ -247,26 +292,50 @@ public class Controller {
         showHomePage(contoScelto);
     }
 
+    /**
+     * Metodo che gestisce la visibilità della pagina di Login.
+     * @param isVisibile setta la visibilità della pagina
+     * */
     public void frameLogin(Boolean isVisibile){
         frameLogin.setVisible(isVisibile);
     }
 
+    /**
+     * Metodo che gestisce la visibilità della pagina di SignIn.
+     * @param isVisibile setta la visibilità della pagina
+     * */
     public void frameSignIn(Boolean isVisibile){
         frameSignIn.setVisible(isVisibile);
     }
 
+    /**
+     * Metodo che gestisce la visibilità della pagina di scelata del conto.
+     * @param isVisibile setta la visibilità della pagina
+     * */
     public void framePick(Boolean isVisibile){
         framePick.setVisible(isVisibile);
     }
 
+    /**
+     * Metodo che gestisce la visibilità della pagina Home.
+     * @param isVisibile setta la visibilità della pagina
+     * */
     public void frameHome(Boolean isVisible){
         frameHome.setVisible(isVisible);
     }
 
+    /**
+     * Metodo che gestisce la visibilità della pagina per visualizzare la carta.
+     * @param isVisibile setta la visibilità della pagina
+     * */
     public void frameCard(Boolean isVisible){
         frameCard.setVisible(isVisible);
     }
 
+    /**
+     * Metodo che gestisce la visibilità della pagina per visualizzare i salvadanai.
+     * @param isVisibile setta la visibilità della pagina
+     * */
     public void frameSalvadanaio(Boolean isVisible){
         frameSalvadanaio.setVisible(isVisible);
     }

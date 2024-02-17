@@ -7,9 +7,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+// Classe del modello che rappresenta la persona
 
 public class Persona {
 
+    //Attributi
     String codiceFiscale;
     String nome;
     String cognome;
@@ -20,6 +22,7 @@ public class Persona {
     String nCivico;
     String cap;
 
+    //Costruttori
     public Persona(String nome, String cognome, String numeroTelefono, String dataNascita, String citta, String via, String nCivico, String cap, String codiceFiscale) throws MyExc {
         setNome(nome);
         setCognome(cognome);
@@ -32,6 +35,7 @@ public class Persona {
         setCodiceFiscale(codiceFiscale);
     }
 
+    //Getter e Setter
     public String getCodiceFiscale() {
         return codiceFiscale;
     }
