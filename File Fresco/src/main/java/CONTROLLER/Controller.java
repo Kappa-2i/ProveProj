@@ -60,8 +60,7 @@ public class Controller {
                 persona = personaDao.selectPersonaFromEmail(email.toLowerCase());
                 account.setPersona(persona);
                 frameLogin(false);
-                framePick = new BankAccountPickViewGUI(this);
-                framePick(true);
+                showPickFrame();
             }
             else{
                 //Se uno dei due campi è sbagliato viene visualizzato un messaggio di errore.
@@ -89,6 +88,11 @@ public class Controller {
         frameLogin(false);
         frameSignIn = new SignInViewGUI(this);
         frameSignIn(true);
+    }
+
+    public void showPickFrame(){
+        framePick = new BankAccountPickViewGUI(this);
+        framePick(true);
     }
 
     /**
@@ -162,11 +166,17 @@ public class Controller {
      * Metodo che seleziona tutti i conti relativi all'account che gli viene passato
      * @param account riferimento per i conti da selzionare
      * */
-    public ArrayList<ContoCorrente> selectBankAccount(Account account){
+    public ArrayList<ContoCorrente> selectBankAccountByAccount(Account account){
         conti = new ArrayList<ContoCorrente>();
-        conti = contoCorrenteDAO.selectBankAccount(account);
+        conti = contoCorrenteDAO.selectBankAccountByAccount(account);
         account.setConti(conti);
         return conti;
+    }
+
+    public void updateBankAccount(ContoCorrente conto){
+        contoScelto = contoCorrenteDAO.updateBankAccount(conto);
+        contoScelto.setAccount(account);
+        contoScelto.setSalvadanai(salvadanai);
     }
 
     /**
@@ -206,16 +216,16 @@ public class Controller {
      * Metodo per gesitre la visualizzaione della pagina di Home page.
      * @param conto riferimento per le informazioni da visualizzare in Home Page.*/
     public void showHomePage(ContoCorrente conto){
+
         //Viene selezionato il conto dopo averlo scelto dalla pagina di selzione.
         contoScelto = conto;
         //Viene recuperata la carta associata al conto scelto.
         carta = cartaDAO.selectCard(contoScelto);
-        //Vengono recuperati i salvadanai associati al conto scelto.
-        salvadanai = salvadanaioDAO.selectSalvadanaio(contoScelto);
-        contoScelto.setSalvadanai(salvadanai);
 
         //System.out.println(contoScelto.toString());
         framePick(false);
+        if(frameSalvadanaio != null)
+            frameSalvadanaio(false);
         frameHome = new HomePageGUI(this);
         frameHome(true);
     }
@@ -249,13 +259,7 @@ public class Controller {
         frameCard(true);
     }
 
-    /**
-     * Metodo che permette di gestire la visualizzazione della pagina dei salvadanai. */
-    public void showSalvadanaioPage(){
-        frameSalvadanaio = new SalvadanaioGUI(this);
-        frameHome(false);
-        frameSalvadanaio(true);
-    }
+
 
 
     /**
@@ -290,6 +294,36 @@ public class Controller {
         );
         frameHome(false);
         showHomePage(contoScelto);
+    }
+
+    /**
+     * Metodo che permette di gestire la visualizzazione della pagina dei salvadanai. */
+    public void showSalvadanaioPage(){
+        if (frameSalvadanaio != null)
+            frameSalvadanaio(false);
+        //Vengono recuperati i salvadanai associati al conto scelto.
+        salvadanai = salvadanaioDAO.selectSalvadanaio(contoScelto);
+        contoScelto.setSalvadanai(salvadanai);
+        frameSalvadanaio = new SalvadanaioGUI(this);
+        frameHome(false);
+        frameSalvadanaio(true);
+    }
+
+    public void addPiggyBank(String nome, double obiettivo, String descrizione) {
+        salvadanaioDAO.addPiggyBank(contoScelto, nome, obiettivo, descrizione);
+    }
+
+    public void deletePiggyBank(String nome){
+        salvadanaioDAO.deletePiggyBank(contoScelto, nome);
+    }
+
+    public void fillPiggyBank(String nome, double soldi){
+
+        salvadanaioDAO.fillPiggyBank(contoScelto, nome, soldi);
+    }
+
+    public void getMoneyByPiggyBank(String nome, double soldi){
+        salvadanaioDAO.getMoneyByPiggyBank(contoScelto, nome, soldi);
     }
 
     /**

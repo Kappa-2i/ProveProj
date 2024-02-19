@@ -1,20 +1,15 @@
 package GUI;
 
 import CONTROLLER.Controller;
-import DAO.ContoCorrenteDAO;
 import ENTITY.ContoCorrente;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.FileDescriptor;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 
 
 public class BankAccountPickViewGUI extends JFrame {
@@ -159,7 +154,7 @@ public class BankAccountPickViewGUI extends JFrame {
         panelSignIn.setBackground(new Color(246, 248, 255)); // Scegli il colore che preferisci
         panelSignIn.setOpaque(true);
 
-        controller.selectBankAccount(controller.account);
+        controller.selectBankAccountByAccount(controller.account);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
@@ -192,7 +187,7 @@ public class BankAccountPickViewGUI extends JFrame {
 
     public void showBankAccount(){
 
-        ArrayList<ContoCorrente> conti = controller.selectBankAccount(controller.account);
+        ArrayList<ContoCorrente> conti = controller.selectBankAccountByAccount(controller.account);
         if (!conti.isEmpty()){
             int y = 2;
             int x = 0;

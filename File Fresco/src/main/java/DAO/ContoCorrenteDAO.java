@@ -10,7 +10,9 @@ public interface ContoCorrenteDAO {
      * Metodo per selzionare i conti corrente dal db.
      * @param account riferimento per recuperare i conti.
      * @return ArrayList di conti correnti*/
-    public ArrayList<ContoCorrente> selectBankAccount(Account account);
+    public ArrayList<ContoCorrente> selectBankAccountByAccount(Account account);
+
+    public ContoCorrente updateBankAccount(ContoCorrente contoScelto);
 
     /**
      * Metodo per inserire un nuovo Conto Corrente all'interno del db.
@@ -22,4 +24,6 @@ public interface ContoCorrenteDAO {
      * Metodo per l'eliminazione di un Conto Corrente all'interno del db.
      * @param iban riferimento per eliminare il conto.*/
     public void deleteBankAccount(String iban);
+
+
 }

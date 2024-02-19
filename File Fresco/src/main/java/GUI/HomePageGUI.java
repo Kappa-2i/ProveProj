@@ -191,7 +191,8 @@ public class HomePageGUI extends JFrame {
 
             @Override
             public void mouseClicked(MouseEvent e){
-                controller.backFramePick();
+                setVisible(false);
+                controller.showPickFrame();
             }
         });
 
