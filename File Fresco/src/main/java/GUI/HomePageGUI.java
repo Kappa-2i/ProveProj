@@ -428,6 +428,7 @@ public class HomePageGUI extends JFrame {
 
         RoundedPanel spesePanel = new RoundedPanel(50, new Color(111, 195, 192));
         spesePanel.setLayout(new GridBagLayout());
+        spesePanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         spesePanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -437,6 +438,7 @@ public class HomePageGUI extends JFrame {
 
         RoundedPanel salvadanaioPanel = new RoundedPanel(50, new Color(154, 213, 211));
         salvadanaioPanel.setLayout(new GridBagLayout());
+        salvadanaioPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         salvadanaioPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

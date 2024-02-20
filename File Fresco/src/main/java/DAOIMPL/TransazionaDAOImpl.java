@@ -6,10 +6,8 @@ import ENTITY.ContoCorrente;
 import ENTITY.Salvadanaio;
 import ENTITY.Transazione;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class TransazionaDAOImpl implements TransazioneDAO {
@@ -32,7 +30,7 @@ public class TransazionaDAOImpl implements TransazioneDAO {
                     while (resultSet.next()){
                         //Creazione degli oggetti Salvadanaio.
                         Transazione transazione = new Transazione(resultSet.getDouble("importo"), resultSet.getString("causale"),
-                                resultSet.getString("datatransazione"), resultSet.getString("orariotransazione"), resultSet.getString("tipotransazione"),
+                                resultSet.getString("datatransazione"), resultSet.getString("orariotransazione").substring(0,5), resultSet.getString("tipotransazione"),
                                 resultSet.getString("iban1"), conto);
                         //Agginta del salvadaio all'ArrayList di salvadanai
                         transazioni.add(transazione);
@@ -44,6 +42,48 @@ public class TransazionaDAOImpl implements TransazioneDAO {
                 e.printStackTrace();
             }
             return null;
+    }
+
+    public Double[] viewReport(ContoCorrente conto, String mese){
+        try (Connection conn = DBConnection.getDBConnection().getConnection()) {
+            System.out.println(mese);
+            // Prepara la query sostituendo i valori di iban e mese
+            String query = "SELECT"
+                    + " CAST(MAX(CASE WHEN t.tipotransazione = 'Invia a' THEN t.importo END) AS double precision) AS entrata_massima,"
+                    + " CAST(MIN(CASE WHEN t.tipotransazione = 'Invia a' THEN t.importo END) AS double precision) AS entrata_minima,"
+                    + " CAST(AVG(CASE WHEN t.tipotransazione = 'Invia a' THEN t.importo END) AS double precision) AS entrata_media,"
+                    + " CAST(MAX(CASE WHEN t.tipotransazione = 'Riceve da' THEN t.importo END) AS double precision) AS uscita_massima,"
+                    + " CAST(MIN(CASE WHEN t.tipotransazione = 'Riceve da' THEN t.importo END) AS double precision) AS uscita_minima,"
+                    + " CAST(AVG(CASE WHEN t.tipotransazione = 'Riceve da' THEN t.importo END) AS double precision) AS uscita_media"
+                    + " FROM test.transazione t"
+                    + " WHERE (t.iban1 = ?)"
+                    + " AND t.datatransazione BETWEEN TO_DATE(? || '-01', 'YYYY-MM-DD') AND (TO_DATE(? || '-01', 'YYYY-MM-DD') + INTERVAL '1 MONTH' - INTERVAL '1 day')::DATE";
+
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                // Imposta i parametri della query
+                System.out.println(conto.getIban());
+                pstmt.setString(1, conto.getIban());
+                pstmt.setString(2, mese);
+                pstmt.setString(3, mese);
+
+                // Esegue la query
+                ResultSet rs = pstmt.executeQuery();
+
+                // Processa i risultati
+                if (rs.next()) {
+                    Double[] report = {rs.getDouble("entrata_massima"),
+                            rs.getDouble("entrata_minima"),
+                            rs.getDouble("entrata_media"),
+                            rs.getDouble("uscita_massima"),
+                            rs.getDouble("uscita_massima"),
+                            rs.getDouble("uscita_massima")};
+                    return report;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
 

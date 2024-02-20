@@ -12,9 +12,12 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.InputStream;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.swing.table.*;
 
 
 public class TransazioniGUI extends JFrame {
@@ -26,6 +29,22 @@ public class TransazioniGUI extends JFrame {
     private Font fontRegularSmall;
     private Font fontRegularBold;
     private Font fontRegularXXL;
+
+    private static final Map<String, String> monthMap = new HashMap<>();
+    static {
+        monthMap.put("Gennaio", "01");
+        monthMap.put("Febbraio", "02");
+        monthMap.put("Marzo", "03");
+        monthMap.put("Aprile", "04");
+        monthMap.put("Maggio", "05");
+        monthMap.put("Giugno", "06");
+        monthMap.put("Luglio", "07");
+        monthMap.put("Agosto", "08");
+        monthMap.put("Settembre", "09");
+        monthMap.put("Ottobre", "10");
+        monthMap.put("Novembre", "11");
+        monthMap.put("Dicembre", "12");
+    }
 
     public TransazioniGUI(Controller controller){
         this.controller = controller;
@@ -41,10 +60,9 @@ public class TransazioniGUI extends JFrame {
         fontRegularSmall();
         fontRegularBold();
         fontRegularXXL();
-        Object[] optionsAdd = {"Crea", "Annulla"};
-        Object[] optionsFill = {"Invia", "Annulla"};
-        Object[] optionsGet = {"Prendi", "Annulla"};
-        Object[] options = {"Annulla", "Invia soldi", "Prendi soldi", "Elimina"};
+
+        Object[] optionsView = {"Visualizza", "Annulla"};
+
 
 
         // Creazione panello principale che contiene il tutto
@@ -111,10 +129,162 @@ public class TransazioniGUI extends JFrame {
         buttonHome.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                setVisible(false);
                 controller.showHomePage(controller.contoScelto);
             }
         });
 
+        ImageIcon iconStats = new ImageIcon(SalvadanaioGUI.class.getResource("/IMG/statistics.png")); // Sostituisci con il percorso del tuo file icona
+        JButton statsButton = new JButton();
+        statsButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        statsButton.setBackground(null);
+        statsButton.setIcon(iconStats);
+        statsButton.setContentAreaFilled(false);
+        statsButton.setOpaque(false);
+        statsButton.setBorderPainted(false);
+        statsButton.setBorder(null);
+        statsButton.setFocusPainted(false);
+        statsButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Creazione del JPanel che conterrà i JTextField
+                JPanel statsPanel = new JPanel(new GridBagLayout());
+
+                JLabel selezionaLabel = new JLabel("Seleziona mese: ");
+                // Array contenente i nomi dei mesi
+
+
+                // Crea la JList utilizzando l'array dei mesi
+                JComboBox<String> monthsComboBox = new JComboBox<>(monthMap.keySet().toArray(new String[0]));
+
+                GridBagConstraints gbc = new GridBagConstraints();
+                gbc.fill = GridBagConstraints.BOTH;
+                gbc.weightx = 0.3;
+                gbc.gridy = 0;
+                gbc.gridx = 0;
+                statsPanel.add(selezionaLabel, gbc);
+                gbc.gridwidth = 2;
+                gbc.weightx = 0.6;
+                gbc.gridy = 1;
+                gbc.gridx = 0;
+                statsPanel.add(monthsComboBox, gbc);
+
+
+                // Mostra il JOptionPane con i JTextField inseriti
+                int result = JOptionPane.showOptionDialog(
+                        null, // Componente padre
+                        statsPanel, // Messaggio
+                        "Visualizza Report", // Titolo
+                        JOptionPane.YES_NO_CANCEL_OPTION,
+                        JOptionPane.QUESTION_MESSAGE, // Tipo di messaggio
+                        null, // Icona personalizzata, usa null per l'icona di default
+                        optionsView, // Array contenente le etichette dei pulsanti
+                        optionsView[0] // Opzione di default
+                );
+                if (result == JOptionPane.YES_OPTION){
+                    String selectedMonthName = (String) monthsComboBox.getSelectedItem();
+                    String monthValue = monthMap.get(selectedMonthName);
+
+                    // Ottieni l'anno corrente
+                    String currentYear = String.valueOf(LocalDate.now().getYear());
+
+                    // Combina l'anno e il mese nel formato YYYY-MM
+                    String yearMonth = currentYear + "-" + monthValue;
+                    controller.viewReport(controller.contoScelto, yearMonth);
+
+
+                    JPanel reportPanel = new JPanel(new GridBagLayout());
+
+                    JLabel entrataMax = new JLabel("Entrata Massima: ");
+                    JLabel entraMaxValue = new JLabel(String.valueOf(controller.report[0]) + "€");
+                    JLabel entrataMin = new JLabel("Entrata Minima: ");
+                    JLabel entraMinValue = new JLabel(String.valueOf(controller.report[1])+ "€");
+                    JLabel entrataMed = new JLabel("Entrata Media: ");
+                    JLabel entraMedValue = new JLabel(String.valueOf(controller.report[2])+ "€");
+                    JLabel uscitaMax = new JLabel("Uscita Massima: ");
+                    JLabel uscitaMaxValue = new JLabel(String.valueOf(controller.report[3])+ "€");
+                    JLabel uscitaMin = new JLabel("Uscita Minima: ");
+                    JLabel uscitaMinValue = new JLabel(String.valueOf(controller.report[4])+ "€");
+                    JLabel uscitaMed = new JLabel("Uscita Media: ");
+                    JLabel uscitaMedValue = new JLabel(String.valueOf(controller.report[5])+ "€");
+
+                    gbc = new GridBagConstraints();
+                    gbc.fill = GridBagConstraints.BOTH;
+                    gbc.weightx = 0.3;
+                    gbc.gridy = 0;
+                    gbc.gridx = 0;
+                    reportPanel.add(entrataMax, gbc);
+                    gbc.gridwidth = 2;
+                    gbc.weightx = 0.6;
+                    gbc.gridy = 0;
+                    gbc.gridx = 1;
+                    reportPanel.add(entraMaxValue, gbc);
+                    gbc.fill = GridBagConstraints.BOTH;
+                    gbc.weightx = 0.3;
+                    gbc.gridy = 1;
+                    gbc.gridx = 0;
+                    reportPanel.add(entrataMin, gbc);
+                    gbc.gridwidth = 2;
+                    gbc.weightx = 0.6;
+                    gbc.gridy = 1;
+                    gbc.gridx = 1;
+                    reportPanel.add(entraMinValue, gbc);
+                    gbc.fill = GridBagConstraints.BOTH;
+                    gbc.weightx = 0.3;
+                    gbc.gridy = 2;
+                    gbc.gridx = 0;
+                    reportPanel.add(entrataMed, gbc);
+                    gbc.gridwidth = 2;
+                    gbc.weightx = 0.6;
+                    gbc.gridy = 2;
+                    gbc.gridx = 1;
+                    reportPanel.add(entraMedValue, gbc);
+
+                    gbc.fill = GridBagConstraints.BOTH;
+                    gbc.insets = new Insets(10, 0, 0, 0);
+                    gbc.weightx = 0.3;
+                    gbc.gridy = 3;
+                    gbc.gridx = 0;
+                    reportPanel.add(uscitaMax, gbc);
+                    gbc.gridwidth = 2;
+                    gbc.weightx = 0.6;
+                    gbc.gridy = 3;
+                    gbc.gridx = 1;
+                    reportPanel.add(uscitaMaxValue, gbc);
+                    gbc = new GridBagConstraints();
+                    gbc.fill = GridBagConstraints.BOTH;
+                    gbc.weightx = 0.3;
+                    gbc.gridy = 4;
+                    gbc.gridx = 0;
+                    reportPanel.add(uscitaMin, gbc);
+                    gbc.gridwidth = 2;
+                    gbc.weightx = 0.6;
+                    gbc.gridy = 4;
+                    gbc.gridx = 1;
+                    reportPanel.add(uscitaMinValue, gbc);
+                    gbc.fill = GridBagConstraints.BOTH;
+                    gbc.weightx = 0.3;
+                    gbc.gridy = 5;
+                    gbc.gridx = 0;
+                    reportPanel.add(uscitaMed, gbc);
+                    gbc.gridwidth = 2;
+                    gbc.weightx = 0.6;
+                    gbc.gridy = 5;
+                    gbc.gridx = 1;
+                    reportPanel.add(uscitaMedValue, gbc);
+
+
+
+                    JOptionPane.showMessageDialog(
+                            null,
+                            reportPanel,
+                            "Dio",
+                            JOptionPane.INFORMATION_MESSAGE
+                    );
+
+                }
+            }
+        });
 
         gbc = new GridBagConstraints();
         // Configurazione per buttonLogo a sinistra di titoloSmu
@@ -149,7 +319,7 @@ public class TransazioniGUI extends JFrame {
         gbc = new GridBagConstraints();
         // Configurazione per buttonUser e buttonLogout a destra della homePageLabel
         gbc.gridx = 6; // Posiziona buttonUser a destra della homePageLabel
-        //panelTop.add(addPiggyBankButton, gbc);
+        panelTop.add(statsButton, gbc);
 
         gbc.gridx = 7; // Posiziona buttonLogout a destra di buttonUser
         gbc.insets = new Insets(0, 20, 0, 15); // Aggiusta gli insetti se necessario
@@ -191,182 +361,61 @@ public class TransazioniGUI extends JFrame {
 
         // Creare la tabella con il modello
         JTable tabella = new JTable(modello);
-        JScrollPane scrollPane = new JScrollPane(tabella);
         tabella.getTableHeader().setFont(fontRegularBold);
         tabella.getTableHeader().setBackground(new Color(246, 248, 255));
+        tabella.setFont(fontRegular);
+        tabella.setRowHeight(70);
+        tabella.setForeground(Color.WHITE);
+        tabella.setBackground(new Color(37, 89, 87));
+        tabella.setTableHeader(null);
+
+        // Creiamo lo scrollPane che contiene la tabella
+        JScrollPane scrollPane = new JScrollPane(tabella);
         scrollPane.getViewport().setBackground(new Color(246, 248, 255)); // Sostituisci Color.LIGHT_GRAY con il colore desiderato
         scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(tabella.getModel());
+        tabella.setRowSorter(sorter);
+
+        // Assumendo che "DataOra" sia nella quarta colonna (indice 3) del modello
+        List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+        sortKeys.add(new RowSorter.SortKey(2, SortOrder.DESCENDING)); // Ordina per "Data" in ordine decrescente
+        sortKeys.add(new RowSorter.SortKey(3, SortOrder.DESCENDING)); // Ordina per "Ora" in ordine decrescente
+        sorter.setSortKeys(sortKeys);
 
 
         // Renderer centrato per le celle
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        tabella.setFont(fontRegular);
-        tabella.setRowHeight(70);
-        tabella.setForeground(Color.WHITE);
-        tabella.setBackground(new Color(37, 89, 87));
 
         // Applicare il renderer a tutte le celle per centrare il testo
         for (int i = 0; i < tabella.getColumnCount(); i++) {
             tabella.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
 
-        // Impostare la larghezza preferita per le colonne 0,1
-        int smallWidth = 280;
-        for (int i = 0; i <= 1; i++) {
-            TableColumn column = tabella.getColumnModel().getColumn(i);
-            column.setPreferredWidth(smallWidth);
-            column.setMaxWidth(smallWidth);
-            column.setMinWidth(smallWidth);
-        }
+        TableColumn column = tabella.getColumnModel().getColumn(0);
+        column.setPreferredWidth(200);
+        column.setMaxWidth(200);
+        column.setMinWidth(200);
 
-        // Impostare la larghezza preferita per le colonne 2, 3, 4, 5
-        smallWidth = 200;
-        for (int i = 2; i <= 4; i++) {
-            TableColumn column = tabella.getColumnModel().getColumn(i);
-            column.setPreferredWidth(smallWidth);
-            column.setMaxWidth(smallWidth);
-            column.setMinWidth(smallWidth);
-        }
+        column = tabella.getColumnModel().getColumn(1);
+        column.setPreferredWidth(400);
+        column.setMaxWidth(400);
+        column.setMinWidth(400);
 
+        column = tabella.getColumnModel().getColumn(2);
+        column.setPreferredWidth(200);
+        column.setMaxWidth(200);
+        column.setMinWidth(200);
 
+        column = tabella.getColumnModel().getColumn(3);
+        column.setPreferredWidth(200);
+        column.setMaxWidth(200);
+        column.setMinWidth(200);
 
-//        tabella.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                Point point = e.getPoint();
-//                int currentRow = tabella.rowAtPoint(point);
-//
-//                if (currentRow >= 0) { // Verifica che il clic sia su una riga valida
-//                    // Costruisci il messaggio con i dati della riga cliccata
-//                    StringBuilder infoSalvadanaio = new StringBuilder();
-//                    infoSalvadanaio.append("Dettagli Salvadanaio:\n");
-//                    for (int i = 0; i < tabella.getColumnCount(); i++) {
-//                        infoSalvadanaio.append("<html><b>" +tabella.getColumnName(i) + ": </b>" + tabella.getValueAt(currentRow, i) + "\n</html>");
-//                    }
-//
-//                    // Mostra il dialogo con le informazioni
-//                    ImageIcon iconInformation = new ImageIcon(HomePageGUI.class.getResource("/IMG/information.png"));
-//                    // Mostra il JOptionPane con i JTextField inseriti
-//                    int result = JOptionPane.showOptionDialog(
-//                            null, // Componente padre
-//                            infoSalvadanaio.toString(), // Messaggio
-//                            "Informazioni Salvadanaio", // Titolo
-//                            JOptionPane.DEFAULT_OPTION,
-//                            JOptionPane.QUESTION_MESSAGE, // Tipo di messaggio
-//                            iconInformation, // Icona personalizzata, usa null per l'icona di default
-//                            options, // Array contenente le etichette dei pulsanti
-//                            options[0] // Opzione di default
-//                    );
-//
-//                    switch (result){
-//                        case 0: // annulla
-//                            break;
-//                        case 1: // invia soldi
-//                            JPanel fillPiggyBankPanel = new JPanel(new GridBagLayout());
-//                            JLabel soldiLabel = new JLabel("Inserisci una cifra da inviare al salvadanaio: ");
-//                            JTextField soldiField = new JTextField();
-//                            GridBagConstraints gbc = new GridBagConstraints();
-//                            gbc.fill = GridBagConstraints.BOTH;
-//                            gbc.gridy = 0;
-//                            gbc.gridx = 0;
-//                            fillPiggyBankPanel.add(soldiLabel, gbc);
-//                            gbc.gridy = 1;
-//                            gbc.gridx = 0;
-//                            fillPiggyBankPanel.add(soldiField, gbc);
-//                            int resultFill = JOptionPane.showOptionDialog(
-//                                    null, // Componente padre
-//                                    fillPiggyBankPanel, // Messaggio
-//                                    "Invia soldi al salvadanaio", // Titolo
-//                                    JOptionPane.DEFAULT_OPTION,
-//                                    JOptionPane.QUESTION_MESSAGE, // Tipo di messaggio
-//                                    iconInformation, // Icona personalizzata, usa null per l'icona di default
-//                                    optionsFill, // Array contenente le etichette dei pulsanti
-//                                    optionsFill[0] // Opzione di default
-//                            );
-//                            if (resultFill == JOptionPane.YES_OPTION){
-//                                if( controller.contoScelto.getSaldo() >= Double.parseDouble(soldiField.getText())) {
-//                                    controller.fillPiggyBank((String) tabella.getValueAt(currentRow, 0), Double.parseDouble(soldiField.getText()));
-//                                    controller.updateBankAccount(controller.contoScelto);
-//                                    controller.showSalvadanaioPage();
-//                                }
-//                                else {
-//                                    JOptionPane.showMessageDialog(
-//                                            null,
-//                                            "Saldo conto corrente insufficiente!",
-//                                            "Errore",
-//                                            JOptionPane.ERROR_MESSAGE
-//                                    );
-//                                }
-//
-//                            }
-//
-//                            break;
-//                        case 2: // prendi soldi
-//                            JPanel getPiggyBankPanel = new JPanel(new GridBagLayout());
-//                            JLabel getSoldiLabel = new JLabel("Inserisci una cifra da prendere dal salvadanaio: ");
-//                            JTextField getSoldiField = new JTextField();
-//                            gbc = new GridBagConstraints();
-//                            gbc.fill = GridBagConstraints.BOTH;
-//                            gbc.gridy = 0;
-//                            gbc.gridx = 0;
-//                            getPiggyBankPanel.add(getSoldiLabel, gbc);
-//                            gbc.gridy = 1;
-//                            gbc.gridx = 0;
-//                            getPiggyBankPanel.add(getSoldiField, gbc);
-//                            int resultGet = JOptionPane.showOptionDialog(
-//                                    null, // Componente padre
-//                                    getPiggyBankPanel, // Messaggio
-//                                    "Prendi soldi dal salvadanaio", // Titolo
-//                                    JOptionPane.DEFAULT_OPTION,
-//                                    JOptionPane.QUESTION_MESSAGE, // Tipo di messaggio
-//                                    iconInformation, // Icona personalizzata, usa null per l'icona di default
-//                                    optionsGet, // Array contenente le etichette dei pulsanti
-//                                    optionsGet[0] // Opzione di default
-//                            );
-//                            if (resultGet == JOptionPane.YES_OPTION){
-//                                // Ottieni il valore dalla tabella e convertilo in Stringa
-//                                String valueWithCurrency = (String) tabella.getValueAt(currentRow, 3);
-//                                //  Rimuovi il simbolo della valuta '€' e qualsiasi altro carattere non numerico, mantenendo solo numeri e punto decimale
-//                                String numericValue = valueWithCurrency.replaceAll("[^\\d.]", "");
-//
-//                                if(Double.parseDouble(numericValue) >= Double.parseDouble(getSoldiField.getText())) {
-//                                    controller.getMoneyByPiggyBank((String) tabella.getValueAt(currentRow, 0), Double.parseDouble(getSoldiField.getText()));
-//                                    controller.updateBankAccount(controller.contoScelto);
-//                                    controller.showSalvadanaioPage();
-//                                }
-//                                else {
-//                                    JOptionPane.showMessageDialog(
-//                                            null,
-//                                            "Saldo salvadanaio insufficiente!",
-//                                            "Errore",
-//                                            JOptionPane.ERROR_MESSAGE
-//                                    );
-//                                }
-//                            }
-//
-//                            break;
-//                        case 3: // elimina
-//                            if (tabella.getValueAt(currentRow, 3).equals("0.0€")) {
-//                                controller.deletePiggyBank((String) tabella.getValueAt(currentRow, 0));
-//                                controller.showSalvadanaioPage();
-//                            }
-//                            else{
-//                                JOptionPane.showMessageDialog(
-//                                        null,
-//                                        "Rimuovi prima i tuoi risparmi!",
-//                                        "Errore",
-//                                        JOptionPane.ERROR_MESSAGE
-//                                );
-//                            }
-//                            break;
-//
-//                    }
-//                }
-//            }
-//        });
-
-
+        column = tabella.getColumnModel().getColumn(4);
+        column.setPreferredWidth(400);
+        column.setMaxWidth(400);
+        column.setMinWidth(400);
 
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;

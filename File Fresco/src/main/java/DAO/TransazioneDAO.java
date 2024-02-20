@@ -6,4 +6,5 @@ import java.util.ArrayList;
 
 public interface TransazioneDAO {
     public ArrayList<Transazione> selectTransazioniByIban(ContoCorrente conto);
+    public Double[] viewReport(ContoCorrente conto, String mese);
 }

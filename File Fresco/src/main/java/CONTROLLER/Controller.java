@@ -38,6 +38,7 @@ public class Controller {
     public Carta carta = null;
     public ArrayList<Salvadanaio> salvadanai = null;
     public ArrayList<Transazione> transazioni = null;
+    public Double[] report = null;
 
     public Controller() {
         frameLogin = new LoginViewGUI(this); //LoginView accetta ControllerLogin come parametro
@@ -349,6 +350,11 @@ public class Controller {
         frameTransazioni = new TransazioniGUI(this);
         frameHome(false);
         frameTransazioni(true);
+    }
+
+    public void viewReport(ContoCorrente conto, String mese){
+        report = transazioneDAO.viewReport(contoScelto, mese);
+
     }
 
     /**
