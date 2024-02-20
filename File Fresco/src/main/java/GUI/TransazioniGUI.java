@@ -13,10 +13,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.InputStream;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import javax.swing.table.*;
 
 
@@ -30,7 +28,7 @@ public class TransazioniGUI extends JFrame {
     private Font fontRegularBold;
     private Font fontRegularXXL;
 
-    private static final Map<String, String> monthMap = new HashMap<>();
+    private static final Map<String, String> monthMap = new LinkedHashMap<>();
     static {
         monthMap.put("Gennaio", "01");
         monthMap.put("Febbraio", "02");
