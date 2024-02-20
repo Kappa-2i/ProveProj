@@ -73,7 +73,8 @@ public class PersonaDAOImpl implements PersonaDAO {
         }
         catch (SQLException e){
             e.printStackTrace();
-        } catch (MyExc e) {
+        }
+        catch (MyExc e) {
             throw new RuntimeException(e);
         }
         return null;

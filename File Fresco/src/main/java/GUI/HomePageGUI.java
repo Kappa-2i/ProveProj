@@ -428,6 +428,12 @@ public class HomePageGUI extends JFrame {
 
         RoundedPanel spesePanel = new RoundedPanel(50, new Color(111, 195, 192));
         spesePanel.setLayout(new GridBagLayout());
+        spesePanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                controller.showTransazioniPage();
+            }
+        });
 
         RoundedPanel salvadanaioPanel = new RoundedPanel(50, new Color(154, 213, 211));
         salvadanaioPanel.setLayout(new GridBagLayout());
@@ -500,6 +506,13 @@ public class HomePageGUI extends JFrame {
         buttonSpese.setBorderPainted(false);
         buttonSpese.setBorder(null);
         buttonSpese.setFocusPainted(false);
+        buttonSpese.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                controller.showTransazioniPage();
+            }
+        });
+
 
         JLabel salvadanaioLabel = new JLabel("<html><b>PIGGY<br>BANK</b></html>");
         salvadanaioLabel.setForeground(new Color(8, 76, 97));

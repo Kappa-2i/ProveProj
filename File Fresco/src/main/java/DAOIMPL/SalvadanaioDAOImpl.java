@@ -4,6 +4,7 @@ import DAO.SalvadanaioDAO;
 import DATABASE.DBConnection;
 import ENTITY.ContoCorrente;
 import ENTITY.Salvadanaio;
+import EXCEPTIONS.MyExc;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class SalvadanaioDAOImpl implements SalvadanaioDAO {
         return null;
     }
 
-    public void addPiggyBank(ContoCorrente contoscelto, String nome, double obiettivo, String descrizione){
+    public void addPiggyBank(ContoCorrente contoscelto, String nome, double obiettivo, String descrizione) throws MyExc {
         CallableStatement statement = null;
         try (Connection conn = DBConnection.getDBConnection().getConnection()) {
 
@@ -60,8 +61,11 @@ public class SalvadanaioDAOImpl implements SalvadanaioDAO {
             statement.executeQuery();
 
         } catch (SQLException e) {
-            //Gestione delle eccezioni SQL
-            e.printStackTrace();
+            // "23505" è il codice di stato usato da PostgreSQL per indicare un errore di unique-violation
+            if("23505".equals(e.getSQLState()))
+                throw new MyExc("Nome salvadanaio già esistente!");
+            else
+                e.printStackTrace();
         }
     }
 

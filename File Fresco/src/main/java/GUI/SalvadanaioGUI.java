@@ -1,21 +1,17 @@
 package GUI;
 
 import CONTROLLER.Controller;
-import ENTITY.ContoCorrente;
 import ENTITY.Salvadanaio;
+import EXCEPTIONS.MyExc;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.InputStream;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 
@@ -31,7 +27,7 @@ public class SalvadanaioGUI extends JFrame {
 
     public SalvadanaioGUI(Controller controller){
         this.controller = controller;
-        setTitle("HomePage - S.M.U.");
+        setTitle("Salvadanaio - S.M.U.");
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
@@ -118,7 +114,7 @@ public class SalvadanaioGUI extends JFrame {
             }
         });
 
-        ImageIcon iconAddPiggyBank = new ImageIcon(SalvadanaioGUI.class.getResource("/IMG/shopping.png")); // Sostituisci con il percorso del tuo file icona
+        ImageIcon iconAddPiggyBank = new ImageIcon(SalvadanaioGUI.class.getResource("/IMG/addPiggyBank.png")); // Sostituisci con il percorso del tuo file icona
         JButton addPiggyBankButton = new JButton();
         addPiggyBankButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         addPiggyBankButton.setBackground(null);
@@ -186,7 +182,11 @@ public class SalvadanaioGUI extends JFrame {
                         optionsAdd[0] // Opzione di default
                 );
                 if (result == JOptionPane.YES_OPTION) {
-                    controller.addPiggyBank(nomeField.getText(), Double.parseDouble(obiettivoField.getText()), descrizionField.getText());
+                    try {
+                        controller.addPiggyBank(nomeField.getText(), Double.parseDouble(obiettivoField.getText()), descrizionField.getText());
+                    } catch (MyExc ex) {
+                        throw new RuntimeException(ex);
+                    }
                     controller.showSalvadanaioPage();
                 }
 
@@ -357,9 +357,20 @@ public class SalvadanaioGUI extends JFrame {
                                     optionsFill[0] // Opzione di default
                             );
                             if (resultFill == JOptionPane.YES_OPTION){
-                                controller.fillPiggyBank((String)tabella.getValueAt(currentRow, 0), Double.parseDouble(soldiField.getText()));
-                                controller.updateBankAccount(controller.contoScelto);
-                                controller.showSalvadanaioPage();
+                                if( controller.contoScelto.getSaldo() >= Double.parseDouble(soldiField.getText())) {
+                                    controller.fillPiggyBank((String) tabella.getValueAt(currentRow, 0), Double.parseDouble(soldiField.getText()));
+                                    controller.updateBankAccount(controller.contoScelto);
+                                    controller.showSalvadanaioPage();
+                                }
+                                else {
+                                    JOptionPane.showMessageDialog(
+                                            null,
+                                            "Saldo conto corrente insufficiente!",
+                                            "Errore",
+                                            JOptionPane.ERROR_MESSAGE
+                                    );
+                                }
+
                             }
 
                             break;
@@ -386,15 +397,40 @@ public class SalvadanaioGUI extends JFrame {
                                     optionsGet[0] // Opzione di default
                             );
                             if (resultGet == JOptionPane.YES_OPTION){
-                                controller.getMoneyByPiggyBank((String)tabella.getValueAt(currentRow, 0), Double.parseDouble(getSoldiField.getText()));
-                                controller.updateBankAccount(controller.contoScelto);
-                                controller.showSalvadanaioPage();
+                                // Ottieni il valore dalla tabella e convertilo in Stringa
+                                String valueWithCurrency = (String) tabella.getValueAt(currentRow, 3);
+                                //  Rimuovi il simbolo della valuta '€' e qualsiasi altro carattere non numerico, mantenendo solo numeri e punto decimale
+                                String numericValue = valueWithCurrency.replaceAll("[^\\d.]", "");
+
+                                if(Double.parseDouble(numericValue) >= Double.parseDouble(getSoldiField.getText())) {
+                                    controller.getMoneyByPiggyBank((String) tabella.getValueAt(currentRow, 0), Double.parseDouble(getSoldiField.getText()));
+                                    controller.updateBankAccount(controller.contoScelto);
+                                    controller.showSalvadanaioPage();
+                                }
+                                else {
+                                    JOptionPane.showMessageDialog(
+                                            null,
+                                            "Saldo salvadanaio insufficiente!",
+                                            "Errore",
+                                            JOptionPane.ERROR_MESSAGE
+                                    );
+                                }
                             }
 
                             break;
                         case 3: // elimina
-                            controller.deletePiggyBank((String)tabella.getValueAt(currentRow, 0));
-                            controller.showSalvadanaioPage();
+                            if (tabella.getValueAt(currentRow, 3).equals("0.0€")) {
+                                controller.deletePiggyBank((String) tabella.getValueAt(currentRow, 0));
+                                controller.showSalvadanaioPage();
+                            }
+                            else{
+                                JOptionPane.showMessageDialog(
+                                        null,
+                                        "Rimuovi prima i tuoi risparmi!",
+                                        "Errore",
+                                        JOptionPane.ERROR_MESSAGE
+                                );
+                            }
                             break;
 
                     }

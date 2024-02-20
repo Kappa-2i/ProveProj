@@ -594,6 +594,7 @@ public class SignInViewGUI extends JFrame {
                     } catch (MyExc ex) {
                         throw new RuntimeException(ex);
                     }
+
                     setVisible(false);
                     controller.frameLogin(true);
 

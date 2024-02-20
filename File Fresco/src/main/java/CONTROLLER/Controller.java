@@ -20,6 +20,7 @@ public class Controller {
     private HomePageGUI frameHome;
     private CardPageGUI frameCard;
     private SalvadanaioGUI frameSalvadanaio;
+    private TransazioniGUI frameTransazioni;
 
     //Dichiarazioni delle Dao
     private AccountDAO accountDao;
@@ -27,6 +28,7 @@ public class Controller {
     private ContoCorrenteDAO contoCorrenteDAO;
     private CartaDAO cartaDAO;
     private SalvadanaioDAO salvadanaioDAO;
+    private TransazioneDAO transazioneDAO;
 
     //Dichiarazione delle variabili
     public Account account = null;
@@ -35,6 +37,7 @@ public class Controller {
     public ContoCorrente contoScelto = null;
     public Carta carta = null;
     public ArrayList<Salvadanaio> salvadanai = null;
+    public ArrayList<Transazione> transazioni = null;
 
     public Controller() {
         frameLogin = new LoginViewGUI(this); //LoginView accetta ControllerLogin come parametro
@@ -46,6 +49,7 @@ public class Controller {
         this.contoCorrenteDAO = new ContoCorrenteDAOImpl();
         this.cartaDAO = new CartaDAOImpl();
         this.salvadanaioDAO = new SalvadanaioDAOImpl();
+        this.transazioneDAO = new TransazionaDAOImpl();
     }
 
     /**
@@ -118,7 +122,6 @@ public class Controller {
                            "Errore",
                            JOptionPane.ERROR_MESSAGE);
                }
-
            } catch (MyExc e){
                JOptionPane.showMessageDialog(
                        frameSignIn,
@@ -203,7 +206,6 @@ public class Controller {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
         JOptionPane.showMessageDialog(
                 framePick,
                 "Conto Corrente con Iban: " +iban+ ", eliminato con successo!",
@@ -309,8 +311,18 @@ public class Controller {
         frameSalvadanaio(true);
     }
 
-    public void addPiggyBank(String nome, double obiettivo, String descrizione) {
-        salvadanaioDAO.addPiggyBank(contoScelto, nome, obiettivo, descrizione);
+    public void addPiggyBank(String nome, double obiettivo, String descrizione) throws MyExc{
+        try {
+            salvadanaioDAO.addPiggyBank(contoScelto, nome, obiettivo, descrizione);
+        } catch (MyExc e) {
+            JOptionPane.showMessageDialog(
+                    frameSalvadanaio,
+                    e.getMessage(),
+                    "Diocane",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
+
     }
 
     public void deletePiggyBank(String nome){
@@ -324,6 +336,19 @@ public class Controller {
 
     public void getMoneyByPiggyBank(String nome, double soldi){
         salvadanaioDAO.getMoneyByPiggyBank(contoScelto, nome, soldi);
+    }
+
+
+    public void showTransazioniPage(){
+        if (frameTransazioni != null)
+            frameTransazioni(false);
+        //Vengono recuperati le transazioni associati al conto scelto.
+        transazioni = transazioneDAO.selectTransazioniByIban(contoScelto);
+        contoScelto.setTransazioni(transazioni);
+        System.out.println(contoScelto.toString());
+        frameTransazioni = new TransazioniGUI(this);
+        frameHome(false);
+        frameTransazioni(true);
     }
 
     /**
@@ -372,6 +397,10 @@ public class Controller {
      * */
     public void frameSalvadanaio(Boolean isVisible){
         frameSalvadanaio.setVisible(isVisible);
+    }
+
+    public void frameTransazioni(Boolean isVisibile){
+        frameTransazioni.setVisible(isVisibile);
     }
 
 }

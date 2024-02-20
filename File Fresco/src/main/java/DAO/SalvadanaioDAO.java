@@ -2,6 +2,7 @@ package DAO;
 
 import ENTITY.ContoCorrente;
 import ENTITY.Salvadanaio;
+import EXCEPTIONS.MyExc;
 
 import java.util.ArrayList;
 
@@ -13,7 +14,7 @@ public interface SalvadanaioDAO {
      * @return ArrayList di salvadanai.*/
     public ArrayList<Salvadanaio> selectSalvadanaio(ContoCorrente conto);
 
-    public void addPiggyBank(ContoCorrente contoscelto, String nome, double obiettivo, String descrizione);
+    public void addPiggyBank(ContoCorrente contoscelto, String nome, double obiettivo, String descrizione) throws MyExc;
     public void deletePiggyBank(ContoCorrente contoscelto, String nome);
     public void fillPiggyBank(ContoCorrente contoscelto, String nome, double soldi);
     public void getMoneyByPiggyBank(ContoCorrente contoscelto, String nome, double soldi);

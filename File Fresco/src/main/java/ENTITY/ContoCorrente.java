@@ -11,13 +11,15 @@ public class ContoCorrente {
     private double saldo;
     private Account account;
     private ArrayList<Salvadanaio> salvadanai;
+    private ArrayList<Transazione> transazioni;
 
     //Costruttori
-    public ContoCorrente(String iban, double saldo, Account account, ArrayList<Salvadanaio> salvadanai) {
+    public ContoCorrente(String iban, double saldo, Account account, ArrayList<Salvadanaio> salvadanai, ArrayList<Transazione> transazioni) {
         setIban(iban);
         setSaldo(saldo);
         setAccount(account);
         setSalvadanai(salvadanai);
+        setTransazioni(transazioni);
     }
 
     public ContoCorrente(String iban, double saldo) {
@@ -59,13 +61,18 @@ public class ContoCorrente {
         this.salvadanai = salvadanai;
     }
 
+    public ArrayList<Transazione> getTransazioni() {
+        return transazioni;
+    }
+
+    public void setTransazioni(ArrayList<Transazione> transazioni) {
+        this.transazioni = transazioni;
+    }
+
     @Override
     public String toString() {
         return "ContoCorrente{" +
-                "iban='" + iban + '\'' +
-                ", saldo=" + saldo +
-                ", account=" + account +
-                ", salvadanai=" + salvadanai +
+                "transazioni=" + transazioni +
                 '}';
     }
 }
