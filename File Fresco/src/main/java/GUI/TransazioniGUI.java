@@ -5,10 +5,20 @@ import ENTITY.Salvadanaio;
 import ENTITY.Transazione;
 import EXCEPTIONS.MyExc;
 import org.apache.pdfbox.cos.COSObjectKey;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.general.PieDataset;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.InputStream;
@@ -28,21 +38,7 @@ public class TransazioniGUI extends JFrame {
     private Font fontRegularBold;
     private Font fontRegularXXL;
 
-    private static final Map<String, String> monthMap = new LinkedHashMap<>();
-    static {
-        monthMap.put("Gennaio", "01");
-        monthMap.put("Febbraio", "02");
-        monthMap.put("Marzo", "03");
-        monthMap.put("Aprile", "04");
-        monthMap.put("Maggio", "05");
-        monthMap.put("Giugno", "06");
-        monthMap.put("Luglio", "07");
-        monthMap.put("Agosto", "08");
-        monthMap.put("Settembre", "09");
-        monthMap.put("Ottobre", "10");
-        monthMap.put("Novembre", "11");
-        monthMap.put("Dicembre", "12");
-    }
+    private String monthNumber;
 
     public TransazioniGUI(Controller controller){
         this.controller = controller;
@@ -148,12 +144,25 @@ public class TransazioniGUI extends JFrame {
                 // Creazione del JPanel che conterrà i JTextField
                 JPanel statsPanel = new JPanel(new GridBagLayout());
 
-                JLabel selezionaLabel = new JLabel("Seleziona mese: ");
                 // Array contenente i nomi dei mesi
+                String[] mesi = {"Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno",
+                        "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"};
 
+                JLabel selezionaLabel = new JLabel("Seleziona mese: ");
 
-                // Crea la JList utilizzando l'array dei mesi
-                JComboBox<String> monthsComboBox = new JComboBox<>(monthMap.keySet().toArray(new String[0]));
+                // Crea la JComboBox utilizzando l'array dei mesi
+                JComboBox<String> monthsComboBox = new JComboBox<>(mesi);
+
+                // Listener per gestire la selezione dell'utente
+                monthsComboBox.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        // Ottieni l'indice del mese selezionato
+                        int selectedIndex = monthsComboBox.getSelectedIndex();
+                        // Calcola il numero del mese come stringa, aggiungendo uno zero davanti se necessario
+                        monthNumber = String.format("%02d", selectedIndex + 1);
+                    }
+                });
 
                 GridBagConstraints gbc = new GridBagConstraints();
                 gbc.fill = GridBagConstraints.BOTH;
@@ -181,30 +190,29 @@ public class TransazioniGUI extends JFrame {
                 );
                 if (result == JOptionPane.YES_OPTION){
                     String selectedMonthName = (String) monthsComboBox.getSelectedItem();
-                    String monthValue = monthMap.get(selectedMonthName);
+
 
                     // Ottieni l'anno corrente
                     String currentYear = String.valueOf(LocalDate.now().getYear());
 
                     // Combina l'anno e il mese nel formato YYYY-MM
-                    String yearMonth = currentYear + "-" + monthValue;
+                    String yearMonth = currentYear + "-" + monthNumber;
                     controller.viewReport(controller.contoScelto, yearMonth);
-
 
                     JPanel reportPanel = new JPanel(new GridBagLayout());
 
-                    JLabel entrataMax = new JLabel("Entrata Massima: ");
+                    JLabel entrataMax = new JLabel("Entrata massima: ");
                     JLabel entraMaxValue = new JLabel(String.valueOf(controller.report[0]) + "€");
-                    JLabel entrataMin = new JLabel("Entrata Minima: ");
+                    JLabel entrataMin = new JLabel("Entrata minima: ");
                     JLabel entraMinValue = new JLabel(String.valueOf(controller.report[1])+ "€");
-                    JLabel entrataMed = new JLabel("Entrata Media: ");
-                    JLabel entraMedValue = new JLabel(String.valueOf(controller.report[2])+ "€");
-                    JLabel uscitaMax = new JLabel("Uscita Massima: ");
+                    JLabel entrataMed = new JLabel("Entrata media: ");
+                    JLabel entraMedValue = new JLabel(String.format("%.2f", controller.report[2]) + "€");
+                    JLabel uscitaMax = new JLabel("Uscita massima: ");
                     JLabel uscitaMaxValue = new JLabel(String.valueOf(controller.report[3])+ "€");
-                    JLabel uscitaMin = new JLabel("Uscita Minima: ");
+                    JLabel uscitaMin = new JLabel("Uscita minima: ");
                     JLabel uscitaMinValue = new JLabel(String.valueOf(controller.report[4])+ "€");
-                    JLabel uscitaMed = new JLabel("Uscita Media: ");
-                    JLabel uscitaMedValue = new JLabel(String.valueOf(controller.report[5])+ "€");
+                    JLabel uscitaMed = new JLabel("Uscita media: ");
+                    JLabel uscitaMedValue = new JLabel(String.format("%.2f", controller.report[5]) + "€");
 
                     gbc = new GridBagConstraints();
                     gbc.fill = GridBagConstraints.BOTH;
@@ -421,8 +429,66 @@ public class TransazioniGUI extends JFrame {
         gbc.weightx = 1;
         panelCenter.add(scrollPane, gbc);
 
+
+        double entrateTotali = 0.0;
+        double usciteTotali = 0.0;
+
+        // Itera sulle righe del modello della tabella
+        for (int i = 0; i < modello.getRowCount(); i++) {
+            String importoConSegno = (String) modello.getValueAt(i, 0); // Assumendo che la colonna 0 contenga gli importi
+            double importo = Double.parseDouble(importoConSegno.replace("€", "").trim());
+
+            // Controlla il segno dell'importo e aggiorna le entrate/uscite totali
+            if (importoConSegno.contains("+")) {
+                entrateTotali += importo;
+            } else if (importoConSegno.contains("-")) {
+                usciteTotali += Math.abs(importo); // Usa Math.abs per convertire in valore positivo
+            }
+        }
+
+        DefaultPieDataset dataset = new DefaultPieDataset();
+
+
+        dataset.setValue("Entrate", entrateTotali);
+        dataset.setValue("Uscite", usciteTotali);
+
+        JFreeChart chart = ChartFactory.createPieChart(
+                "Rapporto Entrate/Uscite", // chart title
+                 dataset, // data
+                true, // include legend
+                true,
+                false);
+        chart.setBackgroundPaint(new Color(246, 248, 255)); // Cambia il colore di sfondo dell'intero grafico
+
+
+        PiePlot plot = (PiePlot) chart.getPlot();
+        plot.setSectionPaint("Entrate", new Color(154, 205, 50)); // Colore verde
+        plot.setSectionPaint("Uscite", new Color(255, 69, 0)); // Colore rosso
+        plot.setExplodePercent("Uscite", 0.1); // Evidenzia le uscite
+        plot.setBackgroundPaint(new Color(246, 248, 255));
+        plot.setOutlinePaint(new Color(246, 248, 255));
+
+
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        chartPanel.setBackground(new Color(246, 248, 255));
+
+
+
+
+        gbc = new GridBagConstraints();
+        gbc.gridwidth = 1;
+        gbc.weighty = 0.95;
+        gbc.weightx = 0.7;
+        gbc.gridy = 2;
+        gbc.gridx = 0;
+        gbc.insets = new Insets(5, 20, 20, 20);
+        gbc.fill = GridBagConstraints.BOTH;
+        contentPane.add(chartPanel, gbc);
+
         setContentPane(contentPane);
     }
+
 
 
 

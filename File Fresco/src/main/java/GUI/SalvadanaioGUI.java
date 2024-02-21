@@ -10,9 +10,11 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.InputStream;
+import java.text.NumberFormat;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.text.NumberFormatter;
 
 
 public class SalvadanaioGUI extends JFrame {
@@ -132,10 +134,13 @@ public class SalvadanaioGUI extends JFrame {
                 JLabel namePiggyLabel = new JLabel("Nome salvadanaio: ");
                 JTextField nomeField = new JTextField();
                 JLabel obiettivoLabel = new JLabel("Obiettivo: ");
+                // Crea un formato per numeri con massimo 8 cifre intere e 2 decimali
                 JTextField obiettivoField = new JTextField();
                 // Quando sei pronto per leggere il valore (ad esempio, dopo un evento come la pressione di un pulsante):
                 JLabel descrizioneLabel = new JLabel("Descrizione: ");
                 JTextField descrizionField = new JTextField();
+
+
 
                 GridBagConstraints gbc = new GridBagConstraints();
                 gbc.fill = GridBagConstraints.BOTH;
@@ -183,16 +188,7 @@ public class SalvadanaioGUI extends JFrame {
                 );
                 if (result == JOptionPane.YES_OPTION) {
                     try {
-                        if(!nomeField.getText().isEmpty() && !obiettivoField.getText().isEmpty() && !descrizionField.getText().isEmpty())
-                            controller.addPiggyBank(nomeField.getText(), Double.parseDouble(obiettivoField.getText()), descrizionField.getText());
-                        else{
-                            JOptionPane.showMessageDialog(
-                                    null,
-                                    "Riempi tutti i campi!",
-                                    "Errore inserimento",
-                                    JOptionPane.ERROR_MESSAGE
-                            );
-                        }
+                        controller.addPiggyBank(nomeField.getText(), Math.round(Double.parseDouble(obiettivoField.getText())*100.00)/100.00, descrizionField.getText());
                     } catch (MyExc ex) {
                         throw new RuntimeException(ex);
                     }
@@ -325,7 +321,6 @@ public class SalvadanaioGUI extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 Point point = e.getPoint();
                 int currentRow = tabella.rowAtPoint(point);
-
                 if (currentRow >= 0) { // Verifica che il clic sia su una riga valida
                     // Costruisci il messaggio con i dati della riga cliccata
                     StringBuilder infoSalvadanaio = new StringBuilder();
@@ -373,31 +368,11 @@ public class SalvadanaioGUI extends JFrame {
                                     optionsFill, // Array contenente le etichette dei pulsanti
                                     optionsFill[0] // Opzione di default
                             );
-                            if (resultFill == JOptionPane.YES_OPTION){
-                                if (!soldiField.getText().isEmpty()) {
-                                    if (controller.contoScelto.getSaldo() >= Double.parseDouble(soldiField.getText())) {
-                                        controller.fillPiggyBank((String) tabella.getValueAt(currentRow, 0), Double.parseDouble(soldiField.getText()));
-                                        controller.updateBankAccount(controller.contoScelto);
-                                        controller.showSalvadanaioPage();
-                                    } else {
-                                        JOptionPane.showMessageDialog(
-                                                null,
-                                                "Saldo conto corrente insufficiente!",
-                                                "Errore",
-                                                JOptionPane.ERROR_MESSAGE
-                                        );
-                                    }
-                                }
-                                else {
-                                    JOptionPane.showMessageDialog(
-                                            null,
-                                            "Riempi tutti i campi!",
-                                            "Errore inserimento",
-                                            JOptionPane.ERROR_MESSAGE
-                                    );
-                                }
+                            if (resultFill == JOptionPane.YES_OPTION) {
+                                controller.fillPiggyBank((String) tabella.getValueAt(currentRow, 0), soldiField.getText());
+                                controller.updateBankAccount(controller.contoScelto);
+                                controller.showSalvadanaioPage();
                             }
-
                             break;
                         case 2: // prendi soldi
                             JPanel getPiggyBankPanel = new JPanel(new GridBagLayout());
@@ -422,35 +397,15 @@ public class SalvadanaioGUI extends JFrame {
                                     optionsGet[0] // Opzione di default
                             );
                             if (resultGet == JOptionPane.YES_OPTION){
-                                if(!getSoldiField.getText().isEmpty()) {
                                     // Ottieni il valore dalla tabella e convertilo in Stringa
                                     String valueWithCurrency = (String) tabella.getValueAt(currentRow, 3);
                                     //  Rimuovi il simbolo della valuta '€' e qualsiasi altro carattere non numerico, mantenendo solo numeri e punto decimale
                                     String numericValue = valueWithCurrency.replaceAll("[^\\d.]", "");
+                                    controller.getMoneyByPiggyBank(numericValue, (String) tabella.getValueAt(currentRow, 0), getSoldiField.getText());
+                                    controller.updateBankAccount(controller.contoScelto);
+                                    controller.showSalvadanaioPage();
 
-                                    if (Double.parseDouble(numericValue) >= Double.parseDouble(getSoldiField.getText())) {
-                                        controller.getMoneyByPiggyBank((String) tabella.getValueAt(currentRow, 0), Double.parseDouble(getSoldiField.getText()));
-                                        controller.updateBankAccount(controller.contoScelto);
-                                        controller.showSalvadanaioPage();
-                                    } else {
-                                        JOptionPane.showMessageDialog(
-                                                null,
-                                                "Saldo salvadanaio insufficiente!",
-                                                "Errore",
-                                                JOptionPane.ERROR_MESSAGE
-                                        );
-                                    }
                                 }
-                                else {
-                                    JOptionPane.showMessageDialog(
-                                            null,
-                                            "Riempi tutti i campi!",
-                                            "Errore inserimento",
-                                            JOptionPane.ERROR_MESSAGE
-                                    );
-                                }
-                            }
-
                             break;
                         case 3: // elimina
                             if (tabella.getValueAt(currentRow, 3).equals("0.0€")) {

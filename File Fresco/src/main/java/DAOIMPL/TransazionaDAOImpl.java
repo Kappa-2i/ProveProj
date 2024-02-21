@@ -46,7 +46,6 @@ public class TransazionaDAOImpl implements TransazioneDAO {
 
     public Double[] viewReport(ContoCorrente conto, String mese){
         try (Connection conn = DBConnection.getDBConnection().getConnection()) {
-            System.out.println(mese);
             // Prepara la query sostituendo i valori di iban e mese
             String query = "SELECT"
                     + " CAST(MAX(CASE WHEN t.tipotransazione = 'Invia a' THEN t.importo END) AS double precision) AS entrata_massima,"
@@ -61,7 +60,6 @@ public class TransazionaDAOImpl implements TransazioneDAO {
 
             try (PreparedStatement pstmt = conn.prepareStatement(query)) {
                 // Imposta i parametri della query
-                System.out.println(conto.getIban());
                 pstmt.setString(1, conto.getIban());
                 pstmt.setString(2, mese);
                 pstmt.setString(3, mese);

@@ -314,12 +314,21 @@ public class Controller {
 
     public void addPiggyBank(String nome, double obiettivo, String descrizione) throws MyExc{
         try {
-            salvadanaioDAO.addPiggyBank(contoScelto, nome, obiettivo, descrizione);
+            if(!nome.isEmpty() && !descrizione.isEmpty())
+                salvadanaioDAO.addPiggyBank(contoScelto, nome, obiettivo, descrizione);
+            else{
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Riempi tutti i campi!",
+                        "Errore inserimento",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
         } catch (MyExc e) {
             JOptionPane.showMessageDialog(
                     frameSalvadanaio,
                     e.getMessage(),
-                    "Diocane",
+                    "Errore",
                     JOptionPane.ERROR_MESSAGE
             );
         }
@@ -330,13 +339,70 @@ public class Controller {
         salvadanaioDAO.deletePiggyBank(contoScelto, nome);
     }
 
-    public void fillPiggyBank(String nome, double soldi){
-
-        salvadanaioDAO.fillPiggyBank(contoScelto, nome, soldi);
+    public void fillPiggyBank(String nome, String soldiDaInviare){
+        try{
+            if(!soldiDaInviare.isEmpty()) {
+                if(Math.round((Double.parseDouble(soldiDaInviare)*100.00)/100.00) > 0) {
+                    if (contoScelto.getSaldo() >= Math.round((Double.parseDouble(soldiDaInviare) * 100.00) / 100.00)) {
+                        salvadanaioDAO.fillPiggyBank(contoScelto, nome, Math.round((Double.parseDouble(soldiDaInviare) * 100.00) / 100.00));
+                    } else {
+                        JOptionPane.showMessageDialog(
+                                null,
+                                "Saldo conto corrente insufficiente!",
+                                "Errore",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+                    }
+                }
+                else {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Inserisci una cifra valida!",
+                            "Errore inserimento",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                }
+            }
+            else {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Riempi tutti i campi!",
+                        "Errore inserimento",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
+        }
+        catch (NumberFormatException e){
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Inserisci una cifra valida!",
+                    "Errore inserimento",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
 
-    public void getMoneyByPiggyBank(String nome, double soldi){
-        salvadanaioDAO.getMoneyByPiggyBank(contoScelto, nome, soldi);
+    public void getMoneyByPiggyBank(String saldoSalvadanaio, String nome, String soldiDaPrelevare){
+        if(!soldiDaPrelevare.isEmpty()) {
+            if (Double.parseDouble(saldoSalvadanaio) >= Math.round((Double.parseDouble(soldiDaPrelevare)*100.00)/100.00)) {
+                salvadanaioDAO.getMoneyByPiggyBank(contoScelto, nome, Math.round((Double.parseDouble(soldiDaPrelevare)*100.00)/100.00));
+            } else {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Saldo salvadanaio insufficiente!",
+                        "Errore",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Inserisci una cifra valida!",
+                    "Errore inserimento",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
 
 

@@ -62,10 +62,13 @@ public class SalvadanaioDAOImpl implements SalvadanaioDAO {
 
         } catch (SQLException e) {
             // "23505" è il codice di stato usato da PostgreSQL per indicare un errore di unique-violation
-            if("23505".equals(e.getSQLState()))
+            if("23505".equals(e.getSQLState())) {
                 throw new MyExc("Nome salvadanaio già esistente!");
-            else
+            } else if ("23514".equals(e.getSQLState())) {
+                throw new MyExc("Inserisci una cifra valida");
+            } else {
                 e.printStackTrace();
+            }
         }
     }
 
