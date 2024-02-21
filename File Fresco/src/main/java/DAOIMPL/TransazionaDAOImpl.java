@@ -83,5 +83,69 @@ public class TransazionaDAOImpl implements TransazioneDAO {
         }
         return null;
     }
+
+    @Override
+    public double totaleInviatoMensile(ContoCorrente conto, String mese) {
+        try (Connection conn = DBConnection.getDBConnection().getConnection()) {
+            // Prepara la query sostituendo i valori di iban e mese
+            String query = "SELECT SUM(t.importo) AS totale_inviato " +
+                    "FROM test.transazione t " +
+                    "WHERE t.iban2 = ? " +
+                    "AND t.tipotransazione = 'Invia a' " +
+                    " AND t.datatransazione BETWEEN TO_DATE(? || '-01', 'YYYY-MM-DD') AND (TO_DATE(? || '-01', 'YYYY-MM-DD') + INTERVAL '1 MONTH' - INTERVAL '1 day')::DATE";
+
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                // Imposta i parametri della query
+                pstmt.setString(1, conto.getIban());
+                pstmt.setString(2, mese);
+                pstmt.setString(3, mese);
+
+                // Esegue la query
+                ResultSet rs = pstmt.executeQuery();
+
+                // Processa i risultati
+                if (rs.next()) {
+                    Double totaleInviato = rs.getDouble("totale_inviato");
+                    System.out.println(rs.getDouble("totale_inviato"));
+                    return totaleInviato;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    @Override
+    public double totaleRicevutoMensile(ContoCorrente conto, String mese) {
+        try (Connection conn = DBConnection.getDBConnection().getConnection()) {
+            // Prepara la query sostituendo i valori di iban e mese
+            String query = "SELECT SUM(t.importo) AS totale_ricevuto " +
+                    "FROM test.transazione t " +
+                    "WHERE t.iban2 = ? " +
+                    "AND t.tipotransazione = 'Riceve da' " +
+                    " AND t.datatransazione BETWEEN TO_DATE(? || '-01', 'YYYY-MM-DD') AND (TO_DATE(? || '-01', 'YYYY-MM-DD') + INTERVAL '1 MONTH' - INTERVAL '1 day')::DATE";
+
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                // Imposta i parametri della query
+                pstmt.setString(1, conto.getIban());
+                pstmt.setString(2, mese);
+                pstmt.setString(3, mese);
+
+                // Esegue la query
+                ResultSet rs = pstmt.executeQuery();
+
+                // Processa i risultati
+                if (rs.next()) {
+                    Double totaleRicevuto = rs.getDouble("totale_ricevuto");
+                    System.out.println(rs.getDouble("totale_ricevuto"));
+                    return totaleRicevuto;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }
 

@@ -37,6 +37,7 @@ public class TransazioniGUI extends JFrame {
     private Font fontRegularSmall;
     private Font fontRegularBold;
     private Font fontRegularXXL;
+    private Font fontRegularBoldSmall;
 
     private String monthNumber;
 
@@ -54,6 +55,7 @@ public class TransazioniGUI extends JFrame {
         fontRegularSmall();
         fontRegularBold();
         fontRegularXXL();
+        fontRegularBoldSmall();
 
         Object[] optionsView = {"Visualizza", "Annulla"};
 
@@ -199,6 +201,7 @@ public class TransazioniGUI extends JFrame {
                     String yearMonth = currentYear + "-" + monthNumber;
                     controller.viewReport(controller.contoScelto, yearMonth);
 
+
                     JPanel reportPanel = new JPanel(new GridBagLayout());
 
                     JLabel entrataMax = new JLabel("Entrata massima: ");
@@ -213,6 +216,63 @@ public class TransazioniGUI extends JFrame {
                     JLabel uscitaMinValue = new JLabel(String.valueOf(controller.report[4])+ "€");
                     JLabel uscitaMed = new JLabel("Uscita media: ");
                     JLabel uscitaMedValue = new JLabel(String.format("%.2f", controller.report[5]) + "€");
+
+                    double totaleInviatoMensile = controller.totaleInviatoMensile(controller.contoScelto, yearMonth);
+                    double totaleRicevutoMensile = controller.totaleRicevutoMensile(controller.contoScelto, yearMonth);
+                    JLabel totaleInviato = new JLabel("Totale inviato: ");
+                    JLabel totaleInviatoValue = new JLabel(String.valueOf(totaleInviatoMensile)+"€");
+                    JLabel totaleRicevuto = new JLabel("Totale ricevuto: ");
+                    JLabel totaleRicevutoValue = new JLabel(String.valueOf(totaleRicevutoMensile)+"€");
+                    if (fontRegularBoldSmall!= null){
+                        entrataMax.setFont(fontRegularBoldSmall);
+                        entrataMin.setFont(fontRegularBoldSmall);
+                        entrataMed.setFont(fontRegularBoldSmall);
+                        uscitaMax.setFont(fontRegularBoldSmall);
+                        uscitaMin.setFont(fontRegularBoldSmall);
+                        uscitaMed.setFont(fontRegularBoldSmall);
+                        totaleInviato.setFont(fontRegularBoldSmall);
+                        totaleRicevuto.setFont(fontRegularBoldSmall);
+                    }
+                    if (fontRegularSmall!= null){
+                        entraMaxValue.setFont(fontRegularSmall);
+                        entraMinValue.setFont(fontRegularSmall);
+                        entraMedValue.setFont(fontRegularSmall);
+                        uscitaMaxValue.setFont(fontRegularSmall);
+                        uscitaMinValue.setFont(fontRegularSmall);
+                        uscitaMedValue.setFont(fontRegularSmall);
+                        totaleInviatoValue.setFont(fontRegularSmall);
+                        totaleRicevutoValue.setFont(fontRegularSmall);
+                    }
+
+
+                    DefaultPieDataset dataset = new DefaultPieDataset();
+
+
+                    dataset.setValue("Entrate", totaleRicevutoMensile);
+                    dataset.setValue("Uscite", totaleInviatoMensile);
+
+                    JFreeChart chart = ChartFactory.createPieChart(
+                            "Rapporto Entrate/Uscite", // chart title
+                            dataset, // data
+                            true, // include legend
+                            true,
+                            false);
+                    chart.setBackgroundPaint(new Color(238, 238, 238)); // Cambia il colore di sfondo dell'intero grafico
+
+
+                    PiePlot plot = (PiePlot) chart.getPlot();
+                    plot.setSectionPaint("Entrate", new Color(154, 205, 50)); // Colore verde
+                    plot.setSectionPaint("Uscite", new Color(255, 69, 0)); // Colore rosso
+                    plot.setExplodePercent("Entrate", 0.1); // Evidenzia le entrate
+                    plot.setBackgroundPaint(new Color(238, 238, 238));
+                    plot.setOutlinePaint(new Color(238, 238, 238));
+                    plot.setLabelGenerator(null);//nasconde le etichette sul grafico
+
+
+                    ChartPanel chartPanel = new ChartPanel(chart);
+                    chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+                    chartPanel.setBackground(new Color(238, 238, 238));
+                    chartPanel.setPreferredSize(new Dimension(350, 350));
 
                     gbc = new GridBagConstraints();
                     gbc.fill = GridBagConstraints.BOTH;
@@ -278,13 +338,43 @@ public class TransazioniGUI extends JFrame {
                     gbc.gridy = 5;
                     gbc.gridx = 1;
                     reportPanel.add(uscitaMedValue, gbc);
+                    gbc.insets = new Insets(10, 0, 0, 0);
+                    gbc.fill = GridBagConstraints.BOTH;
+                    gbc.weightx = 0.3;
+                    gbc.gridy = 6;
+                    gbc.gridx = 0;
+                    reportPanel.add(totaleInviato, gbc);
+                    gbc.gridwidth = 2;
+                    gbc.weightx = 0.6;
+                    gbc.gridy = 6;
+                    gbc.gridx = 1;
+                    reportPanel.add(totaleInviatoValue, gbc);
+                    gbc = new GridBagConstraints();
+                    gbc.fill = GridBagConstraints.BOTH;
+                    gbc.weightx = 0.3;
+                    gbc.gridy = 7;
+                    gbc.gridx = 0;
+                    reportPanel.add(totaleRicevuto, gbc);
+                    gbc.gridwidth = 2;
+                    gbc.weightx = 0.6;
+                    gbc.gridy = 7;
+                    gbc.gridx = 1;
+                    reportPanel.add(totaleRicevutoValue, gbc);
+                    gbc.insets = new Insets(10, 0, 10, 0);
+                    gbc.gridwidth = 5;
+                    gbc.weightx = 0.6;
+                    gbc.gridy = 8;
+                    gbc.gridx = 0;
+                    reportPanel.add(chartPanel, gbc);
+
+
 
 
 
                     JOptionPane.showMessageDialog(
                             null,
                             reportPanel,
-                            "Dio",
+                            "Report Mensile - " + selectedMonthName,
                             JOptionPane.INFORMATION_MESSAGE
                     );
 
@@ -419,9 +509,9 @@ public class TransazioniGUI extends JFrame {
         column.setMinWidth(200);
 
         column = tabella.getColumnModel().getColumn(4);
-        column.setPreferredWidth(400);
-        column.setMaxWidth(400);
-        column.setMinWidth(400);
+        column.setPreferredWidth(350);
+        column.setMaxWidth(350);
+        column.setMinWidth(350);
 
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
@@ -484,7 +574,7 @@ public class TransazioniGUI extends JFrame {
         gbc.gridx = 0;
         gbc.insets = new Insets(5, 20, 20, 20);
         gbc.fill = GridBagConstraints.BOTH;
-        contentPane.add(chartPanel, gbc);
+        //contentPane.add(chartPanel, gbc);
 
         setContentPane(contentPane);
     }
@@ -544,6 +634,19 @@ public class TransazioniGUI extends JFrame {
         } catch (Exception e) {
             e.printStackTrace();
             fontRegularBold = null;
+        }
+    }
+
+    //Creazioned del fontRegularBold
+    private void fontRegularBoldSmall() {
+        try {
+            InputStream is = LoginViewGUI.class.getResourceAsStream("/FONT/Rubik-Bold.ttf"); // Sostituisci con il tuo percorso
+            fontRegularBoldSmall = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12f); // Modifica la dimensione a piacimento
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(fontRegularBoldSmall);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fontRegularBoldSmall = null;
         }
     }
 

@@ -423,6 +423,14 @@ public class Controller {
 
     }
 
+    public double totaleInviatoMensile(ContoCorrente conto, String mese){
+        return transazioneDAO.totaleInviatoMensile(conto, mese);
+    }
+
+    public double totaleRicevutoMensile(ContoCorrente conto, String mese){
+        return transazioneDAO.totaleRicevutoMensile(conto, mese);
+    }
+
     /**
      * Metodo che gestisce la visibilità della pagina di Login.
      * @param isVisibile setta la visibilità della pagina
