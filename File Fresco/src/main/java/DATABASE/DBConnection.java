@@ -25,12 +25,11 @@ public class DBConnection {
         if (conn == null || conn.isClosed()) {
             // Credenziali del database.
             String url = "jdbc:postgresql://localhost:5432/db_smu_v3";
-            String user = "postgres";
-            String password = "admin";
-
-//            String url = "jdbc:postgresql://localhost:5432/DB PROGETTO";
 //            String user = "postgres";
-//            String password = "3690";
+//            String password = "admin";
+//
+            String user = "postgres";
+            String password = "3690";
             // Stabilire una connessione al database.
             conn = DriverManager.getConnection(url, user, password);
         }
