@@ -2,23 +2,15 @@ package GUI;
 
 import CONTROLLER.Controller;
 import EXCEPTIONS.MyExc;
-import com.toedter.calendar.JCalendar;
-import com.toedter.calendar.JDateChooser;
 
+import com.toedter.calendar.*;
 import javax.swing.*;
-import javax.swing.border.MatteBorder;
+import javax.swing.border.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+import java.awt.event.*;
 import java.io.InputStream;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 public class SignInViewGUI extends JFrame {
 

@@ -5,8 +5,7 @@ import CONTROLLER.Controller;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.InputStream;
 
 public class HomePageGUI extends JFrame {

@@ -2,7 +2,7 @@ package GUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.RoundRectangle2D;
+
 
 public class RoundedPanel extends JPanel {
     private Color backgroundColor;
@@ -28,10 +28,5 @@ public class RoundedPanel extends JPanel {
             graphics.setColor(getBackground());
         }
         graphics.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, cornerRadius, cornerRadius);
-
-        // Se vuoi anche un bordo attorno al pannello, puoi disegnarlo qui
-        // Ad esempio, un bordo grigio:
-        // graphics.setColor(Color.GRAY);
-        // graphics.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, cornerRadius, cornerRadius);
     }
 }

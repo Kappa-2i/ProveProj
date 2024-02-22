@@ -54,7 +54,8 @@ public class Controller {
     }
 
     /**
-     * Metodo che controlla la validità dei campi email e password inseriti al momento del login. <br> In caso di successo viene visulalizzata la pagina Home, bisogna riporovare altrimenti.
+     * Metodo che controlla la validità dei campi email e password inseriti al momento del login.
+     * <br> In caso di successo viene visulalizzata la pagina Home, bisogna riporovare altrimenti.
      * @param email per controllare che l'email sia corretta.
      * @param password per controllare che la password sia corretta.
      * */
@@ -225,7 +226,6 @@ public class Controller {
         //Viene recuperata la carta associata al conto scelto.
         carta = cartaDAO.selectCard(contoScelto);
 
-        //System.out.println(contoScelto.toString());
         framePick(false);
         if(frameSalvadanaio != null)
             frameSalvadanaio(false);
@@ -412,7 +412,7 @@ public class Controller {
         //Vengono recuperati le transazioni associati al conto scelto.
         transazioni = transazioneDAO.selectTransazioniByIban(contoScelto);
         contoScelto.setTransazioni(transazioni);
-        System.out.println(contoScelto.toString());
+
         frameTransazioni = new TransazioniGUI(this);
         frameHome(false);
         frameTransazioni(true);

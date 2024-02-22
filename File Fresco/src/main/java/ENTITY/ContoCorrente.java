@@ -69,10 +69,4 @@ public class ContoCorrente {
         this.transazioni = transazioni;
     }
 
-    @Override
-    public String toString() {
-        return "ContoCorrente{" +
-                "transazioni=" + transazioni +
-                '}';
-    }
 }

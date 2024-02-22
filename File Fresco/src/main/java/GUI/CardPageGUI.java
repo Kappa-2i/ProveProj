@@ -111,8 +111,8 @@ public class CardPageGUI extends JFrame {
             }
         });
 
-        ImageIcon iconHiddenPassword = new ImageIcon(CardPageGUI.class.getResource("/IMG/hiddenpassword.png"));
-        ImageIcon iconShowedPassword = new ImageIcon(CardPageGUI.class.getResource("/IMG/showedpassword.png"));
+        ImageIcon iconHiddenPassword = new ImageIcon(CardPageGUI.class.getResource("/IMG/hidepass.png"));
+        ImageIcon iconShowedPassword = new ImageIcon(CardPageGUI.class.getResource("/IMG/showpass.png"));
 
         showPinCheckBox.setIcon(iconHiddenPassword);
         showPinCheckBox.setSelectedIcon(iconShowedPassword);
