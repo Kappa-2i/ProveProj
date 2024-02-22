@@ -509,9 +509,9 @@ public class TransazioniGUI extends JFrame {
         column.setMinWidth(200);
 
         column = tabella.getColumnModel().getColumn(4);
-        column.setPreferredWidth(350);
-        column.setMaxWidth(350);
-        column.setMinWidth(350);
+        column.setPreferredWidth(360);
+        column.setMaxWidth(360);
+        column.setMinWidth(360);
 
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
