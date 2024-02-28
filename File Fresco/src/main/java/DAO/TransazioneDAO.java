@@ -9,4 +9,5 @@ public interface TransazioneDAO {
     public Double[] viewReport(ContoCorrente conto, String mese);
     public double totaleInviatoMensile(ContoCorrente conto, String mese);
     public double totaleRicevutoMensile(ContoCorrente conto, String mese);
+    public String[] selectNameAndSurnameByIban(String iban);
 }

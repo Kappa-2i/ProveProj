@@ -19,7 +19,8 @@ public class TransazionaDAOImpl implements TransazioneDAO {
         String query = "SELECT t.importo, t.causale, t.datatransazione, t.orariotransazione, t.tipotransazione, t.iban1 " +
                 "FROM test.transazione t " +
                 "WHERE (t.iban2 = '" + conto.getIban() + "' AND t.tipotransazione = 'Invia a') " +
-                "OR (t.iban2 = '" + conto.getIban() + "' AND t.tipotransazione = 'Riceve da')";
+                "OR (t.iban2 = '" + conto.getIban() + "' AND t.tipotransazione = 'Riceve da') "+
+                "ORDER BY t.datatransazione DESC, t.orariotransazione DESC";
 
             try (Connection conn = DBConnection.getDBConnection().getConnection();  // Ottenimento della connessione al database
                  Statement statement = conn.createStatement()) {  // Creazione di un PreparedStatement
@@ -146,6 +147,36 @@ public class TransazionaDAOImpl implements TransazioneDAO {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    @Override
+    public String[] selectNameAndSurnameByIban(String iban) {
+        try (Connection conn = DBConnection.getDBConnection().getConnection()) {
+            // Prepara la query sostituendo i valori di iban e mese
+            String query = "SELECT test.account.nome, test.account.cognome " +
+                    "FROM test.transazione " +
+                    "JOIN test.contocorrente ON test.transazione.iban1 = test.contocorrente.iban " +
+                    "JOIN test.account ON test.contocorrente.Account_Email = test.account.email " +
+                    "WHERE test.transazione.iban1 = ?;";
+
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                // Imposta i parametri della query
+                pstmt.setString(1, iban);
+
+
+                // Esegue la query
+                ResultSet rs = pstmt.executeQuery();
+
+                // Processa i risultati
+                if (rs.next()) {
+                    String[] nomeCognomeIban = {rs.getString("nome"), rs.getString("cognome")};
+                    return nomeCognomeIban;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
 

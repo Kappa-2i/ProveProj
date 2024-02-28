@@ -59,7 +59,7 @@ public class LoginViewGUI extends JFrame{
 
         //Creazione di un JPanel 'PanelLoginRed' con BoxLayout
         JPanel panelLoginGreen = new JPanel(new BorderLayout());
-        panelLoginGreen.setBackground(new Color(37, 89, 87));
+        panelLoginGreen.setBackground(new Color(56, 134, 151, 255));
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.BOTH;

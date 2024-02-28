@@ -1,24 +1,26 @@
 package GUI;
 
 import CONTROLLER.Controller;
+import ENTITY.ContoCorrente;
 import ENTITY.Transazione;
-
-import org.jfree.chart.*;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
+
 import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.table.*;
+import javax.swing.border.MatteBorder;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.InputStream;
 import java.time.LocalDate;
-import java.util.*;
-import java.util.List;
+import java.util.Arrays;
 
-
-
-public class TransazioniGUI extends JFrame {
+public class Trans extends JFrame {
     private Controller controller;
     //Dichiarazioni Variabili per i Font
     private Font fontRegular;
@@ -30,8 +32,9 @@ public class TransazioniGUI extends JFrame {
     private Font fontRegularBoldSmall;
 
     private String monthNumber;
+    private JPanel panelCenter;
 
-    public TransazioniGUI(Controller controller){
+    public Trans(Controller controller) {
         this.controller = controller;
         setTitle("Le tue spese - S.M.U.");
         setVisible(true);
@@ -48,7 +51,6 @@ public class TransazioniGUI extends JFrame {
         fontRegularBoldSmall();
 
         Object[] optionsView = {"Visualizza", "Annulla"};
-
 
 
         // Creazione panello principale che contiene il tutto
@@ -70,17 +72,34 @@ public class TransazioniGUI extends JFrame {
         contentPane.add(panelTop, gbc);
 
 
-
         // Dichiarazione del pannello laterale sinistro con aggiunta dei constraints per posizionarlo
-        JPanel panelCenter = new JPanel(new GridBagLayout());
-        panelCenter.setBackground(new Color(37, 89, 87));
+        panelCenter = new JPanel(new GridBagLayout());
+        panelCenter.setBackground(new Color(246, 248, 255));
         gbc.gridwidth = 1;
         gbc.weighty = 0.95;
         gbc.weightx = 0.7;
         gbc.gridy = 1;
         gbc.gridx = 0;
         gbc.insets = new Insets(20, 20, 20, 20);
-        contentPane.add(panelCenter, gbc);
+
+        showTable();
+        // Creazione dello JScrollPane che conterrà panelSignIn
+        JScrollPane scrollPane = new JScrollPane(panelCenter);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+
+        // Impostazioni per gbc in modo che scrollPane si espanda correttamente
+        gbc.gridx = 0;
+        gbc.gridy = 1; // Assicurati che questo valore di gridy non confligga con altri componenti
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1.0;
+        gbc.weighty = 0.95; // Assegna più spazio a panelSignIn
+        gbc.insets = new Insets(0, 0, 0, 0);
+
+        // Aggiungi scrollPane a contentPane invece di panelSignIn
+        contentPane.add(scrollPane, gbc);
 
         // Dichiarazione dei componenti per il pannello superiore
         JLabel speseLabel = new JLabel("Le tue spese");
@@ -179,7 +198,7 @@ public class TransazioniGUI extends JFrame {
                         optionsView, // Array contenente le etichette dei pulsanti
                         optionsView[0] // Opzione di default
                 );
-                if (result == JOptionPane.YES_OPTION){
+                if (result == JOptionPane.YES_OPTION) {
 
 
                     String selectedMonthName = (String) monthsComboBox.getSelectedItem();
@@ -198,23 +217,23 @@ public class TransazioniGUI extends JFrame {
                     JLabel entrataMax = new JLabel("Entrata massima: ");
                     JLabel entraMaxValue = new JLabel(String.valueOf(controller.report[0]) + "€");
                     JLabel entrataMin = new JLabel("Entrata minima: ");
-                    JLabel entraMinValue = new JLabel(String.valueOf(controller.report[1])+ "€");
+                    JLabel entraMinValue = new JLabel(String.valueOf(controller.report[1]) + "€");
                     JLabel entrataMed = new JLabel("Entrata media: ");
                     JLabel entraMedValue = new JLabel(String.format("%.2f", controller.report[2]) + "€");
                     JLabel uscitaMax = new JLabel("Uscita massima: ");
-                    JLabel uscitaMaxValue = new JLabel(String.valueOf(controller.report[3])+ "€");
+                    JLabel uscitaMaxValue = new JLabel(String.valueOf(controller.report[3]) + "€");
                     JLabel uscitaMin = new JLabel("Uscita minima: ");
-                    JLabel uscitaMinValue = new JLabel(String.valueOf(controller.report[4])+ "€");
+                    JLabel uscitaMinValue = new JLabel(String.valueOf(controller.report[4]) + "€");
                     JLabel uscitaMed = new JLabel("Uscita media: ");
                     JLabel uscitaMedValue = new JLabel(String.format("%.2f", controller.report[5]) + "€");
 
                     double totaleInviatoMensile = controller.totaleInviatoMensile(controller.contoScelto, yearMonth);
                     double totaleRicevutoMensile = controller.totaleRicevutoMensile(controller.contoScelto, yearMonth);
                     JLabel totaleInviato = new JLabel("Totale inviato: ");
-                    JLabel totaleInviatoValue = new JLabel(String.valueOf(totaleInviatoMensile)+"€");
+                    JLabel totaleInviatoValue = new JLabel(String.valueOf(totaleInviatoMensile) + "€");
                     JLabel totaleRicevuto = new JLabel("Totale ricevuto: ");
-                    JLabel totaleRicevutoValue = new JLabel(String.valueOf(totaleRicevutoMensile)+"€");
-                    if (fontRegularBoldSmall!= null){
+                    JLabel totaleRicevutoValue = new JLabel(String.valueOf(totaleRicevutoMensile) + "€");
+                    if (fontRegularBoldSmall != null) {
                         entrataMax.setFont(fontRegularBoldSmall);
                         entrataMin.setFont(fontRegularBoldSmall);
                         entrataMed.setFont(fontRegularBoldSmall);
@@ -224,7 +243,7 @@ public class TransazioniGUI extends JFrame {
                         totaleInviato.setFont(fontRegularBoldSmall);
                         totaleRicevuto.setFont(fontRegularBoldSmall);
                     }
-                    if (fontRegularSmall!= null){
+                    if (fontRegularSmall != null) {
                         entraMaxValue.setFont(fontRegularSmall);
                         entraMinValue.setFont(fontRegularSmall);
                         entraMedValue.setFont(fontRegularSmall);
@@ -359,9 +378,6 @@ public class TransazioniGUI extends JFrame {
                     reportPanel.add(chartPanel, gbc);
 
 
-
-
-
                     JOptionPane.showMessageDialog(
                             null,
                             reportPanel,
@@ -413,181 +429,75 @@ public class TransazioniGUI extends JFrame {
         panelTop.add(buttonHome, gbc);
 
 
-        /**
-         * Definizione della JTable con le informazioni di tutti i salvadanai del conto
-         * */
-
-
-        // Colonne della tabella
-        String[] colonne = {"Importo", "Causale", "Data", "Orario", "Iban"};
-
-        // Modello di tabella predefinito con celle non editabili
-        DefaultTableModel modello = new DefaultTableModel(colonne, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false; // Rende tutte le celle non editabili
-            }
-        };
-
-        // Aggiungere i dati del salvadanaio al modello
-        for(Transazione transazione : controller.transazioni){
-            String importo;
-            if(transazione.getTipoTransazione().equals("Invia a")){
-                importo = "-"+transazione.getImporto()+"€";
-            }else {
-                importo = "+"+transazione.getImporto()+"€";
-            }
-            Object[] riga = {importo,
-                    transazione.getCausale(),
-                    transazione.getDataTransazione(),
-                    transazione.getOrarioTransazione(),
-                    transazione.getIban()
-            };
-            modello.addRow(riga);
-        }
-
-
-        // Creare la tabella con il modello
-        JTable tabella = new JTable(modello);
-        tabella.getTableHeader().setFont(fontRegularBold);
-        tabella.getTableHeader().setBackground(new Color(246, 248, 255));
-        tabella.setFont(fontRegular);
-        tabella.setRowHeight(50);
-        tabella.setForeground(Color.BLACK);
-        tabella.setBackground(new Color(246, 248, 255));
-
-
-
-
-        // Creiamo lo scrollPane che contiene la tabella
-        JScrollPane scrollPane = new JScrollPane(tabella);
-        scrollPane.getViewport().setBackground(new Color(246, 248, 255)); // Sostituisci Color.LIGHT_GRAY con il colore desiderato
-        scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
-        TableRowSorter<TableModel> sorter = new TableRowSorter<>(tabella.getModel());
-        tabella.setRowSorter(sorter);
-
-        // Assumendo che "DataOra" sia nella quarta colonna (indice 3) del modello
-        List<RowSorter.SortKey> sortKeys = new ArrayList<>();
-        sortKeys.add(new RowSorter.SortKey(2, SortOrder.DESCENDING)); // Ordina per "Data" in ordine decrescente
-        sortKeys.add(new RowSorter.SortKey(3, SortOrder.DESCENDING)); // Ordina per "Ora" in ordine decrescente
-        sorter.setSortKeys(sortKeys);
-
-
-        // Renderer centrato con bordi per le celle
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                c.setBackground(new Color(246, 248, 255));
-                c.setForeground(Color.BLACK);
-                setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(246, 248, 255)));
-                setHorizontalAlignment(JLabel.CENTER);
-
-                // Alterna i colori delle righe tra verde e rosso
-                if (!isSelected) { // Controlla che la riga non sia selezionata
-                    if (row % 2 == 0) {
-                        c.setBackground(new Color(241, 249, 249)); // Riga pari, colora di verde
-                    } else {
-                        c.setBackground(new Color(226, 243, 242)); // Riga dispari, colora di rosso
-                    }
-                } else {
-                    // Per le righe selezionate, usa un colore di sfondo differente (opzionale)
-                    c.setBackground(table.getSelectionBackground());
-                }
-
-                return c;
-            }
-        };
-
-        // Applica il renderer a tutte le colonne della tabella
-        for (int i = 0; i < tabella.getColumnCount(); i++) {
-            tabella.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-        }
-
-        TableColumn column = tabella.getColumnModel().getColumn(0);
-        column.setPreferredWidth(200);
-        column.setMaxWidth(200);
-        column.setMinWidth(200);
-
-        column = tabella.getColumnModel().getColumn(1);
-        column.setPreferredWidth(400);
-        column.setMaxWidth(400);
-        column.setMinWidth(400);
-
-        column = tabella.getColumnModel().getColumn(2);
-        column.setPreferredWidth(200);
-        column.setMaxWidth(200);
-        column.setMinWidth(200);
-
-        column = tabella.getColumnModel().getColumn(3);
-        column.setPreferredWidth(200);
-        column.setMaxWidth(200);
-        column.setMinWidth(200);
-
-        column = tabella.getColumnModel().getColumn(4);
-        column.setPreferredWidth(360);
-        column.setMaxWidth(360);
-        column.setMinWidth(360);
-
-        gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.weighty = 1;
-        gbc.weightx = 1;
-        //panelCenter.add(scrollPane, gbc);
-
-
-        double entrateTotali = 0.0;
-        double usciteTotali = 0.0;
-
-        // Itera sulle righe del modello della tabella
-        for (int i = 0; i < modello.getRowCount(); i++) {
-            String importoConSegno = (String) modello.getValueAt(i, 0); // Assumendo che la colonna 0 contenga gli importi
-            double importo = Double.parseDouble(importoConSegno.replace("€", "").trim());
-
-            // Controlla il segno dell'importo e aggiorna le entrate/uscite totali
-            if (importoConSegno.contains("+")) {
-                entrateTotali += importo;
-            } else if (importoConSegno.contains("-")) {
-                usciteTotali += Math.abs(importo); // Usa Math.abs per convertire in valore positivo
-            }
-        }
-
-        DefaultPieDataset dataset = new DefaultPieDataset();
-
-
-        dataset.setValue("Entrate", entrateTotali);
-        dataset.setValue("Uscite", usciteTotali);
-
-        JFreeChart chart = ChartFactory.createPieChart(
-                "Rapporto Entrate/Uscite", // chart title
-                 dataset, // data
-                true, // include legend
-                true,
-                false);
-        chart.setBackgroundPaint(new Color(246, 248, 255)); // Cambia il colore di sfondo dell'intero grafico
-
-
-        PiePlot plot = (PiePlot) chart.getPlot();
-        plot.setSectionPaint("Entrate", new Color(154, 205, 50)); // Colore verde
-        plot.setSectionPaint("Uscite", new Color(255, 69, 0)); // Colore rosso
-        plot.setExplodePercent("Uscite", 0.1); // Evidenzia le uscite
-        plot.setBackgroundPaint(new Color(246, 248, 255));
-        plot.setOutlinePaint(new Color(246, 248, 255));
-
-
-        ChartPanel chartPanel = new ChartPanel(chart);
-        chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-        chartPanel.setBackground(new Color(246, 248, 255));
-
-
 
         setContentPane(contentPane);
     }
 
+    public void showTable(){
+
+        if(!controller.transazioni.isEmpty()){
+            int y = 0;
+            for (Transazione transazione : controller.transazioni) {
+                RoundedPanel cardBank = new RoundedPanel(100, new Color(246, 248, 255));
+                cardBank.setLayout(new GridBagLayout());
 
 
+                JLabel haiInviatoLabel = new JLabel(String.format("Hai inviato %.2f€ a", transazione.getImporto()));
+                JLabel haiRicevutoLabel = new JLabel(String.format("Hai ricevuto %.2f€ da", transazione.getImporto()));
+                controller.selectNameAndSurnameByIban(transazione.getIban());
+                JLabel ibanLabel = new JLabel(Arrays.toString(controller.credenzialiIbanMittDest));
+                JLabel causaleLabel = new JLabel("Causale: " + transazione.getCausale());
+                JLabel dataLabel = new JLabel(transazione.getDataTransazione() + ", " + transazione.getOrarioTransazione());
+
+                if(fontRegularBold != null){
+                    haiInviatoLabel.setFont(fontRegularBold);
+                    haiRicevutoLabel.setFont(fontRegularBold);
+                }
+                if(fontRegularSmall != null){
+                    causaleLabel.setFont(fontRegular);
+                    dataLabel.setFont(fontRegular);
+                }
 
 
+                // Aggiungi le etichette al cardBank
+                GridBagConstraints gbc = new GridBagConstraints();
+
+                if(transazione.getTipoTransazione().equals("Invia a")) {
+                    gbc.insets = new Insets(20, 20, 20, 20);
+                    haiInviatoLabel.setForeground(new Color(145, 57, 57));
+
+                    cardBank.add(haiInviatoLabel, gbc);
+                    gbc.gridy = 1;
+                    cardBank.add(ibanLabel,gbc);
+                }
+                else {
+                    gbc.insets = new Insets(20, 20, 20, 20);
+                    haiRicevutoLabel.setForeground(new Color(37, 89, 87));
+                    cardBank.add(haiRicevutoLabel, gbc);
+
+                    gbc.gridy = 1;
+                    cardBank.add(ibanLabel,gbc);
+                }
+
+
+                cardBank.add(causaleLabel, gbc);
+                cardBank.add(dataLabel, gbc);
+
+
+                // Aggiungi il cardBank al panelCenter
+                gbc = new GridBagConstraints();
+                gbc.insets = new Insets(20,100,20,100);
+                gbc.gridy = y++;
+                gbc.gridx = 0;
+                gbc.fill = GridBagConstraints.HORIZONTAL;
+                gbc.gridwidth = GridBagConstraints.REMAINDER;
+                gbc.weightx = 0.5;
+                gbc.weighty = 1.0;
+                panelCenter.add(cardBank, gbc);
+
+            }
+        }
+    }
 
 
     //Creazione del fontExtraBold
@@ -681,3 +591,4 @@ public class TransazioniGUI extends JFrame {
         }
     }
 }
+

@@ -21,6 +21,7 @@ public class Controller {
     private CardPageGUI frameCard;
     private SalvadanaioGUI frameSalvadanaio;
     private TransazioniGUI frameTransazioni;
+    private Trans trans;
 
     //Dichiarazioni delle Dao
     private AccountDAO accountDao;
@@ -37,6 +38,7 @@ public class Controller {
     public ArrayList<Salvadanaio> salvadanai = null;
     public ArrayList<Transazione> transazioni = null;
     public Double[] report = null;
+    public String[] credenzialiIbanMittDest = null;
 
     public Controller() {
         frameLogin = new LoginViewGUI(this); //LoginView accetta ControllerLogin come parametro
@@ -385,9 +387,17 @@ public class Controller {
         transazioni = transazioneDAO.selectTransazioniByIban(contoScelto);
         contoScelto.setTransazioni(transazioni);
 
-        frameTransazioni = new TransazioniGUI(this);
+//        frameTransazioni = new TransazioniGUI(this);
+//        frameHome(false);
+//        frameTransazioni(true);
+
+        trans = new Trans(this);
         frameHome(false);
-        frameTransazioni(true);
+        trans.setVisible(true);
+    }
+
+    public void selectNameAndSurnameByIban(String iban){
+        credenzialiIbanMittDest = transazioneDAO.selectNameAndSurnameByIban(iban);
     }
 
     public void viewReport(ContoCorrente conto, String mese){

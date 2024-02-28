@@ -242,19 +242,18 @@ public class BankAccountPickViewGUI extends JFrame {
                         addComponent(numberIbanLabel).addComponent(numberSaldoLabel));
                 glBankAccount.setHorizontalGroup(hGroup);
 
-                    GroupLayout.SequentialGroup vGroup = glBankAccount.createSequentialGroup();
+                GroupLayout.SequentialGroup vGroup = glBankAccount.createSequentialGroup();
 
-                    vGroup.addGroup(glBankAccount.createParallelGroup(GroupLayout.Alignment.BASELINE).
-                            addComponent(ibanLabel).addComponent(numberIbanLabel));
-                    vGroup.addGroup(glBankAccount.createParallelGroup(GroupLayout.Alignment.BASELINE).
-                            addComponent(saldoLabel).addComponent(numberSaldoLabel));
-                    glBankAccount.setVerticalGroup(vGroup);
+                vGroup.addGroup(glBankAccount.createParallelGroup(GroupLayout.Alignment.BASELINE).
+                        addComponent(ibanLabel).addComponent(numberIbanLabel));
+                vGroup.addGroup(glBankAccount.createParallelGroup(GroupLayout.Alignment.BASELINE).
+                        addComponent(saldoLabel).addComponent(numberSaldoLabel));
+                glBankAccount.setVerticalGroup(vGroup);
 
-                    cardBank.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                    cardBank.addMouseListener(new MouseAdapter() {
+                cardBank.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                cardBank.addMouseListener(new MouseAdapter() {
                         @Override
-                        public void mouseClicked(MouseEvent e) {
-                            controller.showHomePage(conto);
+                        public void mouseClicked(MouseEvent e) {controller.showHomePage(conto);
                         }
 
                     });
@@ -315,7 +314,6 @@ public class BankAccountPickViewGUI extends JFrame {
 
                     GroupLayout.SequentialGroup hGroup2 = glAddBank.createSequentialGroup();
                     GroupLayout.SequentialGroup vGroup2 = glAddBank.createSequentialGroup();
-
 
 
                     hGroup2.addGroup(glAddBank.createParallelGroup().
