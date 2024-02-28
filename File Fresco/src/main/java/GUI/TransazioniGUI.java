@@ -140,10 +140,14 @@ public class TransazioniGUI extends JFrame {
                 String[] mesi = {"Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno",
                         "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"};
 
-                JLabel selezionaLabel = new JLabel("Seleziona mese: ");
 
                 // Crea la JComboBox utilizzando l'array dei mesi
                 JComboBox<String> monthsComboBox = new JComboBox<>(mesi);
+
+                // Imposta un'opzione di default
+                int selectedIndex = 0;
+                // Calcola il numero del mese come stringa, aggiungendo uno zero davanti se necessario
+                monthNumber = String.format("%02d", selectedIndex + 1);
 
                 // Listener per gestire la selezione dell'utente
                 monthsComboBox.addActionListener(new ActionListener() {
@@ -157,14 +161,9 @@ public class TransazioniGUI extends JFrame {
                 });
 
                 GridBagConstraints gbc = new GridBagConstraints();
-                gbc.fill = GridBagConstraints.BOTH;
-                gbc.weightx = 0.3;
-                gbc.gridy = 0;
-                gbc.gridx = 0;
-                statsPanel.add(selezionaLabel, gbc);
                 gbc.gridwidth = 2;
                 gbc.weightx = 0.6;
-                gbc.gridy = 1;
+                gbc.gridy = 0;
                 gbc.gridx = 0;
                 statsPanel.add(monthsComboBox, gbc);
 
@@ -181,14 +180,16 @@ public class TransazioniGUI extends JFrame {
                         optionsView[0] // Opzione di default
                 );
                 if (result == JOptionPane.YES_OPTION){
-                    String selectedMonthName = (String) monthsComboBox.getSelectedItem();
 
+
+                    String selectedMonthName = (String) monthsComboBox.getSelectedItem();
 
                     // Ottieni l'anno corrente
                     String currentYear = String.valueOf(LocalDate.now().getYear());
 
                     // Combina l'anno e il mese nel formato YYYY-MM
                     String yearMonth = currentYear + "-" + monthNumber;
+
                     controller.viewReport(controller.contoScelto, yearMonth);
 
 
@@ -251,8 +252,8 @@ public class TransazioniGUI extends JFrame {
 
 
                     PiePlot plot = (PiePlot) chart.getPlot();
-                    plot.setSectionPaint("Entrate", new Color(154, 205, 50)); // Colore verde
-                    plot.setSectionPaint("Uscite", new Color(255, 69, 0)); // Colore rosso
+                    plot.setSectionPaint("Entrate", new Color(37, 89, 87)); // Colore verde
+                    plot.setSectionPaint("Uscite", new Color(145, 57, 57)); // Colore rosso
                     plot.setExplodePercent("Entrate", 0.1); // Evidenzia le entrate
                     plot.setBackgroundPaint(new Color(238, 238, 238));
                     plot.setOutlinePaint(new Color(238, 238, 238));
@@ -450,10 +451,12 @@ public class TransazioniGUI extends JFrame {
         tabella.getTableHeader().setFont(fontRegularBold);
         tabella.getTableHeader().setBackground(new Color(246, 248, 255));
         tabella.setFont(fontRegular);
-        tabella.setRowHeight(70);
-        tabella.setForeground(Color.WHITE);
-        tabella.setBackground(new Color(37, 89, 87));
-        tabella.setTableHeader(null);
+        tabella.setRowHeight(50);
+        tabella.setForeground(Color.BLACK);
+        tabella.setBackground(new Color(246, 248, 255));
+
+
+
 
         // Creiamo lo scrollPane che contiene la tabella
         JScrollPane scrollPane = new JScrollPane(tabella);
@@ -469,11 +472,33 @@ public class TransazioniGUI extends JFrame {
         sorter.setSortKeys(sortKeys);
 
 
-        // Renderer centrato per le celle
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        // Renderer centrato con bordi per le celle
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                c.setBackground(new Color(246, 248, 255));
+                c.setForeground(Color.BLACK);
+                setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(246, 248, 255)));
+                setHorizontalAlignment(JLabel.CENTER);
 
-        // Applicare il renderer a tutte le celle per centrare il testo
+                // Alterna i colori delle righe tra verde e rosso
+                if (!isSelected) { // Controlla che la riga non sia selezionata
+                    if (row % 2 == 0) {
+                        c.setBackground(new Color(241, 249, 249)); // Riga pari, colora di verde
+                    } else {
+                        c.setBackground(new Color(226, 243, 242)); // Riga dispari, colora di rosso
+                    }
+                } else {
+                    // Per le righe selezionate, usa un colore di sfondo differente (opzionale)
+                    c.setBackground(table.getSelectionBackground());
+                }
+
+                return c;
+            }
+        };
+
+        // Applica il renderer a tutte le colonne della tabella
         for (int i = 0; i < tabella.getColumnCount(); i++) {
             tabella.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }

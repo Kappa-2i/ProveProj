@@ -24,7 +24,6 @@ public class Controller {
 
     //Dichiarazioni delle Dao
     private AccountDAO accountDao;
-    private PersonaDAO personaDao;
     private ContoCorrenteDAO contoCorrenteDAO;
     private CartaDAO cartaDAO;
     private SalvadanaioDAO salvadanaioDAO;
@@ -32,7 +31,6 @@ public class Controller {
 
     //Dichiarazione delle variabili
     public Account account = null;
-    public Persona persona = null;
     public ArrayList<ContoCorrente> conti = null;
     public ContoCorrente contoScelto = null;
     public Carta carta = null;
@@ -46,7 +44,6 @@ public class Controller {
 
         //DAO
         this.accountDao = new AccountDAOImpl();
-        this.personaDao = new PersonaDAOImpl();
         this.contoCorrenteDAO = new ContoCorrenteDAOImpl();
         this.cartaDAO = new CartaDAOImpl();
         this.salvadanaioDAO = new SalvadanaioDAOImpl();
@@ -63,8 +60,6 @@ public class Controller {
         if((!email.isEmpty()) && (!password.isEmpty())){
             account = accountDao.checkCredentials(email.toLowerCase(), password);
             if (account != null){
-                persona = personaDao.selectPersonaFromEmail(email.toLowerCase());
-                account.setPersona(persona);
                 frameLogin(false);
                 showPickFrame();
             }
@@ -101,50 +96,22 @@ public class Controller {
         framePick(true);
     }
 
-    /**
-     * Metodo che permette di gestire la creazione di un una nuovo Utente, aggiornando il database.*/
-    public void insertUser(String nome, String cognome, String telefono, String dataNascita, String citta, String via, String nCivico, String cap, String codiceFiscale, String email, String password, String username) throws MyExc {
-        if (!nome.isEmpty() && !cognome.isEmpty() && !telefono.isEmpty() && !citta.isEmpty() && !via.isEmpty() && !nCivico.isEmpty() && !cap.isEmpty() && !codiceFiscale.isEmpty()){
-           try {
-               Persona personaInserita = new Persona(nome, cognome, telefono, dataNascita, citta, via, nCivico, cap, codiceFiscale);
-               Account accountInserito = new Account(email, password, username);
 
-               if (personaDao.insertUser(nome, cognome, telefono, dataNascita, citta, via, nCivico, cap, codiceFiscale)){
-                   JOptionPane.showMessageDialog(
-                           frameSignIn,
-                           "Dati della persona inseriti!",
-                           "Benvenuta/o",
-                           JOptionPane.INFORMATION_MESSAGE);
-                   insertAccount(email, password, username, codiceFiscale);
-               }
-               else {
-                   JOptionPane.showMessageDialog(
-                           frameSignIn,
-                           "Credenziali già esistenti!",
-                           "Errore",
-                           JOptionPane.ERROR_MESSAGE);
-               }
-           } catch (MyExc e){
-               JOptionPane.showMessageDialog(
-                       frameSignIn,
-                       e.getMessage(),
-                       "Errore",
-                       JOptionPane.ERROR_MESSAGE);
-           }
+
+    public void insertAccount(String email, String password, String name, String surname){
+        try{
+            account = new Account(email, password, name, surname);
         }
-        else{
+        catch (MyExc exc){
             JOptionPane.showMessageDialog(
                     frameSignIn,
-                    "Inserisci delle credenziali valide!",
+                    "L'email deve contenere una '@'!",
                     "Errore",
                     JOptionPane.ERROR_MESSAGE);
         }
-    }
 
-    public void insertAccount(String email, String nomeUtente, String password, String codiceFiscale){
-
-        if (!email.isEmpty() && !nomeUtente.isEmpty() && !password.isEmpty() && !codiceFiscale.isEmpty()) {
-                accountDao.insertAccount(email, nomeUtente, password, codiceFiscale);
+        if (!email.isEmpty() && !password.isEmpty() && !name.isEmpty() && !surname.isEmpty()) {
+                accountDao.insertAccount(email, password, name, surname);
                 JOptionPane.showMessageDialog(
                         frameSignIn,
                         "Dati dell'account inseriti!",
@@ -163,8 +130,7 @@ public class Controller {
     public boolean confirmedPassword(String password, String confirmedPassword){
         if (password.equals(confirmedPassword))
             return true;
-        else
-            return false;
+        return false;
     }
 
     /**
@@ -243,8 +209,14 @@ public class Controller {
         if (contoScelto!= null)
             contoScelto = null;
 
-        framePick(false);
-        frameHome(false);
+
+        if(framePick != null)
+            framePick(false);
+        if(frameHome != null)
+            frameHome(false);
+        if(frameSignIn != null)
+            frameSignIn(false);
+
         frameLogin(true);
     }
     /**

@@ -11,23 +11,18 @@ public class Account {
     //Attributi
     private String email;
     private String password;
-    private String nomeutente;
-    private Persona persona;
+    private String name;
+    private String surname;
     private ArrayList<ContoCorrente> conti;
 
     //Costruttori
-    public Account(String email, String password, String nomeutente) throws MyExc {
+    public Account(String email, String password, String name, String surname) throws MyExc {
         setEmail(email);
         setPassword(password);
-        setNomeutente(nomeutente);
+        setName(name);
+        setSurname(surname);
     }
 
-    public Account(String email, String password, String nomeutente, Persona persona) throws MyExc {
-        setEmail(email);
-        setPassword(password);
-        setNomeutente(nomeutente);
-        setPersona(persona);
-    }
 
     //Getter e Setter
     public Account(ArrayList<ContoCorrente> conti) {
@@ -54,20 +49,20 @@ public class Account {
         this.password = password;
     }
 
-    public String getNomeutente() {
-        return nomeutente;
+    public String getName() {
+        return name;
     }
 
-    public void setNomeutente(String nomeutente) {
-        this.nomeutente = nomeutente;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Persona getPersona() {
-        return persona;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setPersona(Persona persona) {
-        this.persona = persona;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public ArrayList<ContoCorrente> getConti() {
@@ -89,10 +84,5 @@ public class Account {
         return count;
     }
 
-    @Override
-    public String toString() {
-        return "Account{" +
-                "persona=" + persona +
-                '}';
-    }
+
 }

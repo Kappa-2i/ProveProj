@@ -55,7 +55,7 @@ public class CardPageGUI extends JFrame {
         JLabel titolareLabel = new JLabel("Titolare");
         titolareLabel.setForeground(new Color(246, 248, 255));
 
-        JLabel nomeTitolareLabel = new JLabel(controller.persona.getNome() +" "+controller.persona.getCognome());
+        JLabel nomeTitolareLabel = new JLabel(controller.account.getName() +" "+controller.account.getSurname());
         nomeTitolareLabel.setForeground(new Color(246, 248, 255));
 
 

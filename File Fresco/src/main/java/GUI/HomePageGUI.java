@@ -163,11 +163,9 @@ public class HomePageGUI extends JFrame {
                 ImageIcon iconInformation = new ImageIcon(HomePageGUI.class.getResource("/IMG/information.png"));
                 JOptionPane.showMessageDialog(
                         null,
-                        "<html><b>Nome: </b>" +controller.persona.getNome() +"</html>"+
-                        "\n<html><b>Cognome: </b>: " +controller.persona.getCognome() +"</html>"+
-                        "\n<html><b>Data di Nascita: </b>: " +controller.persona.getDataNascita() + "</html>"+
-                        "\n<html><b>Codice Fiscale: </b>: " +controller.persona.getCodiceFiscale() + "</html>" +
-                                "\n<html><b>Numero Telefono: </b>: " +controller.persona.getNumeroTelefono() + "</html>",
+                        "<html><b>Nome: </b> " +controller.account.getName() +"</html>"+
+                        "\n<html><b>Cognome: </b> " +controller.account.getSurname() +"</html>"+
+                        "\n<html><b>E-mail: </b> " +controller.account.getEmail() + "</html>",
                         "Informazioni profilo",
                         JOptionPane.PLAIN_MESSAGE,
                         iconInformation

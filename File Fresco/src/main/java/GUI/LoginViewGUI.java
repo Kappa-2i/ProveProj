@@ -7,6 +7,7 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.InputStream;
+import java.sql.SQLException;
 
 public class LoginViewGUI extends JFrame{
 
@@ -22,8 +23,7 @@ public class LoginViewGUI extends JFrame{
     public LoginViewGUI(Controller controller){
         this.controller = controller;
         setTitle("Login Page");
-        setSize(1400, 800);
-        setMinimumSize(new Dimension(600, 600));
+        setSize(1000, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -198,7 +198,7 @@ public class LoginViewGUI extends JFrame{
 
             @Override
             public void mouseClicked(MouseEvent e){
-                //controller.showFrameSignIn();
+                controller.showFrameSignIn();
             }
         });
 
@@ -252,13 +252,13 @@ public class LoginViewGUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 //Chiamiamo la funzione checkCredentials dal controller passandogli i dati inseriti
-//                try {
-//                    controller.checkCredentials(emailField.getText(), passwordField.getText());
-//                    emailField.setText("");
-//                    passwordField.setText("");
-//                } catch (SQLException ex) {
-//                    throw new RuntimeException(ex);
-//                }
+                try {
+                    controller.checkCredentials(emailField.getText(), passwordField.getText());
+                    emailField.setText("");
+                    passwordField.setText("");
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         gbc.gridy = 9;

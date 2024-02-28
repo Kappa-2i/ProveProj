@@ -47,15 +47,15 @@ public class TransazionaDAOImpl implements TransazioneDAO {
     public Double[] viewReport(ContoCorrente conto, String mese){
         try (Connection conn = DBConnection.getDBConnection().getConnection()) {
             // Prepara la query sostituendo i valori di iban e mese
-            String query = "SELECT"
-                    + " CAST(MAX(CASE WHEN t.tipotransazione = 'Invia a' THEN t.importo END) AS double precision) AS entrata_massima,"
-                    + " CAST(MIN(CASE WHEN t.tipotransazione = 'Invia a' THEN t.importo END) AS double precision) AS entrata_minima,"
-                    + " CAST(AVG(CASE WHEN t.tipotransazione = 'Invia a' THEN t.importo END) AS double precision) AS entrata_media,"
-                    + " CAST(MAX(CASE WHEN t.tipotransazione = 'Riceve da' THEN t.importo END) AS double precision) AS uscita_massima,"
-                    + " CAST(MIN(CASE WHEN t.tipotransazione = 'Riceve da' THEN t.importo END) AS double precision) AS uscita_minima,"
-                    + " CAST(AVG(CASE WHEN t.tipotransazione = 'Riceve da' THEN t.importo END) AS double precision) AS uscita_media"
+            String query = "SELECT "
+                    + " CAST(MAX(CASE WHEN t.tipotransazione = 'Invia a' THEN t.importo END) AS double precision) AS uscita_massima,"
+                    + " CAST(MIN(CASE WHEN t.tipotransazione = 'Invia a' THEN t.importo END) AS double precision) AS uscita_minima,"
+                    + " CAST(AVG(CASE WHEN t.tipotransazione = 'Invia a' THEN t.importo END) AS double precision) AS uscita_media,"
+                    + " CAST(MAX(CASE WHEN t.tipotransazione = 'Riceve da' THEN t.importo END) AS double precision) AS entrata_massima,"
+                    + " CAST(MIN(CASE WHEN t.tipotransazione = 'Riceve da' THEN t.importo END) AS double precision) AS entrata_minima,"
+                    + " CAST(AVG(CASE WHEN t.tipotransazione = 'Riceve da' THEN t.importo END) AS double precision) AS entrata_media"
                     + " FROM test.transazione t"
-                    + " WHERE (t.iban1 = ?)"
+                    + " WHERE (t.iban2 = ?)"
                     + " AND t.datatransazione BETWEEN TO_DATE(? || '-01', 'YYYY-MM-DD') AND (TO_DATE(? || '-01', 'YYYY-MM-DD') + INTERVAL '1 MONTH' - INTERVAL '1 day')::DATE";
 
             try (PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -73,8 +73,8 @@ public class TransazionaDAOImpl implements TransazioneDAO {
                             rs.getDouble("entrata_minima"),
                             rs.getDouble("entrata_media"),
                             rs.getDouble("uscita_massima"),
-                            rs.getDouble("uscita_massima"),
-                            rs.getDouble("uscita_massima")};
+                            rs.getDouble("uscita_minima"),
+                            rs.getDouble("uscita_media")};
                     return report;
                 }
             }
