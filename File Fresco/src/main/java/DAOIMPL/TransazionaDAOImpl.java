@@ -107,7 +107,6 @@ public class TransazionaDAOImpl implements TransazioneDAO {
                 // Processa i risultati
                 if (rs.next()) {
                     Double totaleInviato = rs.getDouble("totale_inviato");
-                    System.out.println(rs.getDouble("totale_inviato"));
                     return totaleInviato;
                 }
             }
@@ -139,7 +138,6 @@ public class TransazionaDAOImpl implements TransazioneDAO {
                 // Processa i risultati
                 if (rs.next()) {
                     Double totaleRicevuto = rs.getDouble("totale_ricevuto");
-                    System.out.println(rs.getDouble("totale_ricevuto"));
                     return totaleRicevuto;
                 }
             }
@@ -150,14 +148,14 @@ public class TransazionaDAOImpl implements TransazioneDAO {
     }
 
     @Override
-    public String[] selectNameAndSurnameByIban(String iban) {
+    public String selectNameAndSurnameByIban(String iban) {
         try (Connection conn = DBConnection.getDBConnection().getConnection()) {
             // Prepara la query sostituendo i valori di iban e mese
             String query = "SELECT test.account.nome, test.account.cognome " +
                     "FROM test.transazione " +
                     "JOIN test.contocorrente ON test.transazione.iban1 = test.contocorrente.iban " +
                     "JOIN test.account ON test.contocorrente.Account_Email = test.account.email " +
-                    "WHERE test.transazione.iban1 = ?;";
+                    "WHERE test.transazione.iban1 = ?";
 
             try (PreparedStatement pstmt = conn.prepareStatement(query)) {
                 // Imposta i parametri della query
@@ -169,7 +167,7 @@ public class TransazionaDAOImpl implements TransazioneDAO {
 
                 // Processa i risultati
                 if (rs.next()) {
-                    String[] nomeCognomeIban = {rs.getString("nome"), rs.getString("cognome")};
+                    String nomeCognomeIban = rs.getString("nome")+" "+rs.getString("cognome");
                     return nomeCognomeIban;
                 }
             }

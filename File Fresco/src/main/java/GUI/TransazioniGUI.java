@@ -116,7 +116,7 @@ public class TransazioniGUI extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 setVisible(false);
-                controller.showHomePage(controller.contoScelto);
+                controller.showHomePage(controller.getContoScelto());
             }
         });
 
@@ -190,26 +190,26 @@ public class TransazioniGUI extends JFrame {
                     // Combina l'anno e il mese nel formato YYYY-MM
                     String yearMonth = currentYear + "-" + monthNumber;
 
-                    controller.viewReport(controller.contoScelto, yearMonth);
+                    controller.viewReport(controller.getContoScelto(), yearMonth);
 
 
                     JPanel reportPanel = new JPanel(new GridBagLayout());
 
                     JLabel entrataMax = new JLabel("Entrata massima: ");
-                    JLabel entraMaxValue = new JLabel(String.valueOf(controller.report[0]) + "€");
+                    JLabel entraMaxValue = new JLabel(String.valueOf(controller.getReport()[0]) + "€");
                     JLabel entrataMin = new JLabel("Entrata minima: ");
-                    JLabel entraMinValue = new JLabel(String.valueOf(controller.report[1])+ "€");
+                    JLabel entraMinValue = new JLabel(String.valueOf(controller.getReport()[1]) + "€");
                     JLabel entrataMed = new JLabel("Entrata media: ");
-                    JLabel entraMedValue = new JLabel(String.format("%.2f", controller.report[2]) + "€");
+                    JLabel entraMedValue = new JLabel(String.format("%.2f", controller.getReport()[2]) + "€");
                     JLabel uscitaMax = new JLabel("Uscita massima: ");
-                    JLabel uscitaMaxValue = new JLabel(String.valueOf(controller.report[3])+ "€");
+                    JLabel uscitaMaxValue = new JLabel(String.valueOf(controller.getReport()[3]) + "€");
                     JLabel uscitaMin = new JLabel("Uscita minima: ");
-                    JLabel uscitaMinValue = new JLabel(String.valueOf(controller.report[4])+ "€");
+                    JLabel uscitaMinValue = new JLabel(String.valueOf(controller.getReport()[4]) + "€");
                     JLabel uscitaMed = new JLabel("Uscita media: ");
-                    JLabel uscitaMedValue = new JLabel(String.format("%.2f", controller.report[5]) + "€");
+                    JLabel uscitaMedValue = new JLabel(String.format("%.2f", controller.getReport()[5]) + "€");
 
-                    double totaleInviatoMensile = controller.totaleInviatoMensile(controller.contoScelto, yearMonth);
-                    double totaleRicevutoMensile = controller.totaleRicevutoMensile(controller.contoScelto, yearMonth);
+                    double totaleInviatoMensile = controller.totaleInviatoMensile(controller.getContoScelto(), yearMonth);
+                    double totaleRicevutoMensile = controller.totaleRicevutoMensile(controller.getContoScelto(), yearMonth);
                     JLabel totaleInviato = new JLabel("Totale inviato: ");
                     JLabel totaleInviatoValue = new JLabel(String.valueOf(totaleInviatoMensile)+"€");
                     JLabel totaleRicevuto = new JLabel("Totale ricevuto: ");
@@ -430,7 +430,7 @@ public class TransazioniGUI extends JFrame {
         };
 
         // Aggiungere i dati del salvadanaio al modello
-        for(Transazione transazione : controller.transazioni){
+        for(Transazione transazione : controller.getTransazioni()){
             String importo;
             if(transazione.getTipoTransazione().equals("Invia a")){
                 importo = "-"+transazione.getImporto()+"€";

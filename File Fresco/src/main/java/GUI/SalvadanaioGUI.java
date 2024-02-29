@@ -65,7 +65,7 @@ public class SalvadanaioGUI extends JFrame {
 
         // Dichiarazione del pannello laterale sinistro con aggiunta dei constraints per posizionarlo
         JPanel panelCenter = new JPanel(new GridBagLayout());
-        panelCenter.setBackground(new Color(37, 89, 87));
+        panelCenter.setBackground(new Color(0, 50, 73));
         gbc.gridwidth = 1;
         gbc.weighty = 0.95;
         gbc.weightx = 0.7;
@@ -108,7 +108,7 @@ public class SalvadanaioGUI extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                controller.showHomePage(controller.contoScelto);
+                controller.showHomePage(controller.getContoScelto());
             }
         });
 
@@ -258,7 +258,7 @@ public class SalvadanaioGUI extends JFrame {
             }
         };
         // Aggiungere i dati del salvadanaio al modello
-        for(Salvadanaio salvadanaio : controller.salvadanai){
+        for(Salvadanaio salvadanaio : controller.getSalvadanai()){
             Object[] riga = {
                     salvadanaio.getNomeSalvadanaio(),
                     salvadanaio.getDescrizione(),
@@ -366,7 +366,7 @@ public class SalvadanaioGUI extends JFrame {
                             );
                             if (resultFill == JOptionPane.YES_OPTION) {
                                 controller.fillPiggyBank((String) tabella.getValueAt(currentRow, 0), soldiField.getText());
-                                controller.updateBankAccount(controller.contoScelto);
+                                controller.updateBankAccount(controller.getContoScelto());
                                 controller.showSalvadanaioPage();
                             }
                             break;
@@ -398,7 +398,7 @@ public class SalvadanaioGUI extends JFrame {
                                     //  Rimuovi il simbolo della valuta '€' e qualsiasi altro carattere non numerico, mantenendo solo numeri e punto decimale
                                     String numericValue = valueWithCurrency.replaceAll("[^\\d.]", "");
                                     controller.getMoneyByPiggyBank(numericValue, (String) tabella.getValueAt(currentRow, 0), getSoldiField.getText());
-                                    controller.updateBankAccount(controller.contoScelto);
+                                    controller.updateBankAccount(controller.getContoScelto());
                                     controller.showSalvadanaioPage();
 
                                 }

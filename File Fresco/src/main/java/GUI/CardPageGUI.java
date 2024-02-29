@@ -34,7 +34,7 @@ public class CardPageGUI extends JFrame {
         fontRegularXXL();
 
         JPanel contentPane = new JPanel(new GridBagLayout());
-        contentPane.setBackground(new Color(229, 99, 83));
+        contentPane.setBackground(new Color(194, 74, 74));
 
 
 
@@ -55,18 +55,18 @@ public class CardPageGUI extends JFrame {
         JLabel titolareLabel = new JLabel("Titolare");
         titolareLabel.setForeground(new Color(246, 248, 255));
 
-        JLabel nomeTitolareLabel = new JLabel(controller.account.getName() +" "+controller.account.getSurname());
+        JLabel nomeTitolareLabel = new JLabel(controller.getAccount().getName() +" "+controller.getAccount().getSurname());
         nomeTitolareLabel.setForeground(new Color(246, 248, 255));
 
 
-        JLabel numeroCartaLabel = new JLabel(controller.carta.getPan().substring(0,4) + " " +controller.carta.getPan().substring(4,8) + " " +controller.carta.getPan().substring(8,12) + " "+ controller.carta.getPan().substring(12,16));
+        JLabel numeroCartaLabel = new JLabel(controller.getCarta().getPan().substring(0,4) + " " +controller.getCarta().getPan().substring(4,8) + " " +controller.getCarta().getPan().substring(8,12) + " "+ controller.getCarta().getPan().substring(12,16));
         numeroCartaLabel.setForeground(new Color(246, 248, 255));
 
 
         JLabel pinLabel = new JLabel("PIN");
         pinLabel.setForeground(new Color(246, 248, 255));
 
-        JPasswordField pinNumberLabel = new JPasswordField(controller.carta.getPin());
+        JPasswordField pinNumberLabel = new JPasswordField(controller.getCarta().getPin());
         pinNumberLabel.setBackground(null);
         pinNumberLabel.setBorder(null);
         pinNumberLabel.setEditable(false);
@@ -90,7 +90,7 @@ public class CardPageGUI extends JFrame {
         JLabel cvvLabel = new JLabel("CVV");
         cvvLabel.setForeground(new Color(246, 248, 255));
 
-        JPasswordField cvvNumberLabel = new JPasswordField(controller.carta.getCvv());
+        JPasswordField cvvNumberLabel = new JPasswordField(controller.getCarta().getCvv());
         cvvNumberLabel.setEchoChar('*');
         cvvNumberLabel.setForeground(new Color(246, 248, 255));
         cvvNumberLabel.setBackground(null);

@@ -31,14 +31,14 @@ public class Controller {
     private TransazioneDAO transazioneDAO;
 
     //Dichiarazione delle variabili
-    public Account account = null;
-    public ArrayList<ContoCorrente> conti = null;
-    public ContoCorrente contoScelto = null;
-    public Carta carta = null;
-    public ArrayList<Salvadanaio> salvadanai = null;
-    public ArrayList<Transazione> transazioni = null;
-    public Double[] report = null;
-    public String[] credenzialiIbanMittDest = null;
+    private Account account = null;
+    private ArrayList<ContoCorrente> conti = null;
+    private ContoCorrente contoScelto = null;
+    private Carta carta = null;
+    private ArrayList<Salvadanaio> salvadanai = null;
+    private ArrayList<Transazione> transazioni = null;
+    private Double[] report = null;
+    private String credenzialiIbanMittDest = null;
 
     public Controller() {
         frameLogin = new LoginViewGUI(this); //LoginView accetta ControllerLogin come parametro
@@ -465,4 +465,75 @@ public class Controller {
         frameTransazioni.setVisible(isVisibile);
     }
 
+    public Trans getTrans() {
+        return trans;
+    }
+
+    public void setTrans(Trans trans) {
+        this.trans = trans;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
+    public ArrayList<ContoCorrente> getConti() {
+        return conti;
+    }
+
+    public void setConti(ArrayList<ContoCorrente> conti) {
+        this.conti = conti;
+    }
+
+    public ContoCorrente getContoScelto() {
+        return contoScelto;
+    }
+
+    public void setContoScelto(ContoCorrente contoScelto) {
+        this.contoScelto = contoScelto;
+    }
+
+    public Carta getCarta() {
+        return carta;
+    }
+
+    public void setCarta(Carta carta) {
+        this.carta = carta;
+    }
+
+    public ArrayList<Salvadanaio> getSalvadanai() {
+        return salvadanai;
+    }
+
+    public void setSalvadanai(ArrayList<Salvadanaio> salvadanai) {
+        this.salvadanai = salvadanai;
+    }
+
+    public ArrayList<Transazione> getTransazioni() {
+        return transazioni;
+    }
+
+    public void setTransazioni(ArrayList<Transazione> transazioni) {
+        this.transazioni = transazioni;
+    }
+
+    public Double[] getReport() {
+        return report;
+    }
+
+    public void setReport(Double[] report) {
+        this.report = report;
+    }
+
+    public String getCredenzialiIbanMittDest() {
+        return credenzialiIbanMittDest;
+    }
+
+    public void setCredenzialiIbanMittDest(String credenzialiIbanMittDest) {
+        this.credenzialiIbanMittDest = credenzialiIbanMittDest;
+    }
 }

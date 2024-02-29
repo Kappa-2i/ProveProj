@@ -47,7 +47,7 @@ public class HomePageGUI extends JFrame {
 
         // Dichiarazione del pannello superiore con aggiunta dei constraints per posizionarlo
         JPanel panelTop = new JPanel(new GridBagLayout());
-        panelTop.setBackground(new Color(37, 89, 87));
+        panelTop.setBackground(new Color(0, 50, 73));
         gbc.gridwidth = 4;
         gbc.weighty = 0.1;
         gbc.weightx = 1;
@@ -57,7 +57,7 @@ public class HomePageGUI extends JFrame {
         contentPane.add(panelTop, gbc);
 
         // Dichiarazione del pannello laterale sinistro con aggiunta dei constraints per posizionarlo
-        RoundedPanel panelLeft = new RoundedPanel(50, new Color(37, 89, 87));
+        RoundedPanel panelLeft = new RoundedPanel(50, new Color(0, 50, 73));
         panelLeft.setLayout(new GridBagLayout());
         gbc.gridwidth = 1;
         gbc.weighty = 0.95;
@@ -163,9 +163,9 @@ public class HomePageGUI extends JFrame {
                 ImageIcon iconInformation = new ImageIcon(HomePageGUI.class.getResource("/IMG/information.png"));
                 JOptionPane.showMessageDialog(
                         null,
-                        "<html><b>Nome: </b> " +controller.account.getName() +"</html>"+
-                        "\n<html><b>Cognome: </b> " +controller.account.getSurname() +"</html>"+
-                        "\n<html><b>E-mail: </b> " +controller.account.getEmail() + "</html>",
+                        "<html><b>Nome: </b> " +controller.getAccount().getName() +"</html>"+
+                        "\n<html><b>Cognome: </b> " +controller.getAccount().getSurname() +"</html>"+
+                        "\n<html><b>E-mail: </b> " +controller.getAccount().getEmail() + "</html>",
                         "Informazioni profilo",
                         JOptionPane.PLAIN_MESSAGE,
                         iconInformation
@@ -208,8 +208,8 @@ public class HomePageGUI extends JFrame {
 
             @Override
             public void mouseClicked(MouseEvent e){
-                if(controller.carta.getTipoCarta().equals("CartaDiDebito")) {
-                    controller.upgradeCarta(controller.carta.getPan());
+                if(controller.getCarta().getTipoCarta().equals("CartaDiDebito")) {
+                    controller.upgradeCarta(controller.getCarta().getPan());
                 }
                 else{
                     ImageIcon iconCancel = new ImageIcon(HomePageGUI.class.getResource("/IMG/cancel.png"));
@@ -239,8 +239,8 @@ public class HomePageGUI extends JFrame {
 
             @Override
             public void mouseClicked(MouseEvent e){
-                if(controller.carta.getTipoCarta().equals("CartaDiCredito")) {
-                    controller.downgradeCarta(controller.carta.getPan());
+                if(controller.getCarta().getTipoCarta().equals("CartaDiCredito")) {
+                    controller.downgradeCarta(controller.getCarta().getPan());
                 }
                 else{
                     ImageIcon iconCancel = new ImageIcon(HomePageGUI.class.getResource("/IMG/cancel.png"));
@@ -252,20 +252,6 @@ public class HomePageGUI extends JFrame {
                             iconCancel
                     );
                 }
-            }
-        });
-
-        JLabel notificheLabel = new JLabel("Elimina Account");
-        notificheLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        notificheLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                notificheLabel.setText("<html><u>Elimina Account</u></html>");
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                notificheLabel.setText("Elimina Account");
             }
         });
 
@@ -298,7 +284,7 @@ public class HomePageGUI extends JFrame {
                         options[1] // Opzione di default
                 );
                 if (scelta == JOptionPane.YES_OPTION)
-                    controller.deleteBankAccount(controller.contoScelto.getIban());
+                    controller.deleteBankAccount(controller.getContoScelto().getIban());
             }
         });
 
@@ -324,7 +310,6 @@ public class HomePageGUI extends JFrame {
         if (fontRegular != null){
             accountLabel.setFont(fontRegular);
             bankAccountLabel.setFont(fontRegular);
-            notificheLabel.setFont(fontRegular);
             settingsLabel.setFont(fontRegular);
             upgradeLabel.setFont(fontRegular);
             downgradeLabel.setFont(fontRegular);
@@ -340,8 +325,6 @@ public class HomePageGUI extends JFrame {
         gbc.gridy = 3;
         userPanel.add(downgradeLabel, gbc);
         gbc.gridy = 4;
-        userPanel.add(notificheLabel, gbc);
-        gbc.gridy = 5;
         userPanel.add(settingsLabel, gbc);
 
 
@@ -413,7 +396,7 @@ public class HomePageGUI extends JFrame {
         /**
          * Aggiungiamo ora i componenti all'interno del panello di sinistra
          * */
-        RoundedPanel saldoPanel = new RoundedPanel(50, new Color(72, 173, 169) );
+        RoundedPanel saldoPanel = new RoundedPanel(50, new Color(69, 184, 196, 255) );
         saldoPanel.setLayout(new GridBagLayout());
         saldoPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         saldoPanel.addMouseListener(new MouseAdapter() {
@@ -423,7 +406,7 @@ public class HomePageGUI extends JFrame {
             }
         });
 
-        RoundedPanel spesePanel = new RoundedPanel(50, new Color(111, 195, 192));
+        RoundedPanel spesePanel = new RoundedPanel(50, new Color(128, 206, 215));
         spesePanel.setLayout(new GridBagLayout());
         spesePanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         spesePanel.addMouseListener(new MouseAdapter() {
@@ -433,7 +416,7 @@ public class HomePageGUI extends JFrame {
             }
         });
 
-        RoundedPanel salvadanaioPanel = new RoundedPanel(50, new Color(154, 213, 211));
+        RoundedPanel salvadanaioPanel = new RoundedPanel(50, new Color(174, 227, 230));
         salvadanaioPanel.setLayout(new GridBagLayout());
         salvadanaioPanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         salvadanaioPanel.addMouseListener(new MouseAdapter() {
@@ -465,7 +448,7 @@ public class HomePageGUI extends JFrame {
          * */
 
         String carta;
-        if (controller.carta.getTipoCarta().equals("CartaDiCredito")) {
+        if (controller.getCarta().getTipoCarta().equals("CartaDiCredito")) {
             carta = "<html><b>CARTA<br>DI CREDITO</b></html>";
         }
         else {
@@ -474,7 +457,7 @@ public class HomePageGUI extends JFrame {
 
         JLabel cartaLabel = new JLabel(carta);
         cartaLabel.setForeground(new Color(8, 76, 97));
-        JLabel saldoLabel = new JLabel(String.valueOf(controller.contoScelto.getSaldo())+"€");
+        JLabel saldoLabel = new JLabel(String.valueOf(controller.getContoScelto().getSaldo())+"€");
         saldoLabel.setForeground(new Color(246, 248, 255));
         JButton buttonSaldo = new JButton();
         ImageIcon iconSaldo = new ImageIcon(HomePageGUI.class.getResource("/IMG/credit_resized.png"));
