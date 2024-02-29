@@ -165,7 +165,8 @@ public class HomePageGUI extends JFrame {
                         null,
                         "<html><b>Nome: </b> " +controller.getAccount().getName() +"</html>"+
                         "\n<html><b>Cognome: </b> " +controller.getAccount().getSurname() +"</html>"+
-                        "\n<html><b>E-mail: </b> " +controller.getAccount().getEmail() + "</html>",
+                        "\n<html><b>E-mail: </b> " +controller.getAccount().getEmail() + "</html>" +
+                        "\n<html><b>Iban: </b> " +controller.getContoScelto().getIban() + "</html>",
                         "Informazioni profilo",
                         JOptionPane.PLAIN_MESSAGE,
                         iconInformation
