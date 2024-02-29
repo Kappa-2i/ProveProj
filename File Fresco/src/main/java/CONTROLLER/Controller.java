@@ -103,6 +103,21 @@ public class Controller {
     public void insertAccount(String email, String password, String name, String surname){
         try{
             account = new Account(email, password, name, surname);
+            if (!email.isEmpty() && !password.isEmpty() && !name.isEmpty() && !surname.isEmpty()) {
+                accountDao.insertAccount(email, password, name, surname);
+                JOptionPane.showMessageDialog(
+                        frameSignIn,
+                        "Dati dell'account inseriti!",
+                        "Benvenuta/o",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+            else{
+                JOptionPane.showMessageDialog(
+                        frameSignIn,
+                        "Inserisci delle credenziali valide!",
+                        "Errore",
+                        JOptionPane.ERROR_MESSAGE);
+            }
         }
         catch (MyExc exc){
             JOptionPane.showMessageDialog(
@@ -112,21 +127,7 @@ public class Controller {
                     JOptionPane.ERROR_MESSAGE);
         }
 
-        if (!email.isEmpty() && !password.isEmpty() && !name.isEmpty() && !surname.isEmpty()) {
-                accountDao.insertAccount(email, password, name, surname);
-                JOptionPane.showMessageDialog(
-                        frameSignIn,
-                        "Dati dell'account inseriti!",
-                        "Benvenuta/o",
-                        JOptionPane.INFORMATION_MESSAGE);
-        }
-        else{
-            JOptionPane.showMessageDialog(
-                    frameSignIn,
-                    "Inserisci delle credenziali valide!",
-                    "Errore",
-                    JOptionPane.ERROR_MESSAGE);
-        }
+
     }
 
     public boolean confirmedPassword(String password, String confirmedPassword){
