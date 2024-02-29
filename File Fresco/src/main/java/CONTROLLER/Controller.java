@@ -21,7 +21,7 @@ public class Controller {
     private CardPageGUI frameCard;
     private SalvadanaioGUI frameSalvadanaio;
     private TransazioniGUI frameTransazioni;
-    private Trans trans;
+
 
     //Dichiarazioni delle Dao
     private AccountDAO accountDao;
@@ -387,13 +387,10 @@ public class Controller {
         transazioni = transazioneDAO.selectTransazioniByIban(contoScelto);
         contoScelto.setTransazioni(transazioni);
 
-//        frameTransazioni = new TransazioniGUI(this);
-//        frameHome(false);
-//        frameTransazioni(true);
-
-        trans = new Trans(this);
+        frameTransazioni = new TransazioniGUI(this);
         frameHome(false);
-        trans.setVisible(true);
+        frameTransazioni(true);
+
     }
 
     public void selectNameAndSurnameByIban(String iban){
@@ -463,14 +460,6 @@ public class Controller {
 
     public void frameTransazioni(Boolean isVisibile){
         frameTransazioni.setVisible(isVisibile);
-    }
-
-    public Trans getTrans() {
-        return trans;
-    }
-
-    public void setTrans(Trans trans) {
-        this.trans = trans;
     }
 
     public Account getAccount() {

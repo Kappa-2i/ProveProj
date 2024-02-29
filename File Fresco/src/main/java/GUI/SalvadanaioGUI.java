@@ -52,7 +52,7 @@ public class SalvadanaioGUI extends JFrame {
 
         // Dichiarazione del pannello superiore con aggiunta dei constraints per posizionarlo
         JPanel panelTop = new JPanel(new GridBagLayout());
-        panelTop.setBackground(new Color(37, 89, 87));
+        panelTop.setBackground(new Color(0, 50, 73));
         gbc.gridwidth = 4;
         gbc.weighty = 0.1;
         gbc.weightx = 1;
@@ -284,8 +284,8 @@ public class SalvadanaioGUI extends JFrame {
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         tabella.setFont(fontRegular);
         tabella.setRowHeight(70);
-        tabella.setForeground(Color.WHITE);
-        tabella.setBackground(new Color(37, 89, 87));
+        tabella.setForeground(new Color(8, 76, 97));
+        tabella.setBackground(new Color(174, 227, 230));
 
         // Applicare il renderer a tutte le celle per centrare il testo
         for (int i = 0; i < tabella.getColumnCount(); i++) {
