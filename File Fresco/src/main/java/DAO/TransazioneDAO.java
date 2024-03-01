@@ -12,6 +12,7 @@ public interface TransazioneDAO {
     public double totaleInviatoMensile(ContoCorrente conto, String mese);
     public double totaleRicevutoMensile(ContoCorrente conto, String mese);
     public String selectNameAndSurnameByIban(String iban);
-    public void sendBankTransfer(ContoCorrente conto, String receiver, String amount, String reason);
+    public void sendBankTransfer(ContoCorrente conto, String receiver, String amount, String reason, String cat);
+    public void sendIstantBankTransfer(ContoCorrente conto, String receiver, String amount, String reason, String cat);
     public boolean checkIban(String receiver, String name, String surname) throws MyExc;
 }

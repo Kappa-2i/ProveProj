@@ -17,7 +17,7 @@ public class TransazionaDAOImpl implements TransazioneDAO {
             ArrayList<Transazione> transazioni = new ArrayList<Transazione>();
 
             // Query SQL per ottenere i dettagli dell'utente
-        String query = "SELECT t.importo, t.causale, t.datatransazione, t.orariotransazione, t.tipotransazione, t.iban1 " +
+        String query = "SELECT t.importo, t.causale, t.datatransazione, t.orariotransazione, t.tipotransazione, t.categoriaentrata, t.categoriauscita ,t.iban1 " +
                 "FROM test.transazione t " +
                 "WHERE (t.iban2 = '" + conto.getIban() + "' AND t.tipotransazione = 'Invia a') " +
                 "OR (t.iban2 = '" + conto.getIban() + "' AND t.tipotransazione = 'Riceve da') "+
@@ -34,7 +34,7 @@ public class TransazionaDAOImpl implements TransazioneDAO {
                         //Creazione degli oggetti Salvadanaio.
                         Transazione transazione = new Transazione(resultSet.getDouble("importo"), resultSet.getString("causale"),
                                 resultSet.getString("datatransazione"), resultSet.getString("orariotransazione").substring(0,5), resultSet.getString("tipotransazione"),
-                                resultSet.getString("iban1"), conto);
+                                resultSet.getString("iban1"), resultSet.getString("categoriaentrata"), resultSet.getString("categoriauscita"), conto);
                         //Agginta del salvadaio all'ArrayList di salvadanai
                         transazioni.add(transazione);
                     }
@@ -213,13 +213,13 @@ public class TransazionaDAOImpl implements TransazioneDAO {
         return false;
     }
 
-    public void sendBankTransfer(ContoCorrente conto, String receiver, String amount, String reason){
+    public void sendBankTransfer(ContoCorrente conto, String receiver, String amount, String reason, String cat){
         CallableStatement statement = null;
         try (Connection conn = DBConnection.getDBConnection().getConnection()) {
 
 
                 //Chiamata della funzione del db.
-                String callFunction = "{call test.invia_bonifico(?,?,?,?)}";
+                String callFunction = "{call test.invia_bonifico(?,?,?,?,?)}";
 
                 statement = conn.prepareCall(callFunction);
 
@@ -227,8 +227,33 @@ public class TransazionaDAOImpl implements TransazioneDAO {
                 statement.setString(2, receiver);
                 statement.setDouble(3, Double.parseDouble(amount));
                 statement.setString(4, reason);
+                statement.setString(5, cat);
 
                 statement.executeQuery();
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendIstantBankTransfer(ContoCorrente conto, String receiver, String amount, String reason, String cat){
+        CallableStatement statement = null;
+        try (Connection conn = DBConnection.getDBConnection().getConnection()) {
+
+
+            //Chiamata della funzione del db.
+            String callFunction = "{call test.invia_bonifico_istantaneo(?,?,?,?,?)}";
+
+            statement = conn.prepareCall(callFunction);
+
+            statement.setString(1, conto.getIban());
+            statement.setString(2, receiver);
+            statement.setDouble(3, Double.parseDouble(amount));
+            statement.setString(4, reason);
+            statement.setString(5, cat);
+
+            statement.executeQuery();
 
 
         } catch (SQLException e) {

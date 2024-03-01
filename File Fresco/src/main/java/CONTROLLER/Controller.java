@@ -418,25 +418,43 @@ public class Controller {
         frameBankTransfer(true);
     }
 
-    public void sendBankTransfer(String ibanReceiver, String amount, String name, String surname, String reason){
+    public void sendBankTransfer(String ibanReceiver, String amount, String name, String surname, String reason, String cat, String typeBankTransfer){
         try{
-            if(!amount.isEmpty()) {
-                if(contoScelto.getSaldo()>=Math.round((Double.parseDouble(amount)*100.00)/100.00)) {
-                    if(!ibanReceiver.isEmpty() && !name.isEmpty() && !surname.isEmpty() && !reason.isEmpty()) {
-                        if (transazioneDAO.checkIban(ibanReceiver, name, surname)) {
-                            transazioneDAO.sendBankTransfer(contoScelto, ibanReceiver, amount, reason);
+            if(typeBankTransfer.equals("Bonifico")){
+                if(!amount.isEmpty()) {
+                    if (!contoScelto.getIban().equals(ibanReceiver)) {
+                        if (contoScelto.getSaldo() >= Math.round((Double.parseDouble(amount) * 100.00) / 100.00)) {
+                            if (!ibanReceiver.isEmpty() && !name.isEmpty() && !surname.isEmpty() && !reason.isEmpty()) {
+                                if (transazioneDAO.checkIban(ibanReceiver, name, surname)) {
+                                    transazioneDAO.sendBankTransfer(contoScelto, ibanReceiver, amount, reason, cat);
+                                    JOptionPane.showMessageDialog(
+                                            frameBankTransfer,
+                                            "Bonifico inviato con successo!",
+                                            "",
+                                            JOptionPane.INFORMATION_MESSAGE
+                                    );
+                                }
+                            } else {
+                                JOptionPane.showMessageDialog(
+                                        frameBankTransfer,
+                                        "Riempi tutti i campi.",
+                                        "Errore",
+                                        JOptionPane.ERROR_MESSAGE
+                                );
+                            }
+                        } else {
                             JOptionPane.showMessageDialog(
                                     frameBankTransfer,
-                                    "Bonifico inviato con successo!",
-                                    "",
-                                    JOptionPane.INFORMATION_MESSAGE
+                                    "Saldo conto corrente insufficiente",
+                                    "Errore",
+                                    JOptionPane.ERROR_MESSAGE
                             );
                         }
                     }
                     else {
                         JOptionPane.showMessageDialog(
                                 frameBankTransfer,
-                                "Riempi tutti i campi.",
+                                "Non puoi inserire il tuo stesso Iban.",
                                 "Errore",
                                 JOptionPane.ERROR_MESSAGE
                         );
@@ -445,25 +463,74 @@ public class Controller {
                 else {
                     JOptionPane.showMessageDialog(
                             frameBankTransfer,
-                            "Saldo conto corrente insufficiente",
+                            "Riempi tutti i campi.",
                             "Errore",
                             JOptionPane.ERROR_MESSAGE
                     );
                 }
             }
             else {
-                JOptionPane.showMessageDialog(
-                        frameBankTransfer,
-                        "Riempi tutti i campi.",
-                        "Errore",
-                        JOptionPane.ERROR_MESSAGE
-                );
+                if(!amount.isEmpty()) {
+                    if (!contoScelto.getIban().equals(ibanReceiver)) {
+                        if (contoScelto.getSaldo() >= Math.round((Double.parseDouble(amount) * 100.00) / 100.00)) {
+                            if (!ibanReceiver.isEmpty() && !name.isEmpty() && !surname.isEmpty() && !reason.isEmpty()) {
+                                if (transazioneDAO.checkIban(ibanReceiver, name, surname)) {
+                                    transazioneDAO.sendIstantBankTransfer(contoScelto, ibanReceiver, amount, reason, cat);
+                                    JOptionPane.showMessageDialog(
+                                            frameBankTransfer,
+                                            "Bonifico inviato con successo!",
+                                            "",
+                                            JOptionPane.INFORMATION_MESSAGE
+                                    );
+                                }
+                            } else {
+                                JOptionPane.showMessageDialog(
+                                        frameBankTransfer,
+                                        "Riempi tutti i campi.",
+                                        "Errore",
+                                        JOptionPane.ERROR_MESSAGE
+                                );
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(
+                                    frameBankTransfer,
+                                    "Saldo conto corrente insufficiente",
+                                    "Errore",
+                                    JOptionPane.ERROR_MESSAGE
+                            );
+                        }
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(
+                                frameBankTransfer,
+                                "Non puoi inserire il tuo stesso Iban.",
+                                "Errore",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+                    }
+                }
+                else {
+                    JOptionPane.showMessageDialog(
+                            frameBankTransfer,
+                            "Riempi tutti i campi.",
+                            "Errore",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                }
             }
         }
         catch (MyExc e){
             JOptionPane.showMessageDialog(
                     frameBankTransfer,
                     e.getMessage(),
+                    "Errore",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
+        catch (NumberFormatException e){
+            JOptionPane.showMessageDialog(
+                    frameBankTransfer,
+                    "Inserisci una cifra valida",
                     "Errore",
                     JOptionPane.ERROR_MESSAGE
             );

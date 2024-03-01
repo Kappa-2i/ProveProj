@@ -273,9 +273,10 @@ public class TransazioniGUI extends JFrame {
         double totaleInviatoMensile = controller.totaleInviatoMensile(controller.getContoScelto(), yearMonth);
         double totaleRicevutoMensile = controller.totaleRicevutoMensile(controller.getContoScelto(), yearMonth);
         JLabel totaleInviato = new JLabel("Totale inviato: ");
-        totaleInviatoValue = new JLabel(String.valueOf(totaleInviatoMensile) + "€");
         JLabel totaleRicevuto = new JLabel("Totale ricevuto: ");
-        totaleRicevutoValue = new JLabel(String.valueOf(totaleRicevutoMensile) + "€");
+        totaleInviatoValue = new JLabel(String.format("%.2f", totaleInviatoMensile) + "€");
+        totaleRicevutoValue = new JLabel(String.format("%.2f", totaleRicevutoMensile) + "€");
+
         if (fontRegularBoldSmall != null) {
             entrataMax.setFont(fontRegularBoldSmall);
             entrataMin.setFont(fontRegularBoldSmall);
@@ -480,8 +481,8 @@ public class TransazioniGUI extends JFrame {
                 double totaleRicevutoMensile = controller.totaleRicevutoMensile(controller.getContoScelto(), yearMonth);
                 System.out.println(totaleRicevutoMensile+" "+totaleInviatoMensile);
 
-                totaleInviatoValue = new JLabel(String.valueOf(totaleInviatoMensile) + "€");
-                totaleRicevutoValue = new JLabel(String.valueOf(totaleRicevutoMensile) + "€");
+                totaleInviatoValue = new JLabel(String.format("%.2f", totaleInviatoMensile) + "€");
+                totaleRicevutoValue = new JLabel(String.format("%.2f", totaleRicevutoMensile) + "€");
 
                 if (fontRegularSmall != null) {
                     entraMaxValue.setFont(fontRegularSmall);
@@ -605,6 +606,12 @@ public class TransazioniGUI extends JFrame {
                 JLabel haiRicevutoLabel = new JLabel(String.format("Hai ricevuto %.2f€ da", transazione.getImporto()));
                 controller.selectNameAndSurnameByIban(transazione.getIban());
                 JLabel ibanLabel = new JLabel(controller.getCredenzialiIbanMittDest());
+                JLabel catLabel = new JLabel("Categoria: ");
+                if(transazione.getCategoriaEntrata()!=null)
+                    catLabel.setText(catLabel.getText()+transazione.getCategoriaEntrata());
+                else
+                    catLabel.setText(catLabel.getText()+transazione.getCategoriaUscita());
+
                 JLabel dataLabel = new JLabel(transazione.getDataTransazione() + ", " + transazione.getOrarioTransazione());
                 JLabel dettagliLabel = new JLabel("<html><u><i>Causale</i></u></html>");
                 dettagliLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -628,6 +635,7 @@ public class TransazioniGUI extends JFrame {
                 if(fontRegularSmall != null){
                     dataLabel.setFont(fontRegularSmall);
                     dettagliLabel.setFont(fontRegularSmall);
+                    catLabel.setFont(fontRegularSmall);
                 }
 
 
@@ -658,16 +666,22 @@ public class TransazioniGUI extends JFrame {
                     gbc.gridy = 1;
                     cardBank.add(ibanLabel,gbc);
                 }
+
                 gbc = new GridBagConstraints();
                 gbc.insets = new Insets(20, 5, 5, 5);
                 gbc.anchor = GridBagConstraints.SOUTHWEST;
                 gbc.gridy = 2;
+                cardBank.add(catLabel, gbc);
+                gbc = new GridBagConstraints();
+                gbc.insets = new Insets(5, 5, 5, 10);
+                gbc.anchor = GridBagConstraints.SOUTHWEST;
+                gbc.gridy = 3;
                 cardBank.add(dataLabel, gbc);
                 gbc = new GridBagConstraints();
-                gbc.insets = new Insets(20, 5, 5, 20);
+                gbc.insets = new Insets(5, 5, 5, 10);
                 gbc.anchor = GridBagConstraints.SOUTHEAST;
                 gbc.gridx = 1;
-                gbc.gridy = 2;
+                gbc.gridy = 3;
                 cardBank.add(dettagliLabel, gbc);
 
 

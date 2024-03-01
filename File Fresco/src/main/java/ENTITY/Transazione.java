@@ -7,15 +7,19 @@ public class Transazione {
     private String orarioTransazione;
     private String tipoTransazione;
     private String iban; //iban di chi ci manda soldi, o a chi inviamo soldi
+    private String categoriaEntrata;
+    private String categoriaUscita;
     private ContoCorrente contoCorrente;
 
-    public Transazione(double importo, String causale, String dataTransazione, String orarioTransazione, String tipoTransazione, String iban, ContoCorrente contoCorrente) {
+    public Transazione(double importo, String causale, String dataTransazione, String orarioTransazione, String tipoTransazione, String iban, String categoriaEntrata, String categoriaUscita, ContoCorrente contoCorrente) {
         setImporto(importo);
         setCausale(causale);
         setDataTransazione(dataTransazione);
         setOrarioTransazione(orarioTransazione);
         setTipoTransazione(tipoTransazione);
         setIban(iban);
+        setCategoriaEntrata(categoriaEntrata);
+        setCategoriaUscita(categoriaUscita);
         setContoCorrente(contoCorrente);
     }
 
@@ -73,6 +77,22 @@ public class Transazione {
 
     public void setContoCorrente(ContoCorrente contoCorrente) {
         this.contoCorrente = contoCorrente;
+    }
+
+    public String getCategoriaEntrata() {
+        return categoriaEntrata;
+    }
+
+    public void setCategoriaEntrata(String categoriaEntrata) {
+        this.categoriaEntrata = categoriaEntrata;
+    }
+
+    public String getCategoriaUscita() {
+        return categoriaUscita;
+    }
+
+    public void setCategoriaUscita(String categoriaUscita) {
+        this.categoriaUscita = categoriaUscita;
     }
 
     @Override
