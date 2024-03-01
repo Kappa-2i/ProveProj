@@ -618,12 +618,24 @@ public class HomePageGUI extends JFrame {
         buttonInviaSoldi.setBorder(null);
         buttonInviaSoldi.setFocusPainted(false);
         buttonInviaSoldi.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        buttonInviaSoldi.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                controller.showBankTransferPage();
+            }
+        });
 
         JLabel inviaSoldiLabel = new JLabel("   INVIA BONIFICO");
         if (fontRegularXXL != null)
             inviaSoldiLabel.setFont(fontRegularXXL);
         inviaSoldiLabel.setForeground(new Color(8, 76, 97));
         inviaSoldiLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        inviaSoldiLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                controller.showBankTransferPage();
+            }
+        });
 
 
         gbc = new GridBagConstraints();

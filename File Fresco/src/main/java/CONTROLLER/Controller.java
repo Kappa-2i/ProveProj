@@ -21,14 +21,13 @@ public class Controller {
     private CardPageGUI frameCard;
     private SalvadanaioGUI frameSalvadanaio;
     private TransazioniGUI frameTransazioni;
+    private BankTransferPageGUI frameBankTransfer;
 
     //Icone
     ImageIcon iconAlert = new ImageIcon(HomePageGUI.class.getResource("/IMG/alert.png"));
     ImageIcon iconCancel = new ImageIcon(HomePageGUI.class.getResource("/IMG/cancel.png"));
     ImageIcon iconChecked = new ImageIcon(HomePageGUI.class.getResource("/IMG/checked.png"));
     ImageIcon iconDelete = new ImageIcon(HomePageGUI.class.getResource("/IMG/cancel.png"));
-
-
 
     //Dichiarazioni delle Dao
     private AccountDAO accountDao;
@@ -247,8 +246,10 @@ public class Controller {
     /**
      * Metodo che permette gestire la visualizzazione della pagina della carta.*/
     public void showCardPage(){
-        frameCard = new CardPageGUI(this);
-        frameCard(true);
+        if (frameCard==null) {
+            frameCard = new CardPageGUI(this);
+            frameCard(true);
+        }
     }
 
 
@@ -410,7 +411,63 @@ public class Controller {
         frameTransazioni = new TransazioniGUI(this);
         frameHome(false);
         frameTransazioni(true);
+    }
 
+    public void showBankTransferPage(){
+        frameBankTransfer = new BankTransferPageGUI(this);
+        frameBankTransfer(true);
+    }
+
+    public void sendBankTransfer(String ibanReceiver, String amount, String name, String surname, String reason){
+        try{
+            if(!amount.isEmpty()) {
+                if(contoScelto.getSaldo()>=Math.round((Double.parseDouble(amount)*100.00)/100.00)) {
+                    if(!ibanReceiver.isEmpty() && !name.isEmpty() && !surname.isEmpty() && !reason.isEmpty()) {
+                        if (transazioneDAO.checkIban(ibanReceiver, name, surname)) {
+                            transazioneDAO.sendBankTransfer(contoScelto, ibanReceiver, amount, reason);
+                            JOptionPane.showMessageDialog(
+                                    frameBankTransfer,
+                                    "Bonifico inviato con successo!",
+                                    "",
+                                    JOptionPane.INFORMATION_MESSAGE
+                            );
+                        }
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(
+                                frameBankTransfer,
+                                "Riempi tutti i campi.",
+                                "Errore",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+                    }
+                }
+                else {
+                    JOptionPane.showMessageDialog(
+                            frameBankTransfer,
+                            "Saldo conto corrente insufficiente",
+                            "Errore",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                }
+            }
+            else {
+                JOptionPane.showMessageDialog(
+                        frameBankTransfer,
+                        "Riempi tutti i campi.",
+                        "Errore",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
+        }
+        catch (MyExc e){
+            JOptionPane.showMessageDialog(
+                    frameBankTransfer,
+                    e.getMessage(),
+                    "Errore",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
 
     public void selectNameAndSurnameByIban(String iban){
@@ -468,6 +525,14 @@ public class Controller {
      * */
     public void frameCard(Boolean isVisible){
         frameCard.setVisible(isVisible);
+    }
+
+    /**
+     * Metodo che gestisce la visibilità della pagina per visualizzare la carta.
+     * @param isVisibile setta la visibilità della pagina
+     * */
+    public void frameBankTransfer(Boolean isVisible){
+        frameBankTransfer.setVisible(isVisible);
     }
 
     /**

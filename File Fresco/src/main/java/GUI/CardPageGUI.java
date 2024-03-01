@@ -36,8 +36,6 @@ public class CardPageGUI extends JFrame {
         JPanel contentPane = new JPanel(new GridBagLayout());
         contentPane.setBackground(new Color(194, 74, 74));
 
-
-
         JLabel smuLabel = new JLabel("S.M.U.");
         GridBagConstraints gbc = new GridBagConstraints();
         contentPane.add(smuLabel, gbc);

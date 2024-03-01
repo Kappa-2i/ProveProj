@@ -2,6 +2,8 @@ package DAO;
 
 import ENTITY.ContoCorrente;
 import ENTITY.Transazione;
+import EXCEPTIONS.MyExc;
+
 import java.util.ArrayList;
 
 public interface TransazioneDAO {
@@ -10,4 +12,6 @@ public interface TransazioneDAO {
     public double totaleInviatoMensile(ContoCorrente conto, String mese);
     public double totaleRicevutoMensile(ContoCorrente conto, String mese);
     public String selectNameAndSurnameByIban(String iban);
+    public void sendBankTransfer(ContoCorrente conto, String receiver, String amount, String reason);
+    public boolean checkIban(String receiver, String name, String surname) throws MyExc;
 }

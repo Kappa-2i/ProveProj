@@ -5,6 +5,7 @@ import DATABASE.DBConnection;
 import ENTITY.ContoCorrente;
 import ENTITY.Salvadanaio;
 import ENTITY.Transazione;
+import EXCEPTIONS.MyExc;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -20,6 +21,7 @@ public class TransazionaDAOImpl implements TransazioneDAO {
                 "FROM test.transazione t " +
                 "WHERE (t.iban2 = '" + conto.getIban() + "' AND t.tipotransazione = 'Invia a') " +
                 "OR (t.iban2 = '" + conto.getIban() + "' AND t.tipotransazione = 'Riceve da') "+
+                "AND t.iban2 = '" +conto.getIban()+ "' AND orariotransazione < current_time " +
                 "ORDER BY t.datatransazione DESC, t.orariotransazione DESC";
 
             try (Connection conn = DBConnection.getDBConnection().getConnection();  // Ottenimento della connessione al database
@@ -176,5 +178,63 @@ public class TransazionaDAOImpl implements TransazioneDAO {
         }
         return null;
     }
+
+
+    public boolean checkIban(String receiver, String name, String surname) throws MyExc{
+        try (Connection conn = DBConnection.getDBConnection().getConnection()) {
+            // Prepara la query sostituendo i valori di iban e mese
+            String query = "SELECT cc.iban " +
+                    "from test.contocorrente cc " +
+                    "join test.account a " +
+                    "on a.email = cc.account_email " +
+                    "where cc.iban = ? and a.nome = ? and a.cognome = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                // Imposta i parametri della query
+                pstmt.setString(1, receiver);
+                pstmt.setString(2, name);
+                pstmt.setString(3, surname);
+
+                // Esegue la query
+                ResultSet rs = pstmt.executeQuery();
+
+                // Processa i risultati
+                if (rs.next()) {
+                    return true;
+                }
+                else {
+                    throw new MyExc("Dati destinatario errati");
+                }
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public void sendBankTransfer(ContoCorrente conto, String receiver, String amount, String reason){
+        CallableStatement statement = null;
+        try (Connection conn = DBConnection.getDBConnection().getConnection()) {
+
+
+                //Chiamata della funzione del db.
+                String callFunction = "{call test.invia_bonifico(?,?,?,?)}";
+
+                statement = conn.prepareCall(callFunction);
+
+                statement.setString(1, conto.getIban());
+                statement.setString(2, receiver);
+                statement.setDouble(3, Double.parseDouble(amount));
+                statement.setString(4, reason);
+
+                statement.executeQuery();
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 
