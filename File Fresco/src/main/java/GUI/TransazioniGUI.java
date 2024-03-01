@@ -45,6 +45,11 @@ public class TransazioniGUI extends JFrame {
     private JLabel totaleRicevutoValue;
     private JLabel totaleInviatoValue;
 
+    //Icone
+    ImageIcon iconUnina = new ImageIcon(SalvadanaioGUI.class.getResource("/IMG/unina.png"));
+    ImageIcon iconHome = new ImageIcon(SalvadanaioGUI.class.getResource("/IMG/home.png"));
+    ImageIcon iconStats = new ImageIcon(SalvadanaioGUI.class.getResource("/IMG/statistics.png"));
+
     public TransazioniGUI(Controller controller) {
         this.controller = controller;
         setTitle("Le tue spese - S.M.U.");
@@ -144,7 +149,6 @@ public class TransazioniGUI extends JFrame {
             titoloSmu.setFont(fontRegular);
         }
 
-        ImageIcon iconUnina = new ImageIcon(SalvadanaioGUI.class.getResource("/IMG/unina.png")); // Sostituisci con il percorso del tuo file icona
         JButton buttonLogo = new JButton();
         buttonLogo.setBackground(null);
         buttonLogo.setIcon(iconUnina);
@@ -154,7 +158,6 @@ public class TransazioniGUI extends JFrame {
         buttonLogo.setBorder(null);
         buttonLogo.setFocusPainted(false);
 
-        ImageIcon iconHome = new ImageIcon(SalvadanaioGUI.class.getResource("/IMG/home.png")); // Sostituisci con il percorso del tuo file icona
         JButton buttonHome = new JButton();
         buttonHome.setCursor(new Cursor(Cursor.HAND_CURSOR));
         buttonHome.setBackground(null);
@@ -172,7 +175,6 @@ public class TransazioniGUI extends JFrame {
             }
         });
 
-        ImageIcon iconStats = new ImageIcon(SalvadanaioGUI.class.getResource("/IMG/statistics.png")); // Sostituisci con il percorso del tuo file icona
         JButton statsButton = new JButton();
         statsButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         statsButton.setBackground(null);

@@ -20,6 +20,9 @@ public class SignInViewGUI extends JFrame{
     private Font fontRegularSmall;
     private Font fontRegularBold;
 
+    //Icone
+    ImageIcon iconAlert = new ImageIcon(HomePageGUI.class.getResource("/IMG/alert.png"));
+
     public SignInViewGUI(Controller controller){
         this.controller = controller;
         setTitle("SignUp Page");
@@ -98,7 +101,7 @@ public class SignInViewGUI extends JFrame{
         nameField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                nameField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
+                nameField.setBorder(new MatteBorder(0, 0, 2, 0,new Color(0, 84, 122, 255)));
             }
             @Override
             public void focusLost(FocusEvent e) {
@@ -125,7 +128,7 @@ public class SignInViewGUI extends JFrame{
         surnameField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                surnameField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
+                surnameField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122, 255)));
             }
             @Override
             public void focusLost(FocusEvent e) {
@@ -154,7 +157,7 @@ public class SignInViewGUI extends JFrame{
         emailField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                emailField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
+                emailField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122, 255)));
             }
             @Override
             public void focusLost(FocusEvent e) {
@@ -181,7 +184,7 @@ public class SignInViewGUI extends JFrame{
         passwordField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                passwordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
+                passwordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122, 255)));
             }
             @Override
             public void focusLost(FocusEvent e) {
@@ -210,7 +213,7 @@ public class SignInViewGUI extends JFrame{
         confirmPasswordField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                confirmPasswordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
+                confirmPasswordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122, 255)));
             }
             @Override
             public void focusLost(FocusEvent e) {
@@ -276,7 +279,8 @@ public class SignInViewGUI extends JFrame{
                             null,
                             "Le password non corrispondono",
                             "Errore",
-                            JOptionPane.ERROR_MESSAGE
+                            JOptionPane.PLAIN_MESSAGE,
+                            iconAlert
                     );
                 }
             }

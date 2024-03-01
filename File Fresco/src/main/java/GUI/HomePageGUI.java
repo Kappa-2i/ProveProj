@@ -19,6 +19,20 @@ public class HomePageGUI extends JFrame {
     private Font fontRegularBold;
     private Font fontRegularXXL;
 
+    //Icone
+    ImageIcon iconExit = new ImageIcon(HomePageGUI.class.getResource("/IMG/door_exit.png"));
+    ImageIcon iconLogOut = new ImageIcon(HomePageGUI.class.getResource("/IMG/logout.png"));
+    ImageIcon iconUnina = new ImageIcon(HomePageGUI.class.getResource("/IMG/unina.png")); // Sostituisci con il percorso del tuo file icona
+    ImageIcon iconNotifiche = new ImageIcon(HomePageGUI.class.getResource("/IMG/notice.png"));
+    ImageIcon iconRaccolte = new ImageIcon(HomePageGUI.class.getResource("/IMG/raccolte.png"));
+    ImageIcon iconInviaSoldi = new ImageIcon(HomePageGUI.class.getResource("/IMG/sendMoney.png"));
+    ImageIcon iconSalvadanaio = new ImageIcon(HomePageGUI.class.getResource("/IMG/saving_resized.png"));
+    ImageIcon iconSpese = new ImageIcon(HomePageGUI.class.getResource("/IMG/time-count_resized_flipped.png"));
+    ImageIcon iconSaldo = new ImageIcon(HomePageGUI.class.getResource("/IMG/credit_resized.png"));
+    ImageIcon iconUser = new ImageIcon(HomePageGUI.class.getResource("/IMG/user.png")); // Sostituisci con il percorso del tuo file icona
+    ImageIcon iconDelete = new ImageIcon(HomePageGUI.class.getResource("/IMG/delete.png"));
+    ImageIcon iconCancel = new ImageIcon(HomePageGUI.class.getResource("/IMG/cancel.png"));
+    ImageIcon iconInformation = new ImageIcon(HomePageGUI.class.getResource("/IMG/information.png"));
 
 
     public HomePageGUI(Controller controller){
@@ -104,7 +118,6 @@ public class HomePageGUI extends JFrame {
             titoloSmu.setFont(fontRegular);
         }
 
-        ImageIcon iconUnina = new ImageIcon(HomePageGUI.class.getResource("/IMG/unina.png")); // Sostituisci con il percorso del tuo file icona
         JButton buttonLogo = new JButton();
         buttonLogo.setBackground(null);
         buttonLogo.setIcon(iconUnina);
@@ -114,7 +127,6 @@ public class HomePageGUI extends JFrame {
         buttonLogo.setBorder(null);
         buttonLogo.setFocusPainted(false);
 
-        ImageIcon iconLogOut = new ImageIcon(HomePageGUI.class.getResource("/IMG/logout.png")); // Sostituisci con il percorso del tuo file icona
         JButton buttonLogout = new JButton();
         buttonLogout.setCursor(new Cursor(Cursor.HAND_CURSOR));
         buttonLogout.setBackground(null);
@@ -127,7 +139,6 @@ public class HomePageGUI extends JFrame {
         buttonLogout.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                ImageIcon iconExit = new ImageIcon(HomePageGUI.class.getResource("/IMG/door_exit.png"));
                 int scelta = JOptionPane.showOptionDialog(
                         null, // Componente padre
                         "Sei sicuro di voler uscire?", // Messaggio
@@ -160,7 +171,6 @@ public class HomePageGUI extends JFrame {
 
             @Override
             public void mouseClicked(MouseEvent e){
-                ImageIcon iconInformation = new ImageIcon(HomePageGUI.class.getResource("/IMG/information.png"));
                 JOptionPane.showMessageDialog(
                         null,
                         "<html><b>Nome: </b> " +controller.getAccount().getName() +"</html>"+
@@ -213,7 +223,6 @@ public class HomePageGUI extends JFrame {
                     controller.upgradeCarta(controller.getCarta().getPan());
                 }
                 else{
-                    ImageIcon iconCancel = new ImageIcon(HomePageGUI.class.getResource("/IMG/cancel.png"));
                     JOptionPane.showMessageDialog(
                             null,
                             "Non puoi effettuare l'upgrade, la carta è già di tipo Carta di Credito",
@@ -244,7 +253,6 @@ public class HomePageGUI extends JFrame {
                     controller.downgradeCarta(controller.getCarta().getPan());
                 }
                 else{
-                    ImageIcon iconCancel = new ImageIcon(HomePageGUI.class.getResource("/IMG/cancel.png"));
                     JOptionPane.showMessageDialog(
                             null,
                             "Non puoi effettuare il downgrade, la carta è già di tipo Carta di Debito ",
@@ -273,7 +281,6 @@ public class HomePageGUI extends JFrame {
 
             @Override
             public void mouseClicked(MouseEvent e){
-                ImageIcon iconDelete = new ImageIcon(HomePageGUI.class.getResource("/IMG/delete.png"));
                 int scelta = JOptionPane.showOptionDialog(
                         null, // Componente padre
                         "Vuoi eliminare questo conto corrente?", // Messaggio
@@ -331,7 +338,6 @@ public class HomePageGUI extends JFrame {
 
 
 
-        ImageIcon iconUser = new ImageIcon(HomePageGUI.class.getResource("/IMG/user.png")); // Sostituisci con il percorso del tuo file icona
         JButton buttonUser = new JButton();
         buttonUser.setCursor(new Cursor(Cursor.HAND_CURSOR));
         buttonUser.setBackground(null);
@@ -461,7 +467,6 @@ public class HomePageGUI extends JFrame {
         JLabel saldoLabel = new JLabel(String.valueOf(controller.getContoScelto().getSaldo())+"€");
         saldoLabel.setForeground(new Color(246, 248, 255));
         JButton buttonSaldo = new JButton();
-        ImageIcon iconSaldo = new ImageIcon(HomePageGUI.class.getResource("/IMG/credit_resized.png"));
         buttonSaldo.setBackground(null);
         buttonSaldo.setIcon(iconSaldo);
         buttonSaldo.setContentAreaFilled(false);
@@ -481,7 +486,6 @@ public class HomePageGUI extends JFrame {
         JLabel speseLabel = new JLabel("<html><b>LE TUE<br>SPESE</b></html>");
         speseLabel.setForeground(new Color(8, 76, 97));
         JButton buttonSpese = new JButton();
-        ImageIcon iconSpese = new ImageIcon(HomePageGUI.class.getResource("/IMG/time-count_resized_flipped.png"));
         buttonSpese.setBackground(null);
         buttonSpese.setIcon(iconSpese);
         buttonSpese.setContentAreaFilled(false);
@@ -500,7 +504,6 @@ public class HomePageGUI extends JFrame {
         JLabel salvadanaioLabel = new JLabel("<html><b>PIGGY<br>BANK</b></html>");
         salvadanaioLabel.setForeground(new Color(8, 76, 97));
         JButton buttonSalvadanaio = new JButton();
-        ImageIcon iconSalvadanaio = new ImageIcon(HomePageGUI.class.getResource("/IMG/saving_resized.png"));
         buttonSalvadanaio.setBackground(null);
         buttonSalvadanaio.setIcon(iconSalvadanaio);
         buttonSalvadanaio.setContentAreaFilled(false);
@@ -607,7 +610,6 @@ public class HomePageGUI extends JFrame {
 
 
         JButton buttonInviaSoldi = new JButton();
-        ImageIcon iconInviaSoldi = new ImageIcon(HomePageGUI.class.getResource("/IMG/sendMoney.png"));
         buttonInviaSoldi.setBackground(null);
         buttonInviaSoldi.setIcon(iconInviaSoldi);
         buttonInviaSoldi.setContentAreaFilled(false);
@@ -644,7 +646,6 @@ public class HomePageGUI extends JFrame {
 
 
         JButton buttonRaccolte = new JButton();
-        ImageIcon iconRaccolte = new ImageIcon(HomePageGUI.class.getResource("/IMG/raccolte.png"));
         buttonRaccolte.setBackground(null);
         buttonRaccolte.setIcon(iconRaccolte);
         buttonRaccolte.setContentAreaFilled(false);
@@ -685,7 +686,6 @@ public class HomePageGUI extends JFrame {
 
 
         JButton buttonNotifiche = new JButton();
-        ImageIcon iconNotifiche = new ImageIcon(HomePageGUI.class.getResource("/IMG/notice.png"));
         buttonNotifiche.setBackground(null);
         buttonNotifiche.setIcon(iconNotifiche);
         buttonNotifiche.setContentAreaFilled(false);

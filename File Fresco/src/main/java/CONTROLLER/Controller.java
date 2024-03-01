@@ -22,6 +22,13 @@ public class Controller {
     private SalvadanaioGUI frameSalvadanaio;
     private TransazioniGUI frameTransazioni;
 
+    //Icone
+    ImageIcon iconAlert = new ImageIcon(HomePageGUI.class.getResource("/IMG/alert.png"));
+    ImageIcon iconCancel = new ImageIcon(HomePageGUI.class.getResource("/IMG/cancel.png"));
+    ImageIcon iconChecked = new ImageIcon(HomePageGUI.class.getResource("/IMG/checked.png"));
+    ImageIcon iconDelete = new ImageIcon(HomePageGUI.class.getResource("/IMG/cancel.png"));
+
+
 
     //Dichiarazioni delle Dao
     private AccountDAO accountDao;
@@ -71,7 +78,8 @@ public class Controller {
                         null,
                         "Email o Password Errati",
                         "Errore di Login",
-                        JOptionPane.ERROR_MESSAGE
+                        JOptionPane.PLAIN_MESSAGE,
+                        iconCancel
                 );
             }
         }
@@ -80,8 +88,9 @@ public class Controller {
             JOptionPane.showMessageDialog(
                     null,
                     "Inserisci delle credenziali valide!",
-                    "Errore",
-                    JOptionPane.ERROR_MESSAGE);
+                    "Errore di Login",
+                    JOptionPane.PLAIN_MESSAGE,
+                    iconAlert);
         }
     }
 
@@ -109,14 +118,16 @@ public class Controller {
                         frameSignIn,
                         "Dati dell'account inseriti!",
                         "Benvenuta/o",
-                        JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.PLAIN_MESSAGE,
+                        iconChecked);
             }
             else{
                 JOptionPane.showMessageDialog(
                         frameSignIn,
                         "Inserisci delle credenziali valide!",
                         "Errore",
-                        JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.PLAIN_MESSAGE,
+                        iconAlert);
             }
         }
         catch (MyExc exc){
@@ -124,7 +135,9 @@ public class Controller {
                     frameSignIn,
                     "L'email deve contenere una '@'!",
                     "Errore",
-                    JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.PLAIN_MESSAGE,
+                    iconAlert
+                    );
         }
 
 
@@ -181,7 +194,8 @@ public class Controller {
                 framePick,
                 "Conto Corrente con Iban: " +iban+ ", eliminato con successo!",
                 "Conto Corrente eliminato",
-                JOptionPane.INFORMATION_MESSAGE
+                JOptionPane.PLAIN_MESSAGE,
+                iconDelete
         );
     }
 
@@ -245,7 +259,6 @@ public class Controller {
      * @param pan riferimento per la carta da aggiornare.*/
     public void upgradeCarta(String pan){
         cartaDAO.upgradeCarta(pan);
-        ImageIcon iconChecked = new ImageIcon(Controller.class.getResource("/IMG/checked.png")); //Inserisce l'immagine sul JOptionPane.
         JOptionPane.showMessageDialog(
                 null,
                 "La tua carta è stata aggiornata a carta di credito!",
@@ -262,7 +275,6 @@ public class Controller {
      * @param pan riferimento per la carta da aggiornare.*/
     public void downgradeCarta(String pan){
         cartaDAO.downgradeCarta(pan);
-        ImageIcon iconChecked = new ImageIcon(Controller.class.getResource("/IMG/checked.png")); //Inserisce l'immagine sul JOptionPane.
         JOptionPane.showMessageDialog(
                 null,
                 "La tua carta è stata aggiornata a carta di debito!",
@@ -296,7 +308,8 @@ public class Controller {
                         null,
                         "Riempi tutti i campi!",
                         "Errore inserimento",
-                        JOptionPane.ERROR_MESSAGE
+                        JOptionPane.ERROR_MESSAGE,
+                        iconAlert
                 );
             }
         } catch (MyExc e) {
@@ -304,7 +317,8 @@ public class Controller {
                     frameSalvadanaio,
                     e.getMessage(),
                     "Errore",
-                    JOptionPane.ERROR_MESSAGE
+                    JOptionPane.PLAIN_MESSAGE,
+                    iconCancel
             );
         }
 
@@ -325,7 +339,9 @@ public class Controller {
                                 null,
                                 "Saldo conto corrente insufficiente!",
                                 "Errore",
-                                JOptionPane.ERROR_MESSAGE
+                                JOptionPane.PLAIN_MESSAGE,
+                                iconCancel
+
                         );
                     }
                 }
@@ -334,7 +350,8 @@ public class Controller {
                             null,
                             "Inserisci una cifra valida!",
                             "Errore inserimento",
-                            JOptionPane.ERROR_MESSAGE
+                            JOptionPane.PLAIN_MESSAGE,
+                            iconAlert
                     );
                 }
             }
@@ -343,7 +360,8 @@ public class Controller {
                         null,
                         "Riempi tutti i campi!",
                         "Errore inserimento",
-                        JOptionPane.ERROR_MESSAGE
+                        JOptionPane.PLAIN_MESSAGE,
+                        iconAlert
                 );
             }
         }
@@ -352,7 +370,8 @@ public class Controller {
                     null,
                     "Inserisci una cifra valida!",
                     "Errore inserimento",
-                    JOptionPane.ERROR_MESSAGE
+                    JOptionPane.ERROR_MESSAGE,
+                    iconAlert
             );
         }
     }

@@ -20,6 +20,10 @@ public class LoginViewGUI extends JFrame{
     private Font fontRegularSmall;
     private Font fontRegularBold;
 
+    //Icone
+    ImageIcon iconHiddenPassword = new ImageIcon(LoginViewGUI.class.getResource("/IMG/hidepass.png"));
+    ImageIcon iconShowedPassword = new ImageIcon(LoginViewGUI.class.getResource("/IMG/showpass.png"));
+
     public LoginViewGUI(Controller controller){
         this.controller = controller;
         setTitle("Login Page");
@@ -101,7 +105,7 @@ public class LoginViewGUI extends JFrame{
         emailField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                emailField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
+                emailField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122, 255)));
             }
             @Override
             public void focusLost(FocusEvent e) {
@@ -128,7 +132,7 @@ public class LoginViewGUI extends JFrame{
         passwordField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                passwordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
+                passwordField.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122, 255)));
             }
             @Override
             public void focusLost(FocusEvent e) {
@@ -161,8 +165,6 @@ public class LoginViewGUI extends JFrame{
             }
         });
 
-        ImageIcon iconHiddenPassword = new ImageIcon(LoginViewGUI.class.getResource("/IMG/hidepass.png"));
-        ImageIcon iconShowedPassword = new ImageIcon(LoginViewGUI.class.getResource("/IMG/showpass.png"));
 
         showPasswordCheckBox.setIcon(iconHiddenPassword);
         showPasswordCheckBox.setSelectedIcon(iconShowedPassword);

@@ -13,15 +13,22 @@ import java.util.ArrayList;
 
 
 public class BankAccountPickViewGUI extends JFrame {
+
     private Controller controller;
+
+    //Dichiarazioni Variabili per i Font
     private Font fontRegular;
     private Font fontRegularBold;
     private Font fontBold;
     private Font fontExtraBold;
     private Font fontRegularSmall;
     private JButton logOutButton;
-
     private JPanel panelSignIn;
+
+    //Icone
+    ImageIcon iconExit = new ImageIcon(HomePageGUI.class.getResource("/IMG/door_exit.png"));
+    ImageIcon icon = new ImageIcon(BankAccountPickViewGUI.class.getResource("/IMG/logout.png"));
+    ImageIcon iconUnina = new ImageIcon(HomePageGUI.class.getResource("/IMG/unina.png"));
 
 
     public BankAccountPickViewGUI(Controller controller){
@@ -61,7 +68,6 @@ public class BankAccountPickViewGUI extends JFrame {
         gbc.fill = GridBagConstraints.BOTH;
         panelSignIn3.add(titoloFrame, gbc);
 
-        ImageIcon iconUnina = new ImageIcon(HomePageGUI.class.getResource("/IMG/unina.png")); // Sostituisci con il percorso del tuo file icona
         JButton buttonLogo = new JButton();
         buttonLogo.setBackground(null);
         buttonLogo.setIcon(iconUnina);
@@ -78,7 +84,6 @@ public class BankAccountPickViewGUI extends JFrame {
         }
 
         //Crea componenti
-        ImageIcon icon = new ImageIcon(BankAccountPickViewGUI.class.getResource("/IMG/logout.png")); // Sostituisci con il percorso del tuo file icona
         logOutButton = new JButton();
         logOutButton.setIcon(icon);
         logOutButton.setBackground(null);
@@ -88,7 +93,6 @@ public class BankAccountPickViewGUI extends JFrame {
         logOutButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                ImageIcon iconExit = new ImageIcon(HomePageGUI.class.getResource("/IMG/door_exit.png"));
                 int scelta = JOptionPane.showOptionDialog(
                         null, // Componente padre
                         "Sei sicuro di voler uscire?", // Messaggio
@@ -196,16 +200,16 @@ public class BankAccountPickViewGUI extends JFrame {
                     x = 0;
                 JPanel cardBank = new JPanel();
                 cardBank.setBackground(new Color(246, 248, 255));
-                cardBank.setBorder(new MatteBorder(0, 0, 0, 0, new Color(37, 89, 87)));
+                cardBank.setBorder(new MatteBorder(0, 0, 0, 0, new Color(0, 84, 122)));
 
                 cardBank.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseEntered(MouseEvent e) {
-                        cardBank.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
+                        cardBank.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122)));
                     }
 
                     public void mouseExited(MouseEvent e) {
-                        cardBank.setBorder(new MatteBorder(0, 0, 0, 0, new Color(37, 89, 87)));
+                        cardBank.setBorder(new MatteBorder(0, 0, 0, 0, new Color(0, 84, 122)));
                     }
                 });
 
@@ -276,22 +280,34 @@ public class BankAccountPickViewGUI extends JFrame {
                     }
                     JPanel addBank = new JPanel();
                     addBank.setBackground(new Color(246, 248, 255));
-                    addBank.setBorder(new MatteBorder(0, 0, 0, 0, new Color(37, 89, 87)));
+                    addBank.setBorder(new MatteBorder(0, 0, 0, 0, new Color(0, 84, 122)));
                     addBank.setCursor(new Cursor(Cursor.HAND_CURSOR));
                     addBank.addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseEntered(MouseEvent e) {
-                            addBank.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
+                            addBank.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122)));
                         }
 
                         public void mouseExited(MouseEvent e) {
-                            addBank.setBorder(new MatteBorder(0, 0, 0, 0, new Color(37, 89, 87)));
+                            addBank.setBorder(new MatteBorder(0, 0, 0, 0, new Color(0, 84, 122)));
                         }
                     });
 
                     JLabel creaContoLabel = new JLabel("Crea Conto Corrente +");
                     if (fontRegularBold != null)
                         creaContoLabel.setFont(fontRegularBold);
+
+                    creaContoLabel.addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseEntered(MouseEvent e) {
+                            addBank.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122)));
+                        }
+
+                        public void mouseExited(MouseEvent e) {
+                            addBank.setBorder(new MatteBorder(0, 0, 0, 0, new Color(0, 84, 122)));
+                        }
+                    });
+
                     creaContoLabel.addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseClicked(MouseEvent e){
@@ -337,20 +353,30 @@ public class BankAccountPickViewGUI extends JFrame {
         else {
             JPanel addBank = new JPanel();
             addBank.setBackground(new Color(246, 248, 255));
-            addBank.setBorder(new MatteBorder(0, 0, 0, 0, new Color(37, 89, 87)));
+            addBank.setBorder(new MatteBorder(0, 0, 0, 0, new Color(0, 50, 73)));
             addBank.setCursor(new Cursor(Cursor.HAND_CURSOR));
             addBank.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    addBank.setBorder(new MatteBorder(0, 0, 2, 0, new Color(37, 89, 87)));
+                    addBank.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122)));
                 }
 
                 public void mouseExited(MouseEvent e) {
-                    addBank.setBorder(new MatteBorder(0, 0, 0, 0, new Color(37, 89, 87)));
+                    addBank.setBorder(new MatteBorder(0, 0, 0, 0, new Color(0, 84, 122)));
                 }
             });
 
             JLabel creaContoLabel = new JLabel("Crea Conto Corrente +");
+            creaContoLabel.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    addBank.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122)));
+                }
+
+                public void mouseExited(MouseEvent e) {
+                    addBank.setBorder(new MatteBorder(0, 0, 0, 0, new Color(0, 84, 122)));
+                }
+            });
             if (fontRegularBold != null)
                 creaContoLabel.setFont(fontRegularBold);
             creaContoLabel.addMouseListener(new MouseAdapter() {

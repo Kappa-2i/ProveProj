@@ -23,6 +23,14 @@ public class SalvadanaioGUI extends JFrame {
     private Font fontRegularBold;
     private Font fontRegularXXL;
 
+    //Icone
+    ImageIcon iconUnina = new ImageIcon(SalvadanaioGUI.class.getResource("/IMG/unina.png"));
+    ImageIcon iconHome = new ImageIcon(SalvadanaioGUI.class.getResource("/IMG/home.png"));
+    ImageIcon iconAddPiggyBank = new ImageIcon(SalvadanaioGUI.class.getResource("/IMG/addPiggyBank.png"));
+    ImageIcon iconExit = new ImageIcon(HomePageGUI.class.getResource("/IMG/door_exit.png"));
+    ImageIcon iconInformation = new ImageIcon(HomePageGUI.class.getResource("/IMG/information.png"));
+
+
     public SalvadanaioGUI(Controller controller){
         this.controller = controller;
         setTitle("Salvadanaio - S.M.U.");
@@ -84,7 +92,6 @@ public class SalvadanaioGUI extends JFrame {
             titoloSmu.setFont(fontRegular);
         }
 
-        ImageIcon iconUnina = new ImageIcon(SalvadanaioGUI.class.getResource("/IMG/unina.png")); // Sostituisci con il percorso del tuo file icona
         JButton buttonLogo = new JButton();
         buttonLogo.setBackground(null);
         buttonLogo.setIcon(iconUnina);
@@ -94,7 +101,6 @@ public class SalvadanaioGUI extends JFrame {
         buttonLogo.setBorder(null);
         buttonLogo.setFocusPainted(false);
 
-        ImageIcon iconHome = new ImageIcon(SalvadanaioGUI.class.getResource("/IMG/home.png")); // Sostituisci con il percorso del tuo file icona
         JButton buttonHome = new JButton();
         buttonHome.setCursor(new Cursor(Cursor.HAND_CURSOR));
         buttonHome.setBackground(null);
@@ -112,7 +118,6 @@ public class SalvadanaioGUI extends JFrame {
             }
         });
 
-        ImageIcon iconAddPiggyBank = new ImageIcon(SalvadanaioGUI.class.getResource("/IMG/addPiggyBank.png")); // Sostituisci con il percorso del tuo file icona
         JButton addPiggyBankButton = new JButton();
         addPiggyBankButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         addPiggyBankButton.setBackground(null);
@@ -169,7 +174,6 @@ public class SalvadanaioGUI extends JFrame {
                 gbc.gridy = 5;
                 gbc.gridx = 0;
                 addPiggyPanel.add(descrizionField, gbc);
-                ImageIcon iconExit = new ImageIcon(HomePageGUI.class.getResource("/IMG/door_exit.png"));
 
                 // Mostra il JOptionPane con i JTextField inseriti
                 int result = JOptionPane.showOptionDialog(
@@ -326,7 +330,6 @@ public class SalvadanaioGUI extends JFrame {
                     }
 
                     // Mostra il dialogo con le informazioni
-                    ImageIcon iconInformation = new ImageIcon(HomePageGUI.class.getResource("/IMG/information.png"));
                     // Mostra il JOptionPane con i JTextField inseriti
                     int result = JOptionPane.showOptionDialog(
                             null, // Componente padre
