@@ -666,6 +666,12 @@ public class HomePageGUI extends JFrame {
         buttonRaccolte.setBorder(null);
         buttonRaccolte.setFocusPainted(false);
         buttonRaccolte.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        buttonRaccolte.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                controller.showCollectionPickView();
+            }
+        });
 
         JLabel raccolteLabel = new JLabel("          RACCOLTE");
         if (fontRegularXXL != null)

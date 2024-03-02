@@ -191,7 +191,8 @@ public class BankTransferPageGUI extends JFrame {
                         cognomeDestinatarioField.getText(),
                         causaleArea.getText(),
                         (String) catComboBox.getSelectedItem(),
-                        (String) bonComboBox.getSelectedItem());
+                        (String) bonComboBox.getSelectedItem(),
+                        "ALTRO");
                 ibanDestinatarioField.setText("");
                 importoField.setText("");
                 nomeDestinatarioField.setText("");

@@ -22,6 +22,8 @@ public class Controller {
     private SalvadanaioGUI frameSalvadanaio;
     private TransazioniGUI frameTransazioni;
     private BankTransferPageGUI frameBankTransfer;
+    private CollectionPickViewGUI framePickCollection;
+    private CollectionPageGUI frameCollection;
 
     //Icone
     ImageIcon iconAlert = new ImageIcon(HomePageGUI.class.getResource("/IMG/alert.png"));
@@ -35,6 +37,7 @@ public class Controller {
     private CartaDAO cartaDAO;
     private SalvadanaioDAO salvadanaioDAO;
     private TransazioneDAO transazioneDAO;
+    private CollectionDAO collectionDAO;
 
     //Dichiarazione delle variabili
     private Account account = null;
@@ -45,6 +48,9 @@ public class Controller {
     private ArrayList<Transazione> transazioni = null;
     private Double[] report = null;
     private String credenzialiIbanMittDest = null;
+    private ArrayList<Collection> collections = null;
+    private Collection selectedCollection = null;
+    private ArrayList<Transazione> transactionsCollection = null;
 
     public Controller() {
         frameLogin = new LoginViewGUI(this); //LoginView accetta ControllerLogin come parametro
@@ -56,6 +62,7 @@ public class Controller {
         this.cartaDAO = new CartaDAOImpl();
         this.salvadanaioDAO = new SalvadanaioDAOImpl();
         this.transazioneDAO = new TransazionaDAOImpl();
+        this.collectionDAO = new CollectionDAOImpl();
     }
 
     /**
@@ -418,7 +425,7 @@ public class Controller {
         frameBankTransfer(true);
     }
 
-    public void sendBankTransfer(String ibanReceiver, String amount, String name, String surname, String reason, String cat, String typeBankTransfer){
+    public void sendBankTransfer(String ibanReceiver, String amount, String name, String surname, String reason, String cat, String typeBankTransfer, String nameCollection){
         try{
             if(typeBankTransfer.equals("Bonifico")){
                 if(!amount.isEmpty()) {
@@ -426,7 +433,7 @@ public class Controller {
                         if (contoScelto.getSaldo() >= Math.round((Double.parseDouble(amount) * 100.00) / 100.00)) {
                             if (!ibanReceiver.isEmpty() && !name.isEmpty() && !surname.isEmpty() && !reason.isEmpty()) {
                                 if (transazioneDAO.checkIban(ibanReceiver, name, surname)) {
-                                    transazioneDAO.sendBankTransfer(contoScelto, ibanReceiver, amount, reason, cat);
+                                    transazioneDAO.sendBankTransfer(contoScelto, ibanReceiver, amount, reason, cat, nameCollection);
                                     JOptionPane.showMessageDialog(
                                             frameBankTransfer,
                                             "Bonifico inviato con successo!",
@@ -475,7 +482,7 @@ public class Controller {
                         if (contoScelto.getSaldo() >= Math.round((Double.parseDouble(amount) * 100.00) / 100.00)) {
                             if (!ibanReceiver.isEmpty() && !name.isEmpty() && !surname.isEmpty() && !reason.isEmpty()) {
                                 if (transazioneDAO.checkIban(ibanReceiver, name, surname)) {
-                                    transazioneDAO.sendIstantBankTransfer(contoScelto, ibanReceiver, amount, reason, cat);
+                                    transazioneDAO.sendIstantBankTransfer(contoScelto, ibanReceiver, amount, reason, cat, nameCollection);
                                     JOptionPane.showMessageDialog(
                                             frameBankTransfer,
                                             "Bonifico inviato con successo!",
@@ -539,6 +546,36 @@ public class Controller {
 
     public void selectNameAndSurnameByIban(String iban){
         credenzialiIbanMittDest = transazioneDAO.selectNameAndSurnameByIban(iban);
+    }
+
+    public void showCollectionPickView(){
+        collections = collectionDAO.selectCollectionByIban(contoScelto);
+        framePickCollection = new CollectionPickViewGUI(this);
+
+        frameHome(false);
+        if(frameBankTransfer!=null){
+            frameBankTransfer(false);
+        }
+        if(frameCard!=null){
+            frameCard(false);
+        }
+        framePickCollection(true);
+    }
+
+    public void showCollectionPage(Collection collection){
+        selectedCollection = collection;
+        transactionsCollection = transazioneDAO.selectTransactionsByCollection(selectedCollection, contoScelto);
+
+        if(transactionsCollection.isEmpty()){
+            System.out.println("vuoto");
+        }
+        selectedCollection.setTransactions(transactionsCollection);
+
+
+        framePickCollection(false);
+        frameCollection = new CollectionPageGUI(this);
+        frameCollection(true);
+
     }
 
     public void viewReport(ContoCorrente conto, String mese){
@@ -614,6 +651,32 @@ public class Controller {
         frameTransazioni.setVisible(isVisibile);
     }
 
+    /**
+     * Metodo che gestisce la visibilità della pagina per visualizzare le collezioni.
+     * @param isVisibile setta la visibilità della pagina
+     * */
+    public void framePickCollection(Boolean isVisible){
+        framePickCollection.setVisible(isVisible);
+    }
+
+    /**
+     * Metodo che gestisce la visibilità della pagina per visualizzare le collezioni.
+     * @param isVisibile setta la visibilità della pagina
+     * */
+    public void frameCollection(Boolean isVisible){
+        frameCollection.setVisible(isVisible);
+    }
+
+
+
+
+
+
+
+
+
+
+
     public Account getAccount() {
         return account;
     }
@@ -676,5 +739,29 @@ public class Controller {
 
     public void setCredenzialiIbanMittDest(String credenzialiIbanMittDest) {
         this.credenzialiIbanMittDest = credenzialiIbanMittDest;
+    }
+
+    public ArrayList<Collection> getCollections() {
+        return collections;
+    }
+
+    public void setCollections(ArrayList<Collection> collections) {
+        this.collections = collections;
+    }
+
+    public ArrayList<Transazione> getTransactionsCollection() {
+        return transactionsCollection;
+    }
+
+    public void setTransactionsCollection(ArrayList<Transazione> transactionsCollection) {
+        this.transactionsCollection = transactionsCollection;
+    }
+
+    public Collection getSelectedCollection() {
+        return selectedCollection;
+    }
+
+    public void setSelectedCollection(Collection selectedCollection) {
+        this.selectedCollection = selectedCollection;
     }
 }

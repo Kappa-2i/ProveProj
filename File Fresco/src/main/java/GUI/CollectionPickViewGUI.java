@@ -1,18 +1,19 @@
 package GUI;
 
 import CONTROLLER.Controller;
+import ENTITY.Collection;
 import ENTITY.ContoCorrente;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
-public class BankAccountPickViewGUI extends JFrame {
+public class CollectionPickViewGUI extends JFrame {
 
     private Controller controller;
 
@@ -22,18 +23,18 @@ public class BankAccountPickViewGUI extends JFrame {
     private Font fontBold;
     private Font fontExtraBold;
     private Font fontRegularSmall;
-    private JButton logOutButton;
+    private JButton homeButton;
     private JPanel panelSignIn;
 
     //Icone
     ImageIcon iconExit = new ImageIcon(HomePageGUI.class.getResource("/IMG/door_exit.png"));
-    ImageIcon icon = new ImageIcon(BankAccountPickViewGUI.class.getResource("/IMG/logout.png"));
+    ImageIcon iconHome = new ImageIcon(BankAccountPickViewGUI.class.getResource("/IMG/home.png"));
     ImageIcon iconUnina = new ImageIcon(HomePageGUI.class.getResource("/IMG/unina.png"));
 
 
-    public BankAccountPickViewGUI(Controller controller){
+    public CollectionPickViewGUI(Controller controller){
         this.controller = controller;
-        setTitle("Seleziona conto");
+        setTitle("Seleziona raccolta");
         setSize(1400, 800);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -57,7 +58,7 @@ public class BankAccountPickViewGUI extends JFrame {
         JPanel panelSignIn3 = new JPanel(new GridBagLayout());
         panelSignIn3.setBackground(new Color(0, 50, 73)); // Scegli il colore che preferisci
         panelSignIn3.setOpaque(true);
-        JLabel titoloFrame = new JLabel("Benvenuto " +controller.getAccount().getName());
+        JLabel titoloFrame = new JLabel("Seleziona raccolta");
         if (fontExtraBold != null)
             titoloFrame.setFont(fontExtraBold);
         titoloFrame.setForeground(new Color(246, 248, 255));
@@ -84,27 +85,16 @@ public class BankAccountPickViewGUI extends JFrame {
         }
 
         //Crea componenti
-        logOutButton = new JButton();
-        logOutButton.setIcon(icon);
-        logOutButton.setBackground(null);
-        logOutButton.setOpaque(true);
-        logOutButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia il cursore per indicare che è cliccabile
-        logOutButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        logOutButton.addMouseListener(new MouseAdapter() {
+        homeButton = new JButton();
+        homeButton.setIcon(iconHome);
+        homeButton.setBackground(null);
+        homeButton.setOpaque(true);
+        homeButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia il cursore per indicare che è cliccabile
+        homeButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        homeButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                int scelta = JOptionPane.showOptionDialog(
-                        null, // Componente padre
-                        "Sei sicuro di voler uscire?", // Messaggio
-                        "Conferma Logout", // Titolo
-                        JOptionPane.YES_NO_CANCEL_OPTION,
-                        JOptionPane.QUESTION_MESSAGE, // Tipo di messaggio
-                        iconExit, // Icona personalizzata, usa null per l'icona di default
-                        options, // Array contenente le etichette dei pulsanti
-                        options[1] // Opzione di default
-                );
-                if (scelta == JOptionPane.YES_OPTION)
-                    controller.backLoginPage();
+                controller.showHomePage(controller.getContoScelto());
             }
         });
         gbc = new GridBagConstraints();
@@ -142,7 +132,7 @@ public class BankAccountPickViewGUI extends JFrame {
         gbc = new GridBagConstraints();
         // Configurazione per buttonUser e buttonLogout a destra della homePageLabel
         gbc.gridx = 6; // Posiziona buttonUser a destra della homePageLabel
-        panelSignIn3.add(logOutButton, gbc);
+        panelSignIn3.add(homeButton, gbc);
 
         gbc = new GridBagConstraints();
         gbc.gridx = 0; // Inizia dalla prima colonna
@@ -191,11 +181,11 @@ public class BankAccountPickViewGUI extends JFrame {
 
     public void showBankAccount(){
 
-        ArrayList<ContoCorrente> conti = controller.selectBankAccountByAccount(controller.getAccount());
-        if (!conti.isEmpty()){
+
+        if (!controller.getCollections().isEmpty()){
             int y = 2;
             int x = 0;
-            for (ContoCorrente conto : conti) {
+            for (Collection collection : controller.getCollections()) {
                 if (x == 3)
                     x = 0;
                 JPanel cardBank = new JPanel();
@@ -214,20 +204,20 @@ public class BankAccountPickViewGUI extends JFrame {
                 });
 
 
-                JLabel ibanLabel = new JLabel("Iban: ");
+                JLabel nameLabel = new JLabel("Nome: ");
                 if (fontRegularBold != null)
-                    ibanLabel.setFont(fontRegularBold);
+                    nameLabel.setFont(fontRegularBold);
 
-                JLabel numberIbanLabel = new JLabel(conto.getIban());
+                JLabel nameCollectionLabel = new JLabel(collection.getNameCollection());
                 if (fontRegular != null)
-                    numberIbanLabel.setFont(fontRegular);
+                    nameCollectionLabel.setFont(fontRegular);
 
 
-                JLabel saldoLabel = new JLabel("Saldo: ");
-                JLabel numberSaldoLabel = new JLabel(String.valueOf(conto.getSaldo())+"€");
+                JLabel descrizioneLabel = new JLabel("Descrizione: ");
+                JLabel descriptionLabel = new JLabel(String.valueOf(collection.getDescription()));
                 if (fontBold != null){
-                    saldoLabel.setFont(fontBold);
-                    numberSaldoLabel.setFont(fontBold);
+                    descrizioneLabel.setFont(fontBold);
+                    descriptionLabel.setFont(fontBold);
                 }
 
 
@@ -241,27 +231,29 @@ public class BankAccountPickViewGUI extends JFrame {
                 GroupLayout.SequentialGroup hGroup = glBankAccount.createSequentialGroup();
 
                 hGroup.addGroup(glBankAccount.createParallelGroup().
-                        addComponent(ibanLabel).addComponent(saldoLabel));
+                        addComponent(nameLabel).addComponent(descrizioneLabel));
                 hGroup.addGroup(glBankAccount.createParallelGroup().
-                        addComponent(numberIbanLabel).addComponent(numberSaldoLabel));
+                        addComponent(nameCollectionLabel).addComponent(descriptionLabel));
                 glBankAccount.setHorizontalGroup(hGroup);
 
                 GroupLayout.SequentialGroup vGroup = glBankAccount.createSequentialGroup();
 
                 vGroup.addGroup(glBankAccount.createParallelGroup(GroupLayout.Alignment.BASELINE).
-                        addComponent(ibanLabel).addComponent(numberIbanLabel));
+                        addComponent(nameLabel).addComponent(nameCollectionLabel));
                 vGroup.addGroup(glBankAccount.createParallelGroup(GroupLayout.Alignment.BASELINE).
-                        addComponent(saldoLabel).addComponent(numberSaldoLabel));
+                        addComponent(descrizioneLabel).addComponent(descriptionLabel));
                 glBankAccount.setVerticalGroup(vGroup);
 
                 cardBank.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 cardBank.addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mouseClicked(MouseEvent e) {
-                            controller.showHomePage(conto);
-                        }
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        System.out.println(collection.getNameCollection());
+                        controller.showCollectionPage(collection);
 
-                    });
+                    }
+
+                });
 
 
                 GridBagConstraints gbc = new GridBagConstraints();
@@ -275,7 +267,7 @@ public class BankAccountPickViewGUI extends JFrame {
                     y++;
 
                 // Controlla se l'elemento corrente è l'ultimo dell'ArrayList
-                if (conto.equals(conti.get(conti.size() - 1))) {
+                if (collection.equals(controller.getCollections().get(controller.getCollections().size() - 1))) {
                     if (x == 3){
                         x = 0;
                     }
@@ -294,11 +286,11 @@ public class BankAccountPickViewGUI extends JFrame {
                         }
                     });
 
-                    JLabel creaContoLabel = new JLabel("Crea Conto Corrente +");
+                    JLabel createCollection = new JLabel("Crea Raccolta +");
                     if (fontRegularBold != null)
-                        creaContoLabel.setFont(fontRegularBold);
+                        createCollection.setFont(fontRegularBold);
 
-                    creaContoLabel.addMouseListener(new MouseAdapter() {
+                    createCollection.addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseEntered(MouseEvent e) {
                             addBank.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122)));
@@ -309,17 +301,17 @@ public class BankAccountPickViewGUI extends JFrame {
                         }
                     });
 
-                    creaContoLabel.addMouseListener(new MouseAdapter() {
+                    createCollection.addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseClicked(MouseEvent e){
-                            if(controller.insertBankAccount(controller.getAccount().getEmail())) {
-                                try {
-                                    setVisible(false);
-                                    controller.checkCredentials(controller.getAccount().getEmail(), controller.getAccount().getPassword());
-                                } catch (SQLException ex) {
-                                    throw new RuntimeException(ex);
-                                }
-                            }
+//                            if(controller.insertBankAccount(controller.getAccount().getEmail())) {
+//                                try {
+//                                    setVisible(false);
+//                                    controller.checkCredentials(controller.getAccount().getEmail(), controller.getAccount().getPassword());
+//                                } catch (SQLException ex) {
+//                                    throw new RuntimeException(ex);
+//                                }
+//                            }
                         }
                     });
 
@@ -334,12 +326,12 @@ public class BankAccountPickViewGUI extends JFrame {
 
 
                     hGroup2.addGroup(glAddBank.createParallelGroup().
-                            addComponent(creaContoLabel));
+                            addComponent(createCollection));
                     glAddBank.setHorizontalGroup(hGroup2);
 
 
                     vGroup2.addGroup(glAddBank.createParallelGroup(GroupLayout.Alignment.BASELINE).
-                            addComponent(creaContoLabel));
+                            addComponent(createCollection));
                     glAddBank.setVerticalGroup(vGroup2);
 
                     gbc = new GridBagConstraints();
@@ -487,6 +479,4 @@ public class BankAccountPickViewGUI extends JFrame {
             fontRegularSmall = null;
         }
     }
-
-
 }

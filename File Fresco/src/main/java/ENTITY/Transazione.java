@@ -9,9 +9,10 @@ public class Transazione {
     private String iban; //iban di chi ci manda soldi, o a chi inviamo soldi
     private String categoriaEntrata;
     private String categoriaUscita;
+    private String nameCollection;
     private ContoCorrente contoCorrente;
 
-    public Transazione(double importo, String causale, String dataTransazione, String orarioTransazione, String tipoTransazione, String iban, String categoriaEntrata, String categoriaUscita, ContoCorrente contoCorrente) {
+    public Transazione(double importo, String causale, String dataTransazione, String orarioTransazione, String tipoTransazione, String iban, String categoriaEntrata, String categoriaUscita, String nameCollection, ContoCorrente contoCorrente) {
         setImporto(importo);
         setCausale(causale);
         setDataTransazione(dataTransazione);
@@ -20,6 +21,7 @@ public class Transazione {
         setIban(iban);
         setCategoriaEntrata(categoriaEntrata);
         setCategoriaUscita(categoriaUscita);
+        setNameCollection(nameCollection);
         setContoCorrente(contoCorrente);
     }
 
@@ -93,6 +95,14 @@ public class Transazione {
 
     public void setCategoriaUscita(String categoriaUscita) {
         this.categoriaUscita = categoriaUscita;
+    }
+
+    public String getNameCollection() {
+        return nameCollection;
+    }
+
+    public void setNameCollection(String nameCollection) {
+        this.nameCollection = nameCollection;
     }
 
     @Override
