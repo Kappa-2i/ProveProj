@@ -218,6 +218,8 @@ public class Controller {
         framePick(false);
         if(frameSalvadanaio != null)
             frameSalvadanaio(false);
+        if(framePickCollection != null)
+            framePickCollection(false);
         frameHome = new HomePageGUI(this);
         frameHome(true);
     }
@@ -421,6 +423,9 @@ public class Controller {
     }
 
     public void showBankTransferPage(){
+        if(frameBankTransfer != null){
+            frameBankTransfer(false);
+        }
         frameBankTransfer = new BankTransferPageGUI(this);
         frameBankTransfer(true);
     }
@@ -433,6 +438,8 @@ public class Controller {
                         if (contoScelto.getSaldo() >= Math.round((Double.parseDouble(amount) * 100.00) / 100.00)) {
                             if (!ibanReceiver.isEmpty() && !name.isEmpty() && !surname.isEmpty() && !reason.isEmpty()) {
                                 if (transazioneDAO.checkIban(ibanReceiver, name, surname)) {
+                                    if(nameCollection==null)
+                                        nameCollection = "ALTRO";
                                     transazioneDAO.sendBankTransfer(contoScelto, ibanReceiver, amount, reason, cat, nameCollection);
                                     JOptionPane.showMessageDialog(
                                             frameBankTransfer,
@@ -482,6 +489,8 @@ public class Controller {
                         if (contoScelto.getSaldo() >= Math.round((Double.parseDouble(amount) * 100.00) / 100.00)) {
                             if (!ibanReceiver.isEmpty() && !name.isEmpty() && !surname.isEmpty() && !reason.isEmpty()) {
                                 if (transazioneDAO.checkIban(ibanReceiver, name, surname)) {
+                                    if(nameCollection==null)
+                                        nameCollection = "ALTRO";
                                     transazioneDAO.sendIstantBankTransfer(contoScelto, ibanReceiver, amount, reason, cat, nameCollection);
                                     JOptionPane.showMessageDialog(
                                             frameBankTransfer,
@@ -562,6 +571,10 @@ public class Controller {
         framePickCollection(true);
     }
 
+    public void pickCollectionByIban(){
+        collections = collectionDAO.selectCollectionByIban(contoScelto);
+    }
+
     public void showCollectionPage(Collection collection){
         selectedCollection = collection;
         transactionsCollection = transazioneDAO.selectTransactionsByCollection(selectedCollection, contoScelto);
@@ -576,6 +589,30 @@ public class Controller {
         frameCollection = new CollectionPageGUI(this);
         frameCollection(true);
 
+    }
+
+    public void addCollection(ContoCorrente conto, String name, String description) throws MyExc{
+        try {
+            if(!name.isEmpty() && !description.isEmpty())
+                collectionDAO.addCollection(contoScelto, name, description);
+            else{
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Riempi tutti i campi!",
+                        "Errore inserimento",
+                        JOptionPane.ERROR_MESSAGE,
+                        iconAlert
+                );
+            }
+        } catch (MyExc e) {
+            JOptionPane.showMessageDialog(
+                    frameSalvadanaio,
+                    e.getMessage(),
+                    "Errore",
+                    JOptionPane.PLAIN_MESSAGE,
+                    iconCancel
+            );
+        }
     }
 
     public void viewReport(ContoCorrente conto, String mese){

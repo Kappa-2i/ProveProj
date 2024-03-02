@@ -2,7 +2,7 @@ package GUI;
 
 import CONTROLLER.Controller;
 import ENTITY.Collection;
-import ENTITY.ContoCorrente;
+import EXCEPTIONS.MyExc;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
@@ -10,8 +10,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.InputStream;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class CollectionPickViewGUI extends JFrame {
 
@@ -44,7 +42,7 @@ public class CollectionPickViewGUI extends JFrame {
         fontExtraBold();
         fontRegularSmall();
         fontRegularBold();
-        Object[] options = {"Sì", "No"};
+
 
         // Aggiungo il content Panel
         JPanel contentPane = new JPanel(new GridBagLayout());
@@ -159,7 +157,7 @@ public class CollectionPickViewGUI extends JFrame {
         gbc.gridx = 1;
         gbc.anchor = GridBagConstraints.CENTER;
 
-        showBankAccount();
+        showCollections();
         // Creazione dello JScrollPane che conterrà panelSignIn
         JScrollPane scrollPane = new JScrollPane(panelSignIn);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -179,29 +177,16 @@ public class CollectionPickViewGUI extends JFrame {
         setContentPane(contentPane);
     }
 
-    public void showBankAccount(){
+    public void showCollections(){
 
-
+        Object[] optionsAdd = {"Crea", "Annulla"};
         if (!controller.getCollections().isEmpty()){
             int y = 2;
             int x = 0;
             for (Collection collection : controller.getCollections()) {
                 if (x == 3)
                     x = 0;
-                JPanel cardBank = new JPanel();
-                cardBank.setBackground(new Color(246, 248, 255));
-                cardBank.setBorder(new MatteBorder(0, 0, 0, 0, new Color(0, 84, 122)));
-
-                cardBank.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseEntered(MouseEvent e) {
-                        cardBank.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122)));
-                    }
-
-                    public void mouseExited(MouseEvent e) {
-                        cardBank.setBorder(new MatteBorder(0, 0, 0, 0, new Color(0, 84, 122)));
-                    }
-                });
+                RoundedPanel cardBank = new RoundedPanel(15, new Color(222, 226, 230));
 
 
                 JLabel nameLabel = new JLabel("Nome: ");
@@ -213,15 +198,6 @@ public class CollectionPickViewGUI extends JFrame {
                     nameCollectionLabel.setFont(fontRegular);
 
 
-                JLabel descrizioneLabel = new JLabel("Descrizione: ");
-                JLabel descriptionLabel = new JLabel(String.valueOf(collection.getDescription()));
-                if (fontBold != null){
-                    descrizioneLabel.setFont(fontBold);
-                    descriptionLabel.setFont(fontBold);
-                }
-
-
-
                 GroupLayout glBankAccount = new GroupLayout(cardBank);
                 cardBank.setLayout(glBankAccount);
 
@@ -231,17 +207,15 @@ public class CollectionPickViewGUI extends JFrame {
                 GroupLayout.SequentialGroup hGroup = glBankAccount.createSequentialGroup();
 
                 hGroup.addGroup(glBankAccount.createParallelGroup().
-                        addComponent(nameLabel).addComponent(descrizioneLabel));
+                        addComponent(nameLabel));
                 hGroup.addGroup(glBankAccount.createParallelGroup().
-                        addComponent(nameCollectionLabel).addComponent(descriptionLabel));
+                        addComponent(nameCollectionLabel));
                 glBankAccount.setHorizontalGroup(hGroup);
 
                 GroupLayout.SequentialGroup vGroup = glBankAccount.createSequentialGroup();
 
                 vGroup.addGroup(glBankAccount.createParallelGroup(GroupLayout.Alignment.BASELINE).
                         addComponent(nameLabel).addComponent(nameCollectionLabel));
-                vGroup.addGroup(glBankAccount.createParallelGroup(GroupLayout.Alignment.BASELINE).
-                        addComponent(descrizioneLabel).addComponent(descriptionLabel));
                 glBankAccount.setVerticalGroup(vGroup);
 
                 cardBank.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -258,7 +232,7 @@ public class CollectionPickViewGUI extends JFrame {
 
                 GridBagConstraints gbc = new GridBagConstraints();
 
-                gbc.insets = new Insets(40, 40, 40, 40);
+                gbc.insets = new Insets(10, 100, 10, 100);
                 gbc.gridy = y;
                 gbc.gridx = x;
                 panelSignIn.add(cardBank, gbc);
@@ -304,14 +278,62 @@ public class CollectionPickViewGUI extends JFrame {
                     createCollection.addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseClicked(MouseEvent e){
-//                            if(controller.insertBankAccount(controller.getAccount().getEmail())) {
-//                                try {
-//                                    setVisible(false);
-//                                    controller.checkCredentials(controller.getAccount().getEmail(), controller.getAccount().getPassword());
-//                                } catch (SQLException ex) {
-//                                    throw new RuntimeException(ex);
-//                                }
-//                            }
+
+                            JPanel addCollectionPanel = new JPanel(new GridBagLayout());
+
+                            JLabel nameCollectionLabel = new JLabel("Nome");
+                            JTextField nameCollectionField = new JTextField();
+
+                            JLabel descriptionCollectionLabel = new JLabel("Descrizione");
+                            JTextArea descriptionCollectionArea = new JTextArea();
+                            descriptionCollectionArea.setRows(10);
+
+                            GridBagConstraints gbc = new GridBagConstraints();
+                            gbc.fill = GridBagConstraints.BOTH;
+                            gbc.insets = new Insets(5, 5, 5, 5);
+                            gbc.weightx = 0.5;
+                            gbc.gridy = 0;
+                            gbc.gridx = 0;
+                            addCollectionPanel.add(nameCollectionLabel, gbc);
+                            gbc.gridwidth = 2;
+                            gbc.weightx = 0.5;
+                            gbc.gridy = 1;
+                            gbc.gridx = 0;
+                            addCollectionPanel.add(nameCollectionField, gbc);
+                            gbc.gridwidth = 1;
+                            gbc.weightx = 0.5;
+                            gbc.gridy = 2;
+                            gbc.gridx = 0;
+                            addCollectionPanel.add(descriptionCollectionLabel, gbc);
+                            gbc.gridwidth = 2;
+                            gbc.weightx = 0.5;
+                            gbc.gridy = 3;
+                            gbc.gridx = 0;
+                            gbc.insets = new Insets(5, 10, 5, 10);
+                            addCollectionPanel.add(descriptionCollectionArea, gbc);
+
+
+
+
+                            // Mostra il JOptionPane con i JTextField inseriti
+                            int result = JOptionPane.showOptionDialog(
+                                    null, // Componente padre
+                                    addCollectionPanel, // Messaggio
+                                    "Crea Raccolta", // Titolo
+                                    JOptionPane.YES_NO_CANCEL_OPTION,
+                                    JOptionPane.QUESTION_MESSAGE, // Tipo di messaggio
+                                    iconExit, // Icona personalizzata, usa null per l'icona di default
+                                    optionsAdd, // Array contenente le etichette dei pulsanti
+                                    optionsAdd[0] // Opzione di default
+                            );
+                            if (result == JOptionPane.YES_OPTION) {
+                                try {
+                                    controller.addCollection(controller.getContoScelto(), nameCollectionField.getText(), descriptionCollectionArea.getText());
+                                } catch (MyExc ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                                controller.showCollectionPickView();
+                            }
                         }
                     });
 
@@ -344,50 +366,71 @@ public class CollectionPickViewGUI extends JFrame {
             }
         }
         else {
-            JPanel addBank = new JPanel();
-            addBank.setBackground(new Color(246, 248, 255));
-            addBank.setBorder(new MatteBorder(0, 0, 0, 0, new Color(0, 50, 73)));
-            addBank.setCursor(new Cursor(Cursor.HAND_CURSOR));
-            addBank.addMouseListener(new MouseAdapter() {
+            JPanel addCollection = new JPanel();
+            addCollection.setBackground(new Color(246, 248, 255));
+            addCollection.setBorder(new MatteBorder(0, 0, 0, 0, new Color(0, 50, 73)));
+            addCollection.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            addCollection.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    addBank.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122)));
+                    addCollection.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122)));
                 }
 
                 public void mouseExited(MouseEvent e) {
-                    addBank.setBorder(new MatteBorder(0, 0, 0, 0, new Color(0, 84, 122)));
+                    addCollection.setBorder(new MatteBorder(0, 0, 0, 0, new Color(0, 84, 122)));
                 }
             });
 
-            JLabel creaContoLabel = new JLabel("Crea Conto Corrente +");
-            creaContoLabel.addMouseListener(new MouseAdapter() {
+            JLabel createCollection = new JLabel("Crea Collezione +");
+            createCollection.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    addBank.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122)));
+                    addCollection.setBorder(new MatteBorder(0, 0, 2, 0, new Color(0, 84, 122)));
+                }
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    addCollection.setBorder(new MatteBorder(0, 0, 0, 0, new Color(0, 84, 122)));
                 }
 
-                public void mouseExited(MouseEvent e) {
-                    addBank.setBorder(new MatteBorder(0, 0, 0, 0, new Color(0, 84, 122)));
-                }
-            });
-            if (fontRegularBold != null)
-                creaContoLabel.setFont(fontRegularBold);
-            creaContoLabel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e){
-                    if(controller.insertBankAccount(controller.getAccount().getEmail())) {
+
+                    JPanel addCollectionPanel = new JPanel(new GridBagLayout());
+
+                    JLabel nameCollectionLabel = new JLabel("Nome");
+                    JTextField nameCollectionField = new JTextField();
+
+                    JLabel descriptionCollectionLabel = new JLabel("Descrizione");
+                    JTextArea descriptionCollectionArea = new JTextArea();
+
+                    // Mostra il JOptionPane con i JTextField inseriti
+                    int result = JOptionPane.showOptionDialog(
+                            null, // Componente padre
+                            addCollectionPanel, // Messaggio
+                            "Crea Raccolta", // Titolo
+                            JOptionPane.YES_NO_CANCEL_OPTION,
+                            JOptionPane.QUESTION_MESSAGE, // Tipo di messaggio
+                            iconExit, // Icona personalizzata, usa null per l'icona di default
+                            optionsAdd, // Array contenente le etichette dei pulsanti
+                            optionsAdd[0] // Opzione di default
+                    );
+                    if (result == JOptionPane.YES_OPTION) {
                         try {
-                            setVisible(false);
-                            controller.checkCredentials(controller.getAccount().getEmail(), controller.getAccount().getPassword());
-                        } catch (SQLException ex) {
+                            controller.addCollection(controller.getContoScelto(), nameCollectionField.getText(), descriptionCollectionArea.getText());
+                        } catch (MyExc ex) {
                             throw new RuntimeException(ex);
                         }
+                        controller.showCollectionPickView();
                     }
                 }
             });
+            if (fontRegularBold != null)
+                createCollection.setFont(fontRegularBold);
 
-            GroupLayout glAddBank = new GroupLayout(addBank);
-            addBank.setLayout(glAddBank);
+
+
+            GroupLayout glAddBank = new GroupLayout(addCollection);
+            addCollection.setLayout(glAddBank);
 
             glAddBank.setAutoCreateGaps(true);
             glAddBank.setAutoCreateContainerGaps(true);
@@ -398,12 +441,12 @@ public class CollectionPickViewGUI extends JFrame {
 
 
             hGroup2.addGroup(glAddBank.createParallelGroup().
-                    addComponent(creaContoLabel));
+                    addComponent(createCollection));
             glAddBank.setHorizontalGroup(hGroup2);
 
 
             vGroup2.addGroup(glAddBank.createParallelGroup(GroupLayout.Alignment.BASELINE).
-                    addComponent(creaContoLabel));
+                    addComponent(createCollection));
             glAddBank.setVerticalGroup(vGroup2);
 
             GridBagConstraints gbc = new GridBagConstraints();
@@ -411,7 +454,7 @@ public class CollectionPickViewGUI extends JFrame {
             gbc.insets = new Insets(40, 40, 40, 40);
             gbc.gridy = 2;
             gbc.gridx = 0;
-            panelSignIn.add(addBank, gbc);
+            panelSignIn.add(addCollection, gbc);
         }
     }
 

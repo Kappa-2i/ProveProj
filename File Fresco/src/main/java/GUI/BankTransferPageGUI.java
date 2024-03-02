@@ -1,7 +1,10 @@
 package GUI;
 
 import CONTROLLER.Controller;
+import ENTITY.Collection;
+
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -13,6 +16,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 public class BankTransferPageGUI extends JFrame {
 
@@ -129,11 +133,11 @@ public class BankTransferPageGUI extends JFrame {
             }
         });
 
-        causaleArea.setRows(7);
-        causaleArea.setColumns(10);
+
+
         PlainDocument doc = (PlainDocument) causaleArea.getDocument();
         doc.setDocumentFilter(new DocumentFilter() {
-            private int maxChars = 400;
+            private int maxChars = 200;
 
             @Override
             public void replace(DocumentFilter.FilterBypass fb, int offs, int length, String str, AttributeSet a)
@@ -176,6 +180,24 @@ public class BankTransferPageGUI extends JFrame {
         bonLabel.setForeground(new Color(8, 76, 97));
         JComboBox<String> bonComboBox = new JComboBox<>(tipoBonifico);
 
+
+
+        JLabel collectionLabel = new JLabel("Inserisci in raccolta:");
+        collectionLabel.setForeground(new Color(8, 76, 97));
+
+        ArrayList<String> list = new ArrayList<>();
+        //Funzione per prendere tutte le raccolte del conto e mostrarle nella JList
+        controller.pickCollectionByIban();
+        for (Collection collection : controller.getCollections()){
+            list.add(collection.getNameCollection());
+        }
+        JList<String> listCollection= new JList(list.toArray(new String[0]));
+        listCollection.setBackground(new Color(246, 248, 255));
+
+        // Aggiunge la JList a un JScrollPane
+        JScrollPane scrollPane = new JScrollPane(listCollection);
+
+
         JButton inviaButton = new JButton("Invia");
         inviaButton.setOpaque(true);
         inviaButton.setBackground(new Color(0, 0, 0, 255));
@@ -192,13 +214,12 @@ public class BankTransferPageGUI extends JFrame {
                         causaleArea.getText(),
                         (String) catComboBox.getSelectedItem(),
                         (String) bonComboBox.getSelectedItem(),
-                        "ALTRO");
+                        listCollection.getSelectedValue());
                 ibanDestinatarioField.setText("");
                 importoField.setText("");
                 nomeDestinatarioField.setText("");
                 cognomeDestinatarioField.setText("");
                 causaleArea.setText("");
-
             }
         });
 
@@ -217,6 +238,7 @@ public class BankTransferPageGUI extends JFrame {
             causaleLabel.setFont(fontRegularBold);
             catLabel.setFont(fontRegularBold);
             bonLabel.setFont(fontRegularBold);
+            collectionLabel.setFont(fontRegularBold);
         }
         if(fontRegular!=null){
             nomeDestinatarioField.setFont(fontRegular);
@@ -226,6 +248,7 @@ public class BankTransferPageGUI extends JFrame {
             causaleArea.setFont(fontRegular);
             catComboBox.setFont(fontRegular);
             bonComboBox.setFont(fontRegular);
+            listCollection.setFont(fontRegular);
         }
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -343,7 +366,7 @@ public class BankTransferPageGUI extends JFrame {
 
 
         gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 40, 5, 5);
+        gbc.insets = new Insets(5, 40, 5, 20);
         gbc.weighty = 0.1;
         gbc.weightx = 0.5;
         gbc.fill = GridBagConstraints.BOTH;
@@ -351,16 +374,30 @@ public class BankTransferPageGUI extends JFrame {
         gbc.gridx = 0;
         contentPane.add(causaleLabel,gbc);
         gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 40, 5, 40);
-        gbc.weighty = 0.2;
+        gbc.insets = new Insets(5, 40, 5, 20);
+        gbc.weighty = 0.1;
         gbc.weightx = 0.5;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridy = 8;
         gbc.gridx = 0;
-        gbc.gridwidth = 2;
         contentPane.add(causaleArea,gbc);
 
-
+        gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 20, 5, 40);
+        gbc.weighty = 0.1;
+        gbc.weightx = 0.5;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.gridy = 7;
+        gbc.gridx = 1;
+        contentPane.add(collectionLabel,gbc);
+        gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 20, 5, 40);
+        gbc.weighty = 0.1;
+        gbc.weightx = 0.5;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.gridy = 8;
+        gbc.gridx = 1;
+        contentPane.add(scrollPane,gbc);
 
         gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 40);

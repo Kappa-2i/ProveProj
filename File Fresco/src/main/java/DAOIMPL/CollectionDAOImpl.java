@@ -5,11 +5,9 @@ import DATABASE.DBConnection;
 import ENTITY.Collection;
 import ENTITY.ContoCorrente;
 import ENTITY.Transazione;
+import EXCEPTIONS.MyExc;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class CollectionDAOImpl implements CollectionDAO {
@@ -44,5 +42,32 @@ public class CollectionDAOImpl implements CollectionDAO {
         return null;
     }
 
+
+    public void addCollection(ContoCorrente conto, String name, String description) throws MyExc{
+        CallableStatement statement = null;
+        try (Connection conn = DBConnection.getDBConnection().getConnection()) {
+
+            //Chiamata della funzione del db.
+            String callFunction = "{call test.crea_raccolta(?,?,?)}";
+
+            statement = conn.prepareCall(callFunction);
+
+            statement.setString(1, name);
+            statement.setString(2, description);
+            statement.setString(3, conto.getIban());
+
+
+            statement.executeQuery();
+
+        } catch (SQLException e) {
+            // "23505" è il codice di stato usato da PostgreSQL per indicare un errore di unique-violation
+            if("23505".equals(e.getSQLState())) {
+                throw new MyExc("Nome Raccolta già esistente!");
+            }
+            else {
+                e.printStackTrace();
+            }
+        }
+    }
 
 }
