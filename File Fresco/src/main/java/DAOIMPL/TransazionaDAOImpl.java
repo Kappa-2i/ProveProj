@@ -18,18 +18,22 @@ public class TransazionaDAOImpl implements TransazioneDAO {
             ArrayList<Transazione> transazioni = new ArrayList<Transazione>();
 
             // Query SQL per ottenere i dettagli dell'utente
-        String query = "SELECT t.importo, t.causale, t.datatransazione, t.orariotransazione, t.tipotransazione, t.categoriaentrata, t.categoriauscita, t.nome_raccolta, t.iban1 " +
-                "FROM test.transazione t " +
-                "WHERE (t.iban2 = '" + conto.getIban() + "' AND t.tipotransazione = 'Invia a') " +
-                "OR (t.iban2 = '" + conto.getIban() + "' AND t.tipotransazione = 'Riceve da') "+
-                "AND t.iban2 = '" +conto.getIban()+ "' AND orariotransazione < current_time " +
-                "ORDER BY t.datatransazione DESC, t.orariotransazione DESC";
+        String query = "SELECT t.importo, t.causale, t.datatransazione, t.orariotransazione, t.tipotransazione," +
+                "       t.categoriaentrata, t.categoriauscita, t.nome_raccolta, t.iban1 " +
+                "FROM test.transazione t" +
+                "      WHERE ((t.iban2 = '"+conto.getIban()+"' AND t.tipotransazione = 'Invia a') " +
+                "      OR (t.iban2 = '"+conto.getIban()+"' AND t.tipotransazione = 'Riceve da')) " +
+                "      AND (t.datatransazione BETWEEN '2024-01-01' AND current_date - INTERVAL '1 day' " +
+                "      OR T.orariotransazione < current_time) " +
+                "ORDER BY t.datatransazione DESC, t.orariotransazione DESC;";
 
             try (Connection conn = DBConnection.getDBConnection().getConnection();  // Ottenimento della connessione al database
                  Statement statement = conn.createStatement()) {  // Creazione di un PreparedStatement
 
+
                 // Esecuzione della query e gestione del ResultSet
                 ResultSet resultSet = statement.executeQuery(query);
+
                 if (resultSet != null){
                     while (resultSet.next()){
                         //Creazione degli oggetti Salvadanaio.

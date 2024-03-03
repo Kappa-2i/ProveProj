@@ -6,6 +6,10 @@ import EXCEPTIONS.MyExc;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
+import javax.swing.text.PlainDocument;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -25,9 +29,11 @@ public class CollectionPickViewGUI extends JFrame {
     private JPanel panelSignIn;
 
     //Icone
-    ImageIcon iconExit = new ImageIcon(HomePageGUI.class.getResource("/IMG/door_exit.png"));
+    ImageIcon iconAddCollection = new ImageIcon(HomePageGUI.class.getResource("/IMG/add-folder.png"));
     ImageIcon iconHome = new ImageIcon(BankAccountPickViewGUI.class.getResource("/IMG/home.png"));
     ImageIcon iconUnina = new ImageIcon(HomePageGUI.class.getResource("/IMG/unina.png"));
+    ImageIcon iconTrash = new ImageIcon(HomePageGUI.class.getResource("/IMG/trash.png"));
+    ImageIcon iconDelete = new ImageIcon(HomePageGUI.class.getResource("/IMG/delete.png"));
 
 
     public CollectionPickViewGUI(Controller controller){
@@ -180,6 +186,7 @@ public class CollectionPickViewGUI extends JFrame {
     public void showCollections(){
 
         Object[] optionsAdd = {"Crea", "Annulla"};
+        Object[] optionsDelete = {"Elimina", "Annulla"};
         if (!controller.getCollections().isEmpty()){
             int y = 2;
             int x = 0;
@@ -197,6 +204,34 @@ public class CollectionPickViewGUI extends JFrame {
                 if (fontRegular != null)
                     nameCollectionLabel.setFont(fontRegular);
 
+                JButton deleteButton = new JButton();
+                deleteButton.setBackground(null);
+                deleteButton.setIcon(iconTrash);
+                deleteButton.setContentAreaFilled(false);
+                deleteButton.setOpaque(false);
+                deleteButton.setBorderPainted(false);
+                deleteButton.setBorder(null);
+                deleteButton.setFocusPainted(false);
+                deleteButton.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        int result = JOptionPane.showOptionDialog(
+                                null, // Componente padre
+                                "Sei sicuro di voler eliminare la raccolta "+collection.getNameCollection() , // Messaggio
+                                "Elimina raccolta", // Titolo
+                                JOptionPane.YES_NO_CANCEL_OPTION,
+                                JOptionPane.QUESTION_MESSAGE, // Tipo di messaggio
+                                iconDelete, // Icona personalizzata, usa null per l'icona di default
+                                optionsDelete, // Array contenente le etichette dei pulsanti
+                                optionsDelete[0] // Opzione di default
+                        );
+                        if (result == JOptionPane.YES_OPTION) {
+                            controller.deleteCollection(collection.getNameCollection());
+                        }
+
+                    }
+                });
+
 
                 GroupLayout glBankAccount = new GroupLayout(cardBank);
                 cardBank.setLayout(glBankAccount);
@@ -205,17 +240,30 @@ public class CollectionPickViewGUI extends JFrame {
                 glBankAccount.setAutoCreateContainerGaps(true);
 
                 GroupLayout.SequentialGroup hGroup = glBankAccount.createSequentialGroup();
-
-                hGroup.addGroup(glBankAccount.createParallelGroup().
-                        addComponent(nameLabel));
+                // Aggiungi nameLabel e nameCollectionLabel allo stesso gruppo parallelo per averli sulla stessa riga
+                hGroup.addGroup(glBankAccount.createParallelGroup()
+                        .addComponent(nameLabel));
                 hGroup.addGroup(glBankAccount.createParallelGroup().
                         addComponent(nameCollectionLabel));
+                // Aggiungi deleteButton in un nuovo gruppo parallelo per metterlo sulla riga successiva
+                hGroup.addGroup(glBankAccount.createParallelGroup()
+                        .addComponent(deleteButton));
                 glBankAccount.setHorizontalGroup(hGroup);
 
                 GroupLayout.SequentialGroup vGroup = glBankAccount.createSequentialGroup();
 
-                vGroup.addGroup(glBankAccount.createParallelGroup(GroupLayout.Alignment.BASELINE).
+
+                // Crea un gruppo parallelo per nameLabel e nameCollectionLabel affinché siano allineati verticalmente
+                vGroup.addGroup(glBankAccount.createParallelGroup(GroupLayout.Alignment.TRAILING).
                         addComponent(nameLabel).addComponent(nameCollectionLabel));
+
+                // Aggiungi il deleteButton in un nuovo gruppo parallelo per posizionarlo sotto
+                vGroup.addGroup(glBankAccount.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                        .addGap(10,10,10));
+                // Aggiungi il deleteButton in un nuovo gruppo parallelo per posizionarlo sotto
+                vGroup.addGroup(glBankAccount.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                        .addComponent(deleteButton));
+
                 glBankAccount.setVerticalGroup(vGroup);
 
                 cardBank.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -280,39 +328,81 @@ public class CollectionPickViewGUI extends JFrame {
                         public void mouseClicked(MouseEvent e){
 
                             JPanel addCollectionPanel = new JPanel(new GridBagLayout());
+                            addCollectionPanel.setBackground(new Color(246, 248, 255));
 
                             JLabel nameCollectionLabel = new JLabel("Nome");
                             JTextField nameCollectionField = new JTextField();
 
                             JLabel descriptionCollectionLabel = new JLabel("Descrizione");
                             JTextArea descriptionCollectionArea = new JTextArea();
-                            descriptionCollectionArea.setRows(10);
+                            PlainDocument doc = (PlainDocument) descriptionCollectionArea.getDocument();
+                            doc.setDocumentFilter(new DocumentFilter() {
+                                private int maxChars = 170;
+
+                                @Override
+                                public void replace(DocumentFilter.FilterBypass fb, int offs, int length, String str, AttributeSet a)
+                                        throws BadLocationException {
+                                    String text = fb.getDocument().getText(0, fb.getDocument().getLength());
+                                    int totalLength = text.length() - length + str.length();
+                                    if (totalLength <= maxChars) {
+                                        super.replace(fb, offs, length, str, a);
+                                    } else {
+                                        Toolkit.getDefaultToolkit().beep();
+                                    }
+                                }
+
+                                @Override
+                                public void insertString(DocumentFilter.FilterBypass fb, int offs, String str, AttributeSet a)
+                                        throws BadLocationException {
+                                    String text = fb.getDocument().getText(0, fb.getDocument().getLength());
+                                    int totalLength = text.length() + str.length();
+                                    if (totalLength <= maxChars) {
+                                        super.insertString(fb, offs, str, a);
+                                    } else {
+                                        Toolkit.getDefaultToolkit().beep();
+                                    }
+                                }
+                            });
+                            descriptionCollectionArea.setRows(5); // Imposta il numero di righe
+                            descriptionCollectionArea.setColumns(20); // Imposta il numero di colonne
+                            descriptionCollectionArea.setLineWrap(true); // Abilita l'andare a capo automatico
+                            descriptionCollectionArea.setWrapStyleWord(true); // Il testo va a capo per intere parole
+                            if(fontRegularBold!=null){
+                                nameCollectionLabel.setFont(fontRegularBold);
+                                descriptionCollectionLabel.setFont(fontRegularBold);
+                            }
+                            if(fontRegular!=null){
+                                nameCollectionField.setFont(fontRegular);
+                                descriptionCollectionArea.setFont(fontRegular);
+                            }
 
                             GridBagConstraints gbc = new GridBagConstraints();
                             gbc.fill = GridBagConstraints.BOTH;
-                            gbc.insets = new Insets(5, 5, 5, 5);
-                            gbc.weightx = 0.5;
+                            gbc.gridx = 0;
                             gbc.gridy = 0;
-                            gbc.gridx = 0;
                             addCollectionPanel.add(nameCollectionLabel, gbc);
-                            gbc.gridwidth = 2;
-                            gbc.weightx = 0.5;
+
+                            gbc.gridx = 0;
                             gbc.gridy = 1;
-                            gbc.gridx = 0;
-                            addCollectionPanel.add(nameCollectionField, gbc);
-                            gbc.gridwidth = 1;
-                            gbc.weightx = 0.5;
-                            gbc.gridy = 2;
-                            gbc.gridx = 0;
-                            addCollectionPanel.add(descriptionCollectionLabel, gbc);
                             gbc.gridwidth = 2;
-                            gbc.weightx = 0.5;
-                            gbc.gridy = 3;
+                            addCollectionPanel.add(nameCollectionField, gbc);
+
+                            descriptionCollectionArea.setRows(5);
                             gbc.gridx = 0;
+                            gbc.gridy = 2;
+                            gbc.gridwidth = 1;
+                            addCollectionPanel.add(descriptionCollectionLabel, gbc);
+
+                            gbc.gridx = 0;
+                            gbc.gridy = 3;
+                            gbc.gridwidth = 2;
                             gbc.insets = new Insets(5, 10, 5, 10);
                             addCollectionPanel.add(descriptionCollectionArea, gbc);
 
 
+
+                            UIManager.put("OptionPane.background", new Color(246,248,255)); // Colore di sfondo
+                            UIManager.put("Panel.background", new Color(246,248,255)); // Colore di sfondo per il pannello interno
 
 
                             // Mostra il JOptionPane con i JTextField inseriti
@@ -322,7 +412,7 @@ public class CollectionPickViewGUI extends JFrame {
                                     "Crea Raccolta", // Titolo
                                     JOptionPane.YES_NO_CANCEL_OPTION,
                                     JOptionPane.QUESTION_MESSAGE, // Tipo di messaggio
-                                    iconExit, // Icona personalizzata, usa null per l'icona di default
+                                    iconAddCollection, // Icona personalizzata, usa null per l'icona di default
                                     optionsAdd, // Array contenente le etichette dei pulsanti
                                     optionsAdd[0] // Opzione di default
                             );
@@ -396,12 +486,82 @@ public class CollectionPickViewGUI extends JFrame {
                 public void mouseClicked(MouseEvent e){
 
                     JPanel addCollectionPanel = new JPanel(new GridBagLayout());
+                    addCollectionPanel.setBackground(new Color(246, 248, 255));
 
                     JLabel nameCollectionLabel = new JLabel("Nome");
                     JTextField nameCollectionField = new JTextField();
 
                     JLabel descriptionCollectionLabel = new JLabel("Descrizione");
                     JTextArea descriptionCollectionArea = new JTextArea();
+                    PlainDocument doc = (PlainDocument) descriptionCollectionArea.getDocument();
+                    doc.setDocumentFilter(new DocumentFilter() {
+                        private int maxChars = 170;
+
+                        @Override
+                        public void replace(DocumentFilter.FilterBypass fb, int offs, int length, String str, AttributeSet a)
+                                throws BadLocationException {
+                            String text = fb.getDocument().getText(0, fb.getDocument().getLength());
+                            int totalLength = text.length() - length + str.length();
+                            if (totalLength <= maxChars) {
+                                super.replace(fb, offs, length, str, a);
+                            } else {
+                                Toolkit.getDefaultToolkit().beep();
+                            }
+                        }
+
+                        @Override
+                        public void insertString(DocumentFilter.FilterBypass fb, int offs, String str, AttributeSet a)
+                                throws BadLocationException {
+                            String text = fb.getDocument().getText(0, fb.getDocument().getLength());
+                            int totalLength = text.length() + str.length();
+                            if (totalLength <= maxChars) {
+                                super.insertString(fb, offs, str, a);
+                            } else {
+                                Toolkit.getDefaultToolkit().beep();
+                            }
+                        }
+                    });
+                    descriptionCollectionArea.setRows(5); // Imposta il numero di righe
+                    descriptionCollectionArea.setColumns(20); // Imposta il numero di colonne
+                    descriptionCollectionArea.setLineWrap(true); // Abilita l'andare a capo automatico
+                    descriptionCollectionArea.setWrapStyleWord(true); // Il testo va a capo per intere parole
+                    if(fontRegularBold!=null){
+                        nameCollectionLabel.setFont(fontRegularBold);
+                        descriptionCollectionLabel.setFont(fontRegularBold);
+                    }
+                    if(fontRegular!=null){
+                        nameCollectionField.setFont(fontRegular);
+                        descriptionCollectionArea.setFont(fontRegular);
+                    }
+
+                    GridBagConstraints gbc = new GridBagConstraints();
+                    gbc.fill = GridBagConstraints.BOTH;
+                    gbc.gridx = 0;
+                    gbc.gridy = 0;
+                    addCollectionPanel.add(nameCollectionLabel, gbc);
+
+                    gbc.gridx = 0;
+                    gbc.gridy = 1;
+                    gbc.gridwidth = 2;
+                    addCollectionPanel.add(nameCollectionField, gbc);
+
+                    descriptionCollectionArea.setRows(5);
+                    gbc.gridx = 0;
+                    gbc.gridy = 2;
+                    gbc.gridwidth = 1;
+                    addCollectionPanel.add(descriptionCollectionLabel, gbc);
+
+                    gbc.gridx = 0;
+                    gbc.gridy = 3;
+                    gbc.gridwidth = 2;
+                    gbc.insets = new Insets(5, 10, 5, 10);
+                    addCollectionPanel.add(descriptionCollectionArea, gbc);
+
+
+
+                    UIManager.put("OptionPane.background", new Color(246,248,255)); // Colore di sfondo
+                    UIManager.put("Panel.background", new Color(246,248,255)); // Colore di sfondo per il pannello interno
+
 
                     // Mostra il JOptionPane con i JTextField inseriti
                     int result = JOptionPane.showOptionDialog(
@@ -410,7 +570,7 @@ public class CollectionPickViewGUI extends JFrame {
                             "Crea Raccolta", // Titolo
                             JOptionPane.YES_NO_CANCEL_OPTION,
                             JOptionPane.QUESTION_MESSAGE, // Tipo di messaggio
-                            iconExit, // Icona personalizzata, usa null per l'icona di default
+                            iconAddCollection, // Icona personalizzata, usa null per l'icona di default
                             optionsAdd, // Array contenente le etichette dei pulsanti
                             optionsAdd[0] // Opzione di default
                     );

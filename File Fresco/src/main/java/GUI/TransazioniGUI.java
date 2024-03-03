@@ -432,7 +432,7 @@ public class TransazioniGUI extends JFrame {
                 // Combina l'anno e il mese nel formato YYYY-MM
                 String yearMonth = currentYear + "-" + monthNumber;
 
-                System.out.println(yearMonth+" mese");
+
                 // Ora chiama la funzione viewReport con l'anno e il mese selezionati
                 controller.viewReport(controller.getContoScelto(), yearMonth);
 
@@ -479,7 +479,6 @@ public class TransazioniGUI extends JFrame {
 
                 double totaleInviatoMensile = controller.totaleInviatoMensile(controller.getContoScelto(), yearMonth);
                 double totaleRicevutoMensile = controller.totaleRicevutoMensile(controller.getContoScelto(), yearMonth);
-                System.out.println(totaleRicevutoMensile+" "+totaleInviatoMensile);
 
                 totaleInviatoValue = new JLabel(String.format("%.2f", totaleInviatoMensile) + "€");
                 totaleRicevutoValue = new JLabel(String.format("%.2f", totaleRicevutoMensile) + "€");

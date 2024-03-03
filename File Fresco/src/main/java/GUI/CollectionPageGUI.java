@@ -25,7 +25,6 @@ public class CollectionPageGUI extends JFrame {
 
     private String monthNumber;
     private JPanel panelCenterSx;
-    private JPanel panelCenterDx;
     private String yearMonth;
     private String currentYear;
     private ChartPanel chartPanel;
@@ -49,7 +48,7 @@ public class CollectionPageGUI extends JFrame {
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
-        setSize(1400, 800);
+        setSize(1000, 600);
         setLocationRelativeTo(null);
         fontBold();
         fontRegular();
@@ -123,14 +122,8 @@ public class CollectionPageGUI extends JFrame {
         gbc.insets = new Insets(20, 20, 20, 10); // Imposta gli insetti
         contentPane.add(scrollPane, gbc);
 
-        // Pannello destro fisso
-        panelCenterDx = new JPanel(new GridBagLayout());
-        panelCenterDx.setBackground(new Color(246, 248, 255));
-        gbc.gridx = 1; // Seconda colonna
-        gbc.gridy = 1; // Seconda riga
-        gbc.weightx = 0.5; // Imposta il peso orizzontale per il pannello destro
-        gbc.insets = new Insets(20, 10, 20, 20); // Adegua gli insetti
-        contentPane.add(panelCenterDx, gbc);
+
+
 
         // Dichiarazione dei componenti per il pannello superiore
         JLabel speseLabel = new JLabel(controller.getSelectedCollection().getNameCollection());

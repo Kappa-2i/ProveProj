@@ -559,6 +559,11 @@ public class Controller {
 
     public void showCollectionPickView(){
         collections = collectionDAO.selectCollectionByIban(contoScelto);
+
+        if(framePickCollection!=null){
+            framePickCollection(false);
+        }
+
         framePickCollection = new CollectionPickViewGUI(this);
 
         frameHome(false);
@@ -568,6 +573,7 @@ public class Controller {
         if(frameCard!=null){
             frameCard(false);
         }
+
         framePickCollection(true);
     }
 
@@ -579,9 +585,7 @@ public class Controller {
         selectedCollection = collection;
         transactionsCollection = transazioneDAO.selectTransactionsByCollection(selectedCollection, contoScelto);
 
-        if(transactionsCollection.isEmpty()){
-            System.out.println("vuoto");
-        }
+
         selectedCollection.setTransactions(transactionsCollection);
 
 
@@ -613,6 +617,13 @@ public class Controller {
                     iconCancel
             );
         }
+    }
+
+    public void deleteCollection(String name){
+        collectionDAO.deleteCollection(contoScelto, name);
+        if(framePickCollection!=null)
+            framePickCollection(false);
+        showCollectionPickView();
     }
 
     public void viewReport(ContoCorrente conto, String mese){

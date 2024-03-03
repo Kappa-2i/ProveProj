@@ -9,4 +9,5 @@ import java.util.ArrayList;
 public interface CollectionDAO {
     public ArrayList<Collection> selectCollectionByIban(ContoCorrente conto);
     public void addCollection(ContoCorrente conto, String name, String description) throws MyExc;
+    public void deleteCollection(ContoCorrente conto, String name);
 }

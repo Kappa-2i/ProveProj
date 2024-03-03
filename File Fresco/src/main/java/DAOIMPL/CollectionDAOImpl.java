@@ -70,4 +70,24 @@ public class CollectionDAOImpl implements CollectionDAO {
         }
     }
 
+    public void deleteCollection(ContoCorrente conto, String name){
+        CallableStatement statement = null;
+        try (Connection conn = DBConnection.getDBConnection().getConnection()) {
+
+            //Chiamata della funzione del db.
+            String callFunction = "{call test.rimuovi_raccolta(?,?)}";
+
+            statement = conn.prepareCall(callFunction);
+
+            statement.setString(1, conto.getIban());
+            statement.setString(2, name);
+
+            statement.executeQuery();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

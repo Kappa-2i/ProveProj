@@ -678,6 +678,12 @@ public class HomePageGUI extends JFrame {
             raccolteLabel.setFont(fontRegularXXL);
         raccolteLabel.setForeground(new Color(8, 76, 97));
         raccolteLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        raccolteLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                controller.showCollectionPickView();
+            }
+        });
 
 
 
