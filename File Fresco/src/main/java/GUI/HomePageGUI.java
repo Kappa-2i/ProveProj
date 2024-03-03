@@ -97,7 +97,7 @@ public class HomePageGUI extends JFrame {
         JPanel userPanel = new JPanel(new GridBagLayout());
         userPanel.setVisible(false);
         userPanel.setBackground(new Color(217, 217, 217));
-        userPanel.setBorder(new MatteBorder(0, 3, 0, 0, new Color(37, 89, 87)));
+        userPanel.setBorder(new MatteBorder(0, 3, 0, 0, new Color(0, 50, 73)));
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weighty = 0;
@@ -719,7 +719,23 @@ public class HomePageGUI extends JFrame {
         buttonNotifiche.setFocusPainted(false);
         buttonNotifiche.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        JLabel notificheLabel2 = new JLabel("   NOTIFICHE        ");
+        JLabel notificheLabel2 = new JLabel("");
+        if(controller.getCarta().getTipoCarta().equals("CartaDiCredito"))
+            notificheLabel2.setText("<html><b>DOWNGRADE<br>CARTA</b></html>");
+        else
+            notificheLabel2.setText("UPGRADE CARTA");
+
+        notificheLabel2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(notificheLabel2.getText().equals("UPGRADE CARTA")){
+                    controller.upgradeCarta(controller.getCarta().getPan());
+                }
+                else
+                    controller.downgradeCarta(controller.getCarta().getPan());
+            }
+        });
+
         if (fontRegularXXL != null)
             notificheLabel2.setFont(fontRegularXXL);
         notificheLabel2.setForeground(new Color(8, 76, 97));

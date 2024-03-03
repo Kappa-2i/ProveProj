@@ -234,7 +234,10 @@ public class Controller {
         if (contoScelto!= null)
             contoScelto = null;
 
-
+        if(frameBankTransfer!=null)
+            frameBankTransfer(false);
+        if(frameCard!=null)
+            frameCard(false);
         if(framePick != null)
             framePick(false);
         if(frameHome != null)
@@ -255,10 +258,16 @@ public class Controller {
     /**
      * Metodo che permette gestire la visualizzazione della pagina della carta.*/
     public void showCardPage(){
-        if (frameCard==null) {
+        if (frameCard != null) {
+            frameCard(false);
             frameCard = new CardPageGUI(this);
             frameCard(true);
         }
+        else {
+            frameCard = new CardPageGUI(this);
+            frameCard(true);
+        }
+
     }
 
 
@@ -304,6 +313,12 @@ public class Controller {
         //Vengono recuperati i salvadanai associati al conto scelto.
         salvadanai = salvadanaioDAO.selectSalvadanaio(contoScelto);
         contoScelto.setSalvadanai(salvadanai);
+        if(frameBankTransfer!=null){
+            frameBankTransfer(false);
+        }
+        if(frameCard!=null){
+            frameCard(false);
+        }
         frameSalvadanaio = new SalvadanaioGUI(this);
         frameHome(false);
         frameSalvadanaio(true);
@@ -416,7 +431,12 @@ public class Controller {
         //Vengono recuperati le transazioni associati al conto scelto.
         transazioni = transazioneDAO.selectTransazioniByIban(contoScelto);
         contoScelto.setTransazioni(transazioni);
-
+        if(frameBankTransfer!=null){
+            frameBankTransfer(false);
+        }
+        if(frameCard!=null){
+            frameCard(false);
+        }
         frameTransazioni = new TransazioniGUI(this);
         frameHome(false);
         frameTransazioni(true);
@@ -579,6 +599,10 @@ public class Controller {
 
     public void pickCollectionByIban(){
         collections = collectionDAO.selectCollectionByIban(contoScelto);
+    }
+
+    public double selectSumOfCollections(String name){
+        return transazioneDAO.selectSumOfCollections(contoScelto, name);
     }
 
     public void showCollectionPage(Collection collection){

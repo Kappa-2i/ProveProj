@@ -152,16 +152,6 @@ public class CollectionPickViewGUI extends JFrame {
         panelSignIn.setBackground(new Color(246, 248, 255)); // Scegli il colore che preferisci
         panelSignIn.setOpaque(true);
 
-        controller.selectBankAccountByAccount(controller.getAccount());
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 2;
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 0.0;
-        gbc.weighty = 0.0;
-        gbc.insets = new Insets(40, 5, 20, 5);
-        gbc.gridx = 1;
-        gbc.anchor = GridBagConstraints.CENTER;
 
         showCollections();
         // Creazione dello JScrollPane che conterrà panelSignIn
@@ -177,7 +167,6 @@ public class CollectionPickViewGUI extends JFrame {
         gbc.weightx = 1.0;
         gbc.weighty = 0.95; // Assegna più spazio a panelSignIn
         gbc.insets = new Insets(0, 0, 0, 0);
-
         // Aggiungi scrollPane a contentPane invece di panelSignIn
         contentPane.add(scrollPane, gbc);
         setContentPane(contentPane);
@@ -203,6 +192,32 @@ public class CollectionPickViewGUI extends JFrame {
                 JLabel nameCollectionLabel = new JLabel(collection.getNameCollection());
                 if (fontRegular != null)
                     nameCollectionLabel.setFont(fontRegular);
+
+                JLabel totalLabel = new JLabel("Totale: ");
+                if(fontRegularBold!=null)
+                    totalLabel.setFont(fontRegularBold);
+
+                double sum = controller.selectSumOfCollections(collection.getNameCollection());
+                JLabel totalTransactions = new JLabel(String.valueOf(sum)+"€");
+                if(fontRegular!=null)
+                    totalTransactions.setFont(fontRegular);
+
+                JLabel descriptionLabel = new JLabel("Descrizione");
+
+                if(fontRegular!=null)
+                    descriptionLabel.setFont(fontRegular);
+                descriptionLabel.setForeground(Color.GRAY);
+                descriptionLabel.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        JOptionPane.showMessageDialog(
+                                null,
+                                collection.getDescription(),
+                                "Descrizione",
+                                JOptionPane.INFORMATION_MESSAGE
+                        );
+                    }
+                });
 
                 JButton deleteButton = new JButton();
                 deleteButton.setBackground(null);
@@ -242,28 +257,21 @@ public class CollectionPickViewGUI extends JFrame {
                 GroupLayout.SequentialGroup hGroup = glBankAccount.createSequentialGroup();
                 // Aggiungi nameLabel e nameCollectionLabel allo stesso gruppo parallelo per averli sulla stessa riga
                 hGroup.addGroup(glBankAccount.createParallelGroup()
-                        .addComponent(nameLabel));
-                hGroup.addGroup(glBankAccount.createParallelGroup().
-                        addComponent(nameCollectionLabel));
-                // Aggiungi deleteButton in un nuovo gruppo parallelo per metterlo sulla riga successiva
+                        .addComponent(nameLabel).addComponent(totalLabel).addComponent(descriptionLabel));
                 hGroup.addGroup(glBankAccount.createParallelGroup()
-                        .addComponent(deleteButton));
+                       .addComponent(nameCollectionLabel).addComponent(totalTransactions).addComponent(deleteButton));
                 glBankAccount.setHorizontalGroup(hGroup);
 
                 GroupLayout.SequentialGroup vGroup = glBankAccount.createSequentialGroup();
-
-
                 // Crea un gruppo parallelo per nameLabel e nameCollectionLabel affinché siano allineati verticalmente
-                vGroup.addGroup(glBankAccount.createParallelGroup(GroupLayout.Alignment.TRAILING).
+                vGroup.addGroup(glBankAccount.createParallelGroup().
                         addComponent(nameLabel).addComponent(nameCollectionLabel));
-
+                // Crea un gruppo parallelo per nameLabel e nameCollectionLabel affinché siano allineati verticalmente
+                vGroup.addGroup(glBankAccount.createParallelGroup().
+                        addComponent(totalLabel).addComponent(totalTransactions));
                 // Aggiungi il deleteButton in un nuovo gruppo parallelo per posizionarlo sotto
-                vGroup.addGroup(glBankAccount.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                        .addGap(10,10,10));
-                // Aggiungi il deleteButton in un nuovo gruppo parallelo per posizionarlo sotto
-                vGroup.addGroup(glBankAccount.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                        .addComponent(deleteButton));
-
+                vGroup.addGroup(glBankAccount.createParallelGroup()
+                        .addComponent(descriptionLabel).addComponent(deleteButton));
                 glBankAccount.setVerticalGroup(vGroup);
 
                 cardBank.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -280,9 +288,12 @@ public class CollectionPickViewGUI extends JFrame {
 
                 GridBagConstraints gbc = new GridBagConstraints();
 
-                gbc.insets = new Insets(10, 100, 10, 100);
+                gbc.insets = new Insets(10, 20, 10, 20);
                 gbc.gridy = y;
                 gbc.gridx = x;
+                gbc.weightx = 0.3;
+                gbc.fill = GridBagConstraints.BOTH;
+
                 panelSignIn.add(cardBank, gbc);
                 x++;
                 if(x == 3)
@@ -332,10 +343,38 @@ public class CollectionPickViewGUI extends JFrame {
 
                             JLabel nameCollectionLabel = new JLabel("Nome");
                             JTextField nameCollectionField = new JTextField();
+                            PlainDocument doc = (PlainDocument) nameCollectionField.getDocument();
+                            doc.setDocumentFilter(new DocumentFilter() {
+                                private int maxChars = 20;
+
+                                @Override
+                                public void replace(DocumentFilter.FilterBypass fb, int offs, int length, String str, AttributeSet a)
+                                        throws BadLocationException {
+                                    String text = fb.getDocument().getText(0, fb.getDocument().getLength());
+                                    int totalLength = text.length() - length + str.length();
+                                    if (totalLength <= maxChars) {
+                                        super.replace(fb, offs, length, str, a);
+                                    } else {
+                                        Toolkit.getDefaultToolkit().beep();
+                                    }
+                                }
+
+                                @Override
+                                public void insertString(DocumentFilter.FilterBypass fb, int offs, String str, AttributeSet a)
+                                        throws BadLocationException {
+                                    String text = fb.getDocument().getText(0, fb.getDocument().getLength());
+                                    int totalLength = text.length() + str.length();
+                                    if (totalLength <= maxChars) {
+                                        super.insertString(fb, offs, str, a);
+                                    } else {
+                                        Toolkit.getDefaultToolkit().beep();
+                                    }
+                                }
+                            });
 
                             JLabel descriptionCollectionLabel = new JLabel("Descrizione");
                             JTextArea descriptionCollectionArea = new JTextArea();
-                            PlainDocument doc = (PlainDocument) descriptionCollectionArea.getDocument();
+                            doc = (PlainDocument) descriptionCollectionArea.getDocument();
                             doc.setDocumentFilter(new DocumentFilter() {
                                 private int maxChars = 170;
 
@@ -448,7 +487,8 @@ public class CollectionPickViewGUI extends JFrame {
 
                     gbc = new GridBagConstraints();
 
-                    gbc.insets = new Insets(40, 40, 40, 40);
+                    gbc.insets = new Insets(40, 20, 40, 20);
+                    gbc.weightx = 0.3;
                     gbc.gridy = y;
                     gbc.gridx = x;
                     panelSignIn.add(addBank, gbc);

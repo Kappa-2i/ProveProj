@@ -301,5 +301,28 @@ public class TransazionaDAOImpl implements TransazioneDAO {
         return null;
     }
 
+    public double selectSumOfCollections(ContoCorrente conto, String name) {
+        String query = "SELECT " +
+                "CAST(SUM(CASE WHEN t.tipotransazione = 'Invia a' THEN t.importo END) AS double precision) AS sum " +
+                "FROM test.transazione t " +
+                "WHERE t.iban2 = '" + conto.getIban() + "' AND t.nome_raccolta = '" + name + "'";
+
+        try (Connection conn = DBConnection.getDBConnection().getConnection();  // Ottenimento della connessione al database
+             Statement statement = conn.createStatement()) {  // Creazione di un PreparedStatement
+
+            // Esecuzione della query e gestione del ResultSet
+            ResultSet resultSet = statement.executeQuery(query);
+
+            if (resultSet.next()) {
+                double sum = resultSet.getDouble("sum");
+                return sum;
+            }
+
+        } catch (SQLException e) {
+            // Gestione delle eccezioni SQL
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }
 

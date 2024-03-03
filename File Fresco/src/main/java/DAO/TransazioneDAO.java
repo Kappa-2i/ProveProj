@@ -17,4 +17,5 @@ public interface TransazioneDAO {
     public void sendIstantBankTransfer(ContoCorrente conto, String receiver, String amount, String reason, String cat, String nameCollection);
     public boolean checkIban(String receiver, String name, String surname) throws MyExc;
     public ArrayList<Transazione> selectTransactionsByCollection(Collection collection, ContoCorrente conto);
+    public double selectSumOfCollections(ContoCorrente conto, String name);
 }
