@@ -168,8 +168,6 @@ public class Controller {
 
     public void updateBankAccount(ContoCorrente conto){
         contoScelto = contoCorrenteDAO.updateBankAccount(conto);
-        contoScelto.setAccount(account);
-        contoScelto.setSalvadanai(salvadanai);
     }
 
     /**
@@ -220,6 +218,8 @@ public class Controller {
             frameSalvadanaio(false);
         if(framePickCollection != null)
             framePickCollection(false);
+        if(frameHome != null)
+            frameHome(false);
         frameHome = new HomePageGUI(this);
         frameHome(true);
     }
@@ -454,43 +454,59 @@ public class Controller {
         try{
             if(typeBankTransfer.equals("Bonifico")){
                 if(!amount.isEmpty()) {
-                    if (!contoScelto.getIban().equals(ibanReceiver)) {
-                        if (contoScelto.getSaldo() >= Math.round((Double.parseDouble(amount) * 100.00) / 100.00)) {
-                            if (!ibanReceiver.isEmpty() && !name.isEmpty() && !surname.isEmpty() && !reason.isEmpty()) {
-                                if (transazioneDAO.checkIban(ibanReceiver, name, surname)) {
-                                    if(nameCollection==null)
-                                        nameCollection = "ALTRO";
-                                    transazioneDAO.sendBankTransfer(contoScelto, ibanReceiver, amount, reason, cat, nameCollection);
+                    if((getCarta().getTipoCarta().equals("CartaDiDebito") && Double.parseDouble(amount)<=3000) || (getCarta().getTipoCarta().equals("CartaDiCredito"))) {
+                        if (!contoScelto.getIban().equals(ibanReceiver)) {
+                            if (contoScelto.getSaldo() >= Math.round((Double.parseDouble(amount) * 100.00) / 100.00)) {
+                                if (!ibanReceiver.isEmpty() && !name.isEmpty() && !surname.isEmpty() && !reason.isEmpty()) {
+                                    if (transazioneDAO.checkIban(ibanReceiver, name, surname)) {
+                                        if (nameCollection == null)
+                                            nameCollection = "ALTRO";
+                                        transazioneDAO.sendBankTransfer(contoScelto, ibanReceiver, amount, reason, cat, nameCollection);
+                                        JOptionPane.showMessageDialog(
+                                                frameBankTransfer,
+                                                "Bonifico inviato con successo!",
+                                                "",
+                                                JOptionPane.INFORMATION_MESSAGE
+                                        );
+                                        frameBankTransfer(false);
+                                        showHomePage(contoCorrenteDAO.updateBankAccount(contoScelto));
+
+                                    }
+                                } else {
                                     JOptionPane.showMessageDialog(
                                             frameBankTransfer,
-                                            "Bonifico inviato con successo!",
-                                            "",
-                                            JOptionPane.INFORMATION_MESSAGE
+                                            "Riempi tutti i campi.",
+                                            "Errore",
+                                            JOptionPane.PLAIN_MESSAGE,
+                                            iconAlert
                                     );
                                 }
                             } else {
                                 JOptionPane.showMessageDialog(
                                         frameBankTransfer,
-                                        "Riempi tutti i campi.",
+                                        "Saldo conto corrente insufficiente",
                                         "Errore",
-                                        JOptionPane.ERROR_MESSAGE
+                                        JOptionPane.PLAIN_MESSAGE,
+                                        iconAlert
                                 );
                             }
                         } else {
                             JOptionPane.showMessageDialog(
                                     frameBankTransfer,
-                                    "Saldo conto corrente insufficiente",
+                                    "Non puoi inserire il tuo stesso Iban.",
                                     "Errore",
-                                    JOptionPane.ERROR_MESSAGE
+                                    JOptionPane.PLAIN_MESSAGE,
+                                    iconAlert
                             );
                         }
                     }
                     else {
                         JOptionPane.showMessageDialog(
                                 frameBankTransfer,
-                                "Non puoi inserire il tuo stesso Iban.",
-                                "Errore",
-                                JOptionPane.ERROR_MESSAGE
+                                "<html>L'importo supera il limite di soldi che è possibile inviare con una sola transazione.<br>Se desideri puoi effettuare l'upgrade della carta!</html>",
+                                "Attenzione",
+                                JOptionPane.PLAIN_MESSAGE,
+                                iconAlert
                         );
                     }
                 }
@@ -499,49 +515,66 @@ public class Controller {
                             frameBankTransfer,
                             "Riempi tutti i campi.",
                             "Errore",
-                            JOptionPane.ERROR_MESSAGE
+                            JOptionPane.PLAIN_MESSAGE,
+                            iconAlert
                     );
                 }
+
             }
             else {
                 if(!amount.isEmpty()) {
-                    if (!contoScelto.getIban().equals(ibanReceiver)) {
-                        if (contoScelto.getSaldo() >= Math.round((Double.parseDouble(amount) * 100.00) / 100.00)) {
-                            if (!ibanReceiver.isEmpty() && !name.isEmpty() && !surname.isEmpty() && !reason.isEmpty()) {
-                                if (transazioneDAO.checkIban(ibanReceiver, name, surname)) {
-                                    if(nameCollection==null)
-                                        nameCollection = "ALTRO";
-                                    transazioneDAO.sendIstantBankTransfer(contoScelto, ibanReceiver, amount, reason, cat, nameCollection);
+                    if((getCarta().getTipoCarta().equals("CartaDiDebito") && Double.parseDouble(amount)<=3000) || (getCarta().getTipoCarta().equals("CartaDiCredito"))) {
+                        if (!contoScelto.getIban().equals(ibanReceiver)) {
+                            if (contoScelto.getSaldo() >= Math.round((Double.parseDouble(amount) * 100.00) / 100.00)) {
+                                if (!ibanReceiver.isEmpty() && !name.isEmpty() && !surname.isEmpty() && !reason.isEmpty()) {
+                                    if (transazioneDAO.checkIban(ibanReceiver, name, surname)) {
+                                        if (nameCollection == null)
+                                            nameCollection = "ALTRO";
+                                        transazioneDAO.sendIstantBankTransfer(contoScelto, ibanReceiver, amount, reason, cat, nameCollection);
+                                        JOptionPane.showMessageDialog(
+                                                frameBankTransfer,
+                                                "Bonifico inviato con successo!",
+                                                "",
+                                                JOptionPane.INFORMATION_MESSAGE
+                                        );
+                                        frameBankTransfer(false);
+                                        showHomePage(contoCorrenteDAO.updateBankAccount(contoScelto));
+                                    }
+                                } else {
                                     JOptionPane.showMessageDialog(
                                             frameBankTransfer,
-                                            "Bonifico inviato con successo!",
-                                            "",
-                                            JOptionPane.INFORMATION_MESSAGE
+                                            "Riempi tutti i campi.",
+                                            "Errore",
+                                            JOptionPane.PLAIN_MESSAGE,
+                                            iconAlert
                                     );
                                 }
                             } else {
                                 JOptionPane.showMessageDialog(
                                         frameBankTransfer,
-                                        "Riempi tutti i campi.",
+                                        "Saldo conto corrente insufficiente",
                                         "Errore",
-                                        JOptionPane.ERROR_MESSAGE
+                                        JOptionPane.PLAIN_MESSAGE,
+                                        iconAlert
                                 );
                             }
                         } else {
                             JOptionPane.showMessageDialog(
                                     frameBankTransfer,
-                                    "Saldo conto corrente insufficiente",
+                                    "Non puoi inserire il tuo stesso Iban.",
                                     "Errore",
-                                    JOptionPane.ERROR_MESSAGE
+                                    JOptionPane.PLAIN_MESSAGE,
+                                    iconAlert
                             );
                         }
                     }
                     else {
                         JOptionPane.showMessageDialog(
                                 frameBankTransfer,
-                                "Non puoi inserire il tuo stesso Iban.",
-                                "Errore",
-                                JOptionPane.ERROR_MESSAGE
+                                "<html>L'importo supera il limite di soldi che è possibile inviare con una sola transazione.<br>Se desideri puoi effettuare l'upgrade della carta!</html>",
+                                "Attenzione",
+                                JOptionPane.PLAIN_MESSAGE,
+                                iconAlert
                         );
                     }
                 }
@@ -550,7 +583,8 @@ public class Controller {
                             frameBankTransfer,
                             "Riempi tutti i campi.",
                             "Errore",
-                            JOptionPane.ERROR_MESSAGE
+                            JOptionPane.PLAIN_MESSAGE,
+                            iconAlert
                     );
                 }
             }
@@ -560,7 +594,8 @@ public class Controller {
                     frameBankTransfer,
                     e.getMessage(),
                     "Errore",
-                    JOptionPane.ERROR_MESSAGE
+                    JOptionPane.PLAIN_MESSAGE,
+                    iconAlert
             );
         }
         catch (NumberFormatException e){
@@ -568,7 +603,8 @@ public class Controller {
                     frameBankTransfer,
                     "Inserisci una cifra valida",
                     "Errore",
-                    JOptionPane.ERROR_MESSAGE
+                    JOptionPane.PLAIN_MESSAGE,
+                    iconAlert
             );
         }
     }
@@ -766,7 +802,7 @@ public class Controller {
     }
 
     public ContoCorrente getContoScelto() {
-        return contoScelto;
+         return contoScelto;
     }
 
     public void setContoScelto(ContoCorrente contoScelto) {

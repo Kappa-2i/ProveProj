@@ -181,7 +181,7 @@ public class TransazionaDAOImpl implements TransazioneDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return "Conto Corrente Eliminato";
     }
 
 

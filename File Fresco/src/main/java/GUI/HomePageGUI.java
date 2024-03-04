@@ -204,66 +204,6 @@ public class HomePageGUI extends JFrame {
             }
         });
 
-        JLabel upgradeLabel = new JLabel("Upgrade Carta");
-        upgradeLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        upgradeLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                upgradeLabel.setText("<html><u>Upgrade Carta</u></html>");
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                upgradeLabel.setText("Upgrade Carta");
-            }
-
-            @Override
-            public void mouseClicked(MouseEvent e){
-                if(controller.getCarta().getTipoCarta().equals("CartaDiDebito")) {
-                    controller.upgradeCarta(controller.getCarta().getPan());
-                }
-                else{
-                    JOptionPane.showMessageDialog(
-                            null,
-                            "Non puoi effettuare l'upgrade, la carta è già di tipo Carta di Credito",
-                            "Attenzione!",
-                            JOptionPane.PLAIN_MESSAGE,
-                            iconCancel
-                    );
-                }
-            }
-        });
-
-        JLabel downgradeLabel = new JLabel("Downgrade Carta");
-        downgradeLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        downgradeLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                downgradeLabel.setText("<html><u>Downgrade Carta</u></html>");
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                downgradeLabel.setText("Downgrade Carta");
-            }
-
-            @Override
-            public void mouseClicked(MouseEvent e){
-                if(controller.getCarta().getTipoCarta().equals("CartaDiCredito")) {
-                    controller.downgradeCarta(controller.getCarta().getPan());
-                }
-                else{
-                    JOptionPane.showMessageDialog(
-                            null,
-                            "Non puoi effettuare il downgrade, la carta è già di tipo Carta di Debito ",
-                            "Attenzione!",
-                            JOptionPane.PLAIN_MESSAGE,
-                            iconCancel
-                    );
-                }
-            }
-        });
-
 
 
         JLabel settingsLabel = new JLabel("Elimina Conto Corrente");
@@ -319,8 +259,7 @@ public class HomePageGUI extends JFrame {
             accountLabel.setFont(fontRegular);
             bankAccountLabel.setFont(fontRegular);
             settingsLabel.setFont(fontRegular);
-            upgradeLabel.setFont(fontRegular);
-            downgradeLabel.setFont(fontRegular);
+
         }
 
         gbc.gridy = 0;
@@ -328,11 +267,7 @@ public class HomePageGUI extends JFrame {
         userPanel.add(accountLabel, gbc);
         gbc.gridy = 1;
         userPanel.add(bankAccountLabel, gbc);
-        gbc.gridy = 2;
-        userPanel.add(upgradeLabel, gbc);
         gbc.gridy = 3;
-        userPanel.add(downgradeLabel, gbc);
-        gbc.gridy = 4;
         userPanel.add(settingsLabel, gbc);
 
 

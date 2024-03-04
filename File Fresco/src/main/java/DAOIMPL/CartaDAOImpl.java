@@ -14,7 +14,7 @@ public class CartaDAOImpl implements CartaDAO {
 
     @Override
     public Carta selectCard(ContoCorrente contoCorrente){
-        String query = "SELECT c.pan, c.pin, c.cvv, c.tipocarta, c.maxinvio, c.limitefondi, c.contocorrente_iban " +
+        String query = "SELECT c.pan, c.pin, c.cvv, c.tipocarta, c.maxinvio, c.contocorrente_iban " +
                 "FROM test.carta c " +
                 "WHERE c.contocorrente_iban = '" + contoCorrente.getIban() + "'";
         try(Connection conn = DBConnection.getDBConnection().getConnection();
@@ -30,7 +30,7 @@ public class CartaDAOImpl implements CartaDAO {
 
                     if (resultSet.getString("tipocarta").equals("CartaDiDebito")) {
                         Carta cartaDiDebito = new CartaDiDebito(resultSet.getString("pan"), resultSet.getString("pin"), resultSet.getString("cvv"), resultSet.getString("tipocarta"),
-                                contoCorrente, resultSet.getDouble("limitefondi"));
+                                contoCorrente);
                         return cartaDiDebito;
                     }
                     else {
