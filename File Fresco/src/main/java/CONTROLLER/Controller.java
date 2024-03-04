@@ -277,16 +277,27 @@ public class Controller {
      * Metodo che permette di effettuare l'upgrade della carta da Debito (default) a Credito.
      * @param pan riferimento per la carta da aggiornare.*/
     public void upgradeCarta(String pan){
-        cartaDAO.upgradeCarta(pan);
-        JOptionPane.showMessageDialog(
-                null,
-                "La tua carta è stata aggiornata a carta di credito!",
-                "Aggiornamento effettuato",
-                JOptionPane.PLAIN_MESSAGE,
-                iconChecked
-        );
-        frameHome(false);
-        showHomePage(contoScelto);
+        if(contoScelto.getSaldo() >= 5) {
+            cartaDAO.upgradeCarta(pan);
+            JOptionPane.showMessageDialog(
+                    null,
+                    "La tua carta è stata aggiornata a carta di credito!",
+                    "Aggiornamento effettuato",
+                    JOptionPane.PLAIN_MESSAGE,
+                    iconChecked
+            );
+            frameHome(false);
+            showHomePage(contoCorrenteDAO.updateBankAccount(contoScelto));
+        }
+        else {
+            JOptionPane.showMessageDialog(
+                    frameHome,
+                    "Errore",
+                    "Saldo insufficiente per effettuare l'upgrade!",
+                    JOptionPane.PLAIN_MESSAGE,
+                    iconAlert
+            );
+        }
     }
 
     /**
@@ -361,7 +372,7 @@ public class Controller {
                         salvadanaioDAO.fillPiggyBank(contoScelto, nome, Math.round((Double.parseDouble(soldiDaInviare) * 100.00) / 100.00));
                     } else {
                         JOptionPane.showMessageDialog(
-                                null,
+                                frameSalvadanaio,
                                 "Saldo conto corrente insufficiente!",
                                 "Errore",
                                 JOptionPane.PLAIN_MESSAGE,
@@ -372,7 +383,7 @@ public class Controller {
                 }
                 else {
                     JOptionPane.showMessageDialog(
-                            null,
+                            frameSalvadanaio,
                             "Inserisci una cifra valida!",
                             "Errore inserimento",
                             JOptionPane.PLAIN_MESSAGE,
@@ -382,7 +393,7 @@ public class Controller {
             }
             else {
                 JOptionPane.showMessageDialog(
-                        null,
+                        frameSalvadanaio,
                         "Riempi tutti i campi!",
                         "Errore inserimento",
                         JOptionPane.PLAIN_MESSAGE,
@@ -392,7 +403,7 @@ public class Controller {
         }
         catch (NumberFormatException e){
             JOptionPane.showMessageDialog(
-                    null,
+                    frameSalvadanaio,
                     "Inserisci una cifra valida!",
                     "Errore inserimento",
                     JOptionPane.ERROR_MESSAGE,
@@ -402,24 +413,36 @@ public class Controller {
     }
 
     public void getMoneyByPiggyBank(String saldoSalvadanaio, String nome, String soldiDaPrelevare){
-        if(!soldiDaPrelevare.isEmpty()) {
-            if (Double.parseDouble(saldoSalvadanaio) >= Math.round((Double.parseDouble(soldiDaPrelevare)*100.00)/100.00)) {
-                salvadanaioDAO.getMoneyByPiggyBank(contoScelto, nome, Math.round((Double.parseDouble(soldiDaPrelevare)*100.00)/100.00));
-            } else {
+        try{
+            if(!soldiDaPrelevare.isEmpty()) {
+                if (Double.parseDouble(saldoSalvadanaio) >= Math.round((Double.parseDouble(soldiDaPrelevare)*100.00)/100.00)) {
+                    salvadanaioDAO.getMoneyByPiggyBank(contoScelto, nome, Math.round((Double.parseDouble(soldiDaPrelevare)*100.00)/100.00));
+                } else {
+                    JOptionPane.showMessageDialog(
+                            frameSalvadanaio,
+                            "Saldo salvadanaio insufficiente!",
+                            "Errore",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                }
+            }
+            else {
                 JOptionPane.showMessageDialog(
-                        null,
-                        "Saldo salvadanaio insufficiente!",
-                        "Errore",
-                        JOptionPane.ERROR_MESSAGE
+                        frameSalvadanaio,
+                        "Inserisci una cifra valida!",
+                        "Errore inserimento",
+                        JOptionPane.PLAIN_MESSAGE,
+                        iconAlert
                 );
             }
         }
-        else {
+        catch (NumberFormatException e){
             JOptionPane.showMessageDialog(
-                    null,
-                    "Inserisci una cifra valida!",
+                    frameSalvadanaio,
+                    "Inserisci una cifra valida",
                     "Errore inserimento",
-                    JOptionPane.ERROR_MESSAGE
+                    JOptionPane.PLAIN_MESSAGE,
+                    iconAlert
             );
         }
     }

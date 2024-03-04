@@ -5,28 +5,21 @@ package ENTITY;
 public class CartaDiCredito extends Carta{
 
     //Attributi
-    private double maxInvio;
+    private double priceUpgrade;
 
     //Costruttori
-    public CartaDiCredito(String pan, String pin, String cvv, String tipoCarta,  ContoCorrente contoCorrente, double maxInvio){
+    public CartaDiCredito(String pan, String pin, String cvv, String tipoCarta,  ContoCorrente contoCorrente, double priceUpgrade){
         super(pan, pin, cvv, tipoCarta, contoCorrente);
-        setMaxInvio(maxInvio);
+        setPriceUpgrade(priceUpgrade);
     }
 
     //Getter e Setter
-    public double getMaxInvio() {
-        return maxInvio;
+    public double getPriceUpgrade() {
+        return priceUpgrade;
     }
 
-    public void setMaxInvio(double maxInvio) {
-        this.maxInvio = maxInvio;
+    public void setPriceUpgrade(double priceUpgrade) {
+        this.priceUpgrade = priceUpgrade;
     }
 
-    @Override
-    public String toString() {
-        return super.toString() +
-                "CartaDiCredito{" +
-                "maxInvio=" + maxInvio +
-                '}';
-    }
 }

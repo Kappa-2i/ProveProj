@@ -18,13 +18,20 @@ public class TransazionaDAOImpl implements TransazioneDAO {
             ArrayList<Transazione> transazioni = new ArrayList<Transazione>();
 
             // Query SQL per ottenere i dettagli dell'utente
-        String query = "SELECT t.importo, t.causale, t.datatransazione, t.orariotransazione, t.tipotransazione," +
-                "       t.categoriaentrata, t.categoriauscita, t.nome_raccolta, t.iban1 " +
-                "FROM test.transazione t" +
-                "      WHERE ((t.iban2 = '"+conto.getIban()+"' AND t.tipotransazione = 'Invia a') " +
-                "      OR (t.iban2 = '"+conto.getIban()+"' AND t.tipotransazione = 'Riceve da')) " +
-                "      AND (t.datatransazione BETWEEN '2024-01-01' AND current_date - INTERVAL '1 day' " +
-                "      OR T.orariotransazione < current_time) " +
+        String query = "SELECT t.importo, " +
+                "t.causale, " +
+                "t.datatransazione, " +
+                "t.orariotransazione, " +
+                "t.tipotransazione, " +
+                "t.categoriaentrata, " +
+                "t.categoriauscita, " +
+                "r.nomeraccolta, " +
+                "t.iban1 " +
+                "FROM test.transazione t " +
+                "LEFT JOIN test.raccolta r ON t.raccolta_Id_Fk = r.Id_Raccolta " +
+                "WHERE t.iban2 = '" +conto.getIban()+ "'" +
+                "AND (t.datatransazione BETWEEN '2024-01-01' AND current_date - INTERVAL '1 day' OR (t.datatransazione = current_date AND t.orariotransazione <= current_time )" +
+                ")" +
                 "ORDER BY t.datatransazione DESC, t.orariotransazione DESC;";
 
             try (Connection conn = DBConnection.getDBConnection().getConnection();  // Ottenimento della connessione al database
@@ -39,7 +46,7 @@ public class TransazionaDAOImpl implements TransazioneDAO {
                         //Creazione degli oggetti Salvadanaio.
                         Transazione transazione = new Transazione(resultSet.getDouble("importo"), resultSet.getString("causale"),
                                 resultSet.getString("datatransazione"), resultSet.getString("orariotransazione").substring(0,5), resultSet.getString("tipotransazione"),
-                                resultSet.getString("iban1"), resultSet.getString("categoriaentrata"), resultSet.getString("categoriauscita"), resultSet.getString("nome_raccolta"), conto);
+                                resultSet.getString("iban1"), resultSet.getString("categoriaentrata"), resultSet.getString("categoriauscita"), resultSet.getString("nomeraccolta"), conto);
                         //Agginta del salvadaio all'ArrayList di salvadanai
                         transazioni.add(transazione);
                     }
@@ -192,7 +199,7 @@ public class TransazionaDAOImpl implements TransazioneDAO {
                     "from test.contocorrente cc " +
                     "join test.account a " +
                     "on a.email = cc.account_email " +
-                    "where cc.iban = ? and a.nome = ? and a.cognome = ?";
+                    "where cc.iban = ? and a.nome ILIKE ? and a.cognome ILIKE ?";
             try (PreparedStatement pstmt = conn.prepareStatement(query)) {
                 // Imposta i parametri della query
                 pstmt.setString(1, receiver);
@@ -270,9 +277,11 @@ public class TransazionaDAOImpl implements TransazioneDAO {
 
     public ArrayList<Transazione> selectTransactionsByCollection(Collection collection, ContoCorrente conto){
         // Query SQL per ottenere i dettagli dell'utente
-        String query = "select * " +
+        String query = "select t.importo, t.causale, t.datatransazione, t.orariotransazione, t.tipotransazione, t.iban1, t.categoriaentrata, t.categoriauscita, r.nomeraccolta " +
                 "from test.transazione t " +
-                "WHERE t.iban2 = '" + conto.getIban() + "' AND t.nome_raccolta = '" + collection.getNameCollection() + "' ";
+                "join test.raccolta r " +
+                "ON t.iban2 = r.contocorrente_iban AND t.raccolta_id_fk = r.id_raccolta "+
+                "WHERE r.nomeraccolta = '"+collection.getNameCollection()+"' AND r.contocorrente_iban = '"+conto.getIban()+"' ";
 
         ArrayList<Transazione> transactionsCollection = new ArrayList<Transazione>();
 
@@ -287,7 +296,7 @@ public class TransazionaDAOImpl implements TransazioneDAO {
                     //Creazione degli oggetti Salvadanaio.
                     Transazione transactionCollection = new Transazione(resultSet.getDouble("importo"), resultSet.getString("causale"),
                             resultSet.getString("datatransazione"), resultSet.getString("orariotransazione").substring(0,5), resultSet.getString("tipotransazione"),
-                            resultSet.getString("iban1"), resultSet.getString("categoriaentrata"), resultSet.getString("categoriauscita"), resultSet.getString("nome_raccolta"), conto);
+                            resultSet.getString("iban1"), resultSet.getString("categoriaentrata"), resultSet.getString("categoriauscita"), resultSet.getString("nomeraccolta"), conto);
                     //Aggiunta della collezione all'ArrayList di collezioni
                     transactionsCollection.add(transactionCollection);
                 }
@@ -304,8 +313,10 @@ public class TransazionaDAOImpl implements TransazioneDAO {
     public double selectSumOfCollections(ContoCorrente conto, String name) {
         String query = "SELECT " +
                 "CAST(SUM(CASE WHEN t.tipotransazione = 'Invia a' THEN t.importo END) AS double precision) AS sum " +
-                "FROM test.transazione t " +
-                "WHERE t.iban2 = '" + conto.getIban() + "' AND t.nome_raccolta = '" + name + "'";
+                "from test.transazione t " +
+                "join test.raccolta r " +
+                "ON t.iban2 = r.contocorrente_iban AND t.raccolta_id_fk = r.id_raccolta "+
+                "WHERE t.iban2 = '" + conto.getIban() + "' AND r.nomeraccolta = '" + name + "'";
 
         try (Connection conn = DBConnection.getDBConnection().getConnection();  // Ottenimento della connessione al database
              Statement statement = conn.createStatement()) {  // Creazione di un PreparedStatement
