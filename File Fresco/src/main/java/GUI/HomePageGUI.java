@@ -23,7 +23,8 @@ public class HomePageGUI extends JFrame {
     ImageIcon iconExit = new ImageIcon(HomePageGUI.class.getResource("/IMG/door_exit.png"));
     ImageIcon iconLogOut = new ImageIcon(HomePageGUI.class.getResource("/IMG/logout.png"));
     ImageIcon iconUnina = new ImageIcon(HomePageGUI.class.getResource("/IMG/unina.png")); // Sostituisci con il percorso del tuo file icona
-    ImageIcon iconNotifiche = new ImageIcon(HomePageGUI.class.getResource("/IMG/notice.png"));
+    ImageIcon iconUpgrade = new ImageIcon(HomePageGUI.class.getResource("/IMG/upgrade.png"));
+    ImageIcon iconDowngrade = new ImageIcon(HomePageGUI.class.getResource("/IMG/downgrade.png"));
     ImageIcon iconRaccolte = new ImageIcon(HomePageGUI.class.getResource("/IMG/raccolte.png"));
     ImageIcon iconInviaSoldi = new ImageIcon(HomePageGUI.class.getResource("/IMG/sendMoney.png"));
     ImageIcon iconSalvadanaio = new ImageIcon(HomePageGUI.class.getResource("/IMG/saving_resized.png"));
@@ -646,7 +647,6 @@ public class HomePageGUI extends JFrame {
 
         JButton buttonNotifiche = new JButton();
         buttonNotifiche.setBackground(null);
-        buttonNotifiche.setIcon(iconNotifiche);
         buttonNotifiche.setContentAreaFilled(false);
         buttonNotifiche.setOpaque(false);
         buttonNotifiche.setBorderPainted(false);
@@ -655,15 +655,19 @@ public class HomePageGUI extends JFrame {
         buttonNotifiche.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         JLabel notificheLabel2 = new JLabel("");
-        if(controller.getCarta().getTipoCarta().equals("CartaDiCredito"))
+        if(controller.getCarta().getTipoCarta().equals("CartaDiCredito")) {
             notificheLabel2.setText("<html><b>DOWNGRADE<br>CARTA</b></html>");
-        else
-            notificheLabel2.setText("UPGRADE CARTA");
+            buttonNotifiche.setIcon(iconDowngrade);
+        }
+        else {
+            notificheLabel2.setText("<html><b>UPGRADE CARTA</b></html>");
+            buttonNotifiche.setIcon(iconUpgrade);
+        }
 
         notificheLabel2.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(notificheLabel2.getText().equals("UPGRADE CARTA")){
+                if(notificheLabel2.getText().equals("<html><b>UPGRADE CARTA</b></html>")){
                     controller.upgradeCarta(controller.getCarta().getPan());
                 }
                 else

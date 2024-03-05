@@ -29,7 +29,7 @@ public class Controller {
     ImageIcon iconAlert = new ImageIcon(HomePageGUI.class.getResource("/IMG/alert.png"));
     ImageIcon iconCancel = new ImageIcon(HomePageGUI.class.getResource("/IMG/cancel.png"));
     ImageIcon iconChecked = new ImageIcon(HomePageGUI.class.getResource("/IMG/checked.png"));
-    ImageIcon iconDelete = new ImageIcon(HomePageGUI.class.getResource("/IMG/cancel.png"));
+    ImageIcon iconDelete = new ImageIcon(HomePageGUI.class.getResource("/IMG/delete.png"));
 
     //Dichiarazioni delle Dao
     private AccountDAO accountDao;
@@ -292,8 +292,8 @@ public class Controller {
         else {
             JOptionPane.showMessageDialog(
                     frameHome,
-                    "Errore",
                     "Saldo insufficiente per effettuare l'upgrade!",
+                    "Errore",
                     JOptionPane.PLAIN_MESSAGE,
                     iconAlert
             );

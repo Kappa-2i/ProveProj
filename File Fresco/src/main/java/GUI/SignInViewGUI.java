@@ -22,6 +22,8 @@ public class SignInViewGUI extends JFrame{
 
     //Icone
     ImageIcon iconAlert = new ImageIcon(HomePageGUI.class.getResource("/IMG/alert.png"));
+    ImageIcon iconApp = new ImageIcon(LoginViewGUI.class.getResource("/IMG/digital-money.png"));
+
 
     public SignInViewGUI(Controller controller){
         this.controller = controller;
@@ -54,21 +56,32 @@ public class SignInViewGUI extends JFrame{
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.insets = new Insets(0, -200, 0, 0);
-        gbc.weightx = 0.2;
+        gbc.insets = new Insets(0, 0, 0, 0);
+        gbc.weightx = 0.5;
         gbc.weighty = 1;
         contentPane.add(panelLoginWhite, gbc);//Aggiunge il panelLoginWhite al contentPane
 
 
         //Creazione di un JPanel 'PanelLoginRed' con BoxLayout
-        JPanel panelLoginGreen = new JPanel(new BorderLayout());
+        JPanel panelLoginGreen = new JPanel(new GridBagLayout());
         panelLoginGreen.setBackground(new Color(0, 50, 73));
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 0.45;
+        gbc.weightx = 0.5;
         gbc.weighty = 1;
         contentPane.add(panelLoginGreen, gbc);
+
+        gbc = new GridBagConstraints();
+        JButton buttonApp = new JButton();
+        buttonApp.setIcon(iconApp);
+        buttonApp.setBackground(null);
+        buttonApp.setOpaque(true);
+        buttonApp.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia il cursore per indicare che è cliccabile
+        buttonApp.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panelLoginGreen.add(buttonApp, gbc);
 
 
 
@@ -250,6 +263,7 @@ public class SignInViewGUI extends JFrame{
         gbc.gridy = 11;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = 0;
+        gbc.insets = new Insets(20,5,5,5);
         panelLoginWhite.add(backButton, gbc); //Aggiunge il loginButton al panelLoginWhit
 
         // Creazione del button 'loginButton'
@@ -288,6 +302,7 @@ public class SignInViewGUI extends JFrame{
         gbc.gridy = 11;
         gbc.anchor = GridBagConstraints.EAST;
         gbc.fill = 0;
+        gbc.insets = new Insets(20,5,5,5);
         panelLoginWhite.add(signButton, gbc); //Aggiunge il loginButton al panelLoginWhit
 
         setContentPane(contentPane);

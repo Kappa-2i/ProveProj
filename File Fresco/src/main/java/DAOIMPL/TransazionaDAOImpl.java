@@ -30,10 +30,8 @@ public class TransazionaDAOImpl implements TransazioneDAO {
                 "FROM test.transazione t " +
                 "LEFT JOIN test.raccolta r ON t.raccolta_Id_Fk = r.Id_Raccolta " +
                 "WHERE t.iban2 = '" +conto.getIban()+ "'" +
-                "AND (t.datatransazione BETWEEN '2024-01-01' AND current_date - INTERVAL '1 day' OR (t.datatransazione = current_date AND t.orariotransazione <= current_time )" +
-                ")" +
+                "AND (t.datatransazione BETWEEN '2024-01-01' AND current_date - INTERVAL '1 day' OR (t.datatransazione = current_date AND t.orariotransazione <= current_time )) " +
                 "ORDER BY t.datatransazione DESC, t.orariotransazione DESC;";
-
             try (Connection conn = DBConnection.getDBConnection().getConnection();  // Ottenimento della connessione al database
                  Statement statement = conn.createStatement()) {  // Creazione di un PreparedStatement
 
