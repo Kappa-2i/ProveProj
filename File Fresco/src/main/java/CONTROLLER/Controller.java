@@ -247,13 +247,7 @@ public class Controller {
 
         frameLogin(true);
     }
-    /**
-     * Metodo che permette di tornare alla pagina di selezione del Conto Corrente.*/
-    public void backFramePick(){
-        contoScelto = null;
-        frameHome(false);
-        framePick(true);
-    }
+
 
     /**
      * Metodo che permette gestire la visualizzazione della pagina della carta.*/
